@@ -127,9 +127,9 @@ use telemetry::{Telemetry, TelemetryWorkerHandle};
 
 
 #[cfg(feature = "vine-native")]
-pub use vine_client::peerExecutorDispatch;
+pub use vine_client::VineExecutorDispatch;
 
-pub use chain_spec::{ peerChainSpec};
+pub use chain_spec::{ VineChainSpec};
 pub use consensus_common::{block_validation::Chain, Proposal, SelectChain};
 use mmr_gadget::MmrGadget;
 #[cfg(feature = "full-node")]
@@ -286,7 +286,7 @@ pub enum Error {
 /// Can be called for a `Configuration` to identify which network the configuration targets.
 pub trait IdentifyVariant {
 	/// Returns if this is a configuration for the `vine` network.
-	fn is_peer(&self) -> bool;
+	fn is_vine(&self) -> bool;
 
 	fn is_versi(&self) -> bool;
 
@@ -295,7 +295,7 @@ pub trait IdentifyVariant {
 }
 
 impl IdentifyVariant for Box<dyn ChainSpec> {
-	fn is_peer(&self) -> bool {
+	fn is_vine(&self) -> bool {
 		self.id().starts_with("vine") || self.id().starts_with("vine")
 	}
 	
@@ -861,7 +861,7 @@ pub const AVAILABILITY_CONFIG: AvailabilityConfig = AvailabilityConfig {
 /// regardless of the role the node has. The relay chain selection (longest or disputes-aware) is
 /// still determined based on the role of the node. Likewise for authority discovery.
 pub type FullClientNew =
-	service::TFullClient<Block, RuntimeApipeer, NativeElseWasmExecutor<peerExecutorDispatch>>;
+	service::TFullClient<Block, RuntimeApipeer, NativeElseWasmExecutor<VineExecutorDispatch>>;
 	
 #[cfg(feature = "full-node")]
 pub fn new_full<RuntimeApiPol, ExecutorDispatchStruct, OverseerGenerator>(
@@ -877,7 +877,7 @@ pub fn new_full<RuntimeApiPol, ExecutorDispatchStruct, OverseerGenerator>(
 	overseer_message_channel_capacity_override: Option<usize>,
 	_malus_finality_delay: Option<u32>,
 	hwbench: Option<sc_sysinfo::HwBench>,
-) -> Result<NewFull<Arc<FullClient<RuntimeApipeer, peerExecutorDispatch>>>, Error>
+) -> Result<NewFull<Arc<FullClient<RuntimeApipeer, VineExecutorDispatch>>>, Error>
 where
   RuntimeApiPol: ConstructRuntimeApi<Block, FullClientNew>
 		+ Send
@@ -885,7 +885,7 @@ where
 		+ 'static,
 	RuntimeApiPol::RuntimeApi:
 		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
-	peerExecutorDispatch: NativeExecutionDispatch + 'static,
+	VineExecutorDispatch: NativeExecutionDispatch + 'static,
 	OverseerGenerator: OverseerGen,
 {
 	use vine_node_network_protocol::request_response::IncomingRequest;
@@ -919,7 +919,7 @@ where
 	let disable_grandpa = config.disable_grandpa;
 	let name = config.network.node_name.clone();
 
-	let basics = new_partial_basics::<RuntimeApipeer, peerExecutorDispatch>(
+	let basics = new_partial_basics::<RuntimeApipeer, VineExecutorDispatch>(
 		&mut config,
 		jaeger_agent,
 		telemetry_worker_handle,
@@ -961,7 +961,7 @@ where
 		transaction_pool,
 		// other: (rpc_extensions_builder, import_setup, rpc_setup, slot_duration, mut telemetry,frontier_backend),
 		other: (import_setup,slot_duration,mut telemetry,frontier_backend),
-	} = new_partial::<RuntimeApipeer, peerExecutorDispatch, SelectRelayChain<_>>(
+	} = new_partial::<RuntimeApipeer, VineExecutorDispatch, SelectRelayChain<_>>(
 		&mut config,
 		basics,
 		select_chain,
@@ -1218,7 +1218,7 @@ where
 
 	fn spawn_frontier_tasks(
 		task_manager: &TaskManager,
-		client: Arc<FullClient<RuntimeApipeer, peerExecutorDispatch>>,
+		client: Arc<FullClient<RuntimeApipeer, VineExecutorDispatch>>,
 		backend: Arc<FullBackend>,
 		frontier_backend: Arc<FrontierBackend<Block>>,
 		filter_pool: Option<FilterPool>,
@@ -1643,7 +1643,7 @@ pub fn new_chain_ops(
 
 	#[cfg(feature = "vine-native")]
 	{
-		return chain_ops!(config, jaeger_agent, telemetry_worker_handle; vine_runtime, peerExecutorDispatch, vine)
+		return chain_ops!(config, jaeger_agent, telemetry_worker_handle; vine_runtime, VineExecutorDispatch, vine)
 	}
 	#[cfg(not(feature = "vine-native"))]
 	Err(Error::NoRuntime)
@@ -1670,7 +1670,7 @@ pub fn build_full(
 
 	#[cfg(feature = "vine-native")]
 	{
-		return new_full::<RuntimeApipeer, peerExecutorDispatch, _>(
+		return new_full::<RuntimeApipeer, VineExecutorDispatch, _>(
 			config,
 			is_collator,
 			grandpa_pause,

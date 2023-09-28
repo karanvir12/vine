@@ -1,6 +1,6 @@
 [package]
 name = "vine-cli"
-description = "Peer Relay-chain Client Node"
+description = "Vine Relay-chain Client Node"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
@@ -64,7 +64,7 @@ fast-runtime = ["service/fast-runtime"]
 pyroscope = ["pyro"]
 hostperfcheck = ["vine-performance-test"]
 
-# Configure the native runtimes to use. Peer is enabled by default.
+# Configure the native runtimes to use. Vine is enabled by default.
 #
 # Validators require the native runtime currently
 vine-native = ["service/vine-native"]

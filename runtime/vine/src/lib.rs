@@ -314,7 +314,7 @@ parameter_types! {
 	pub EpochDuration: u64 = prod_or_fast!(
 		EPOCH_DURATION_IN_SLOTS as u64,
 		2 * MINUTES as u64,
-		"PEER_EPOCH_DURATION"
+		"VINE_EPOCH_DURATION"
 	);
 	pub const ExpectedBlockTime: Moment = MILLISECS_PER_BLOCK;
 	pub ReportLongevity: u64 =
@@ -529,18 +529,18 @@ parameter_types! {
 	pub SignedPhase: u32 = prod_or_fast!(
 		EPOCH_DURATION_IN_SLOTS / 4,
 		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 2),
-		"peer_SIGNED_PHASE"
+		"VINE_SIGNED_PHASE"
 	);
 	pub UnsignedPhase: u32 = prod_or_fast!(
 		EPOCH_DURATION_IN_SLOTS / 4,
 		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 2),
-		"peer_UNSIGNED_PHASE"
+		"VINE_UNSIGNED_PHASE"
 	);
 
 	// signed config
 	pub const SignedMaxSubmissions: u32 = 16;
 	pub const SignedMaxRefunds: u32 = 16 / 4;
-	// 40 peers fixed deposit..
+	// 40 beris fixed deposit..
 	pub const SignedDepositBase: Balance = deposit(2, 0);
 	// 0.01 vine per KB of solution data.
 	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024;
@@ -684,12 +684,12 @@ parameter_types! {
 	pub BondingDuration: sp_staking::EraIndex = prod_or_fast!(
 		28,
 		28,
-		"peer_BONDING_DURATION"
+		"VINE_BONDING_DURATION"
 	);
 	pub SlashDeferDuration: sp_staking::EraIndex = prod_or_fast!(
 		27,
 		27,
-		"peer_SLASH_DEFER_DURATION"
+		"VINE_SLASH_DEFER_DURATION"
 	);
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 512;
@@ -801,12 +801,12 @@ impl pallet_identity::Config for Runtime {
 }
 
 parameter_types! {
-	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS , 7 * DAYS, "peer_LAUNCH_PERIOD");
-	pub VotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 7 * DAYS , "peer_VOTING_PERIOD");
-	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 7 * DAYS, "peer_FAST_TRACK_VOTING_PERIOD");
+	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS , 7 * DAYS, "VINE_LAUNCH_PERIOD");
+	pub VotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 7 * DAYS , "VINE_VOTING_PERIOD");
+	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 7 * DAYS, "VINE_FAST_TRACK_VOTING_PERIOD");
 	pub const MinimumDeposit: Balance = 100 * DOLLARS;
-	pub EnactmentPeriod: BlockNumber = prod_or_fast!(7 * DAYS,7 * DAYS, "peer_ENACTMENT_PERIOD");
-	pub CooloffPeriod: BlockNumber = prod_or_fast!(7 * DAYS , 7 * DAYS, "peer_COOLOFF_PERIOD");
+	pub EnactmentPeriod: BlockNumber = prod_or_fast!(7 * DAYS,7 * DAYS, "VINE_ENACTMENT_PERIOD");
+	pub CooloffPeriod: BlockNumber = prod_or_fast!(7 * DAYS , 7 * DAYS, "VINE_COOLOFF_PERIOD");
 	pub const InstantAllowed: bool = true;
 	pub const MaxVotes: u32 = 100;
 	pub const MaxProposals: u32 = 100;
@@ -876,7 +876,7 @@ impl pallet_democracy::Config for Runtime {
 }
 
 parameter_types! {
-	pub CouncilMotionDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "peer_MOTION_DURATION");
+	pub CouncilMotionDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "VINE_MOTION_DURATION");
 	pub const CouncilMaxProposals: u32 = 100;
 	pub const CouncilMaxMembers: u32 = 100;
 }
@@ -900,7 +900,7 @@ parameter_types! {
 	// additional data per vote is 32 bytes (account id).
 	pub const VotingBondFactor: Balance = deposit(0, 32);
 	/// Weekly council elections; scaling up to monthly eventually.
-	pub TermDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "peer_TERM_DURATION");
+	pub TermDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "VINE_TERM_DURATION");
 
 	/// 13 members initially, to be increased to 23 eventually.
 	pub const DesiredMembers: u32 = 13;
@@ -1298,7 +1298,7 @@ parameter_types! {
 }
 
 parameter_types! {
-	pub Prefix: &'static [u8] = b"Pay peers to the vine account:";
+	pub Prefix: &'static [u8] = b"Pay beris to the vine account:";
 }
 
 impl claims::Config for Runtime {
@@ -1629,7 +1629,7 @@ parameter_types! {
 	// Difference is 568 days.
 	// We want a lease period to start on the target onboarding date.
 	// 568 % (12 * 7) = 64 day offset
-	// pub LeaseOffset: BlockNumber = prod_or_fast!(1 * MINUTES, 0, "peer_LEASE_OFFSET");
+	// pub LeaseOffset: BlockNumber = prod_or_fast!(1 * MINUTES, 0, "VINE_LEASE_OFFSET");
 }
 
 impl slots::Config for Runtime {
@@ -2900,7 +2900,7 @@ mod test_fees {
 	#[test]
 	fn signed_deposit_is_sensible() {
 		// ensure this number does not change, or that it is checked after each change.
-		// a 1 MB solution should take (40 + 10) peers of deposit.
+		// a 1 MB solution should take (40 + 10) beris of deposit.
 		let deposit = SignedDepositBase::get() + (SignedDepositByte::get() * 1024 * 1024);
 		assert_eq_error_rate!(deposit, 50 * DOLLARS, DOLLARS);
 	}

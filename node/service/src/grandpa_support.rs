@@ -238,7 +238,7 @@ mod tests {
 
 			move |n| {
 				for _ in 0..n {
-					let block = client.init_peer_block_builder().build().unwrap().block;
+					let block = client.init_vine_block_builder().build().unwrap().block;
 					futures::executor::block_on(client.import(BlockOrigin::Own, block)).unwrap();
 				}
 			}

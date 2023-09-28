@@ -40,7 +40,7 @@ fn basic_buy_fees_message_executes() {
 		DepositAsset { assets: Wild(All), max_assets: 1, beneficiary: Parent.into() },
 	]);
 
-	let mut block_builder = client.init_peer_block_builder();
+	let mut block_builder = client.init_vine_block_builder();
 
 	let execute = construct_extrinsic(
 		&client,
@@ -52,7 +52,7 @@ fn basic_buy_fees_message_executes() {
 		0,
 	);
 
-	block_builder.push_peer_extrinsic(execute).expect("pushes extrinsic");
+	block_builder.push_vine_extrinsic(execute).expect("pushes extrinsic");
 
 	let block = block_builder.build().expect("Finalizes the block").block;
 	let block_hash = block.hash();
@@ -81,7 +81,7 @@ fn query_response_fires() {
 		.set_execution_strategy(ExecutionStrategy::AlwaysWasm)
 		.build();
 
-	let mut block_builder = client.init_peer_block_builder();
+	let mut block_builder = client.init_vine_block_builder();
 
 	let execute = construct_extrinsic(
 		&client,
@@ -92,7 +92,7 @@ fn query_response_fires() {
 		0,
 	);
 
-	block_builder.push_peer_extrinsic(execute).expect("pushes extrinsic");
+	block_builder.push_vine_extrinsic(execute).expect("pushes extrinsic");
 
 	let block = block_builder.build().expect("Finalizes the block").block;
 	let block_hash = block.hash();
@@ -111,7 +111,7 @@ fn query_response_fires() {
 	});
 	let query_id = query_id.unwrap();
 
-	let mut block_builder = client.init_peer_block_builder();
+	let mut block_builder = client.init_vine_block_builder();
 
 	let response = Response::ExecutionResult(None);
 	let max_weight = 1_000_000;
@@ -128,7 +128,7 @@ fn query_response_fires() {
 		1,
 	);
 
-	block_builder.push_peer_extrinsic(execute).expect("pushes extrinsic");
+	block_builder.push_vine_extrinsic(execute).expect("pushes extrinsic");
 
 	let block = block_builder.build().expect("Finalizes the block").block;
 	let block_hash = block.hash();
@@ -164,7 +164,7 @@ fn query_response_elicits_handler() {
 		.set_execution_strategy(ExecutionStrategy::AlwaysWasm)
 		.build();
 
-	let mut block_builder = client.init_peer_block_builder();
+	let mut block_builder = client.init_vine_block_builder();
 
 	let execute = construct_extrinsic(
 		&client,
@@ -175,7 +175,7 @@ fn query_response_elicits_handler() {
 		0,
 	);
 
-	block_builder.push_peer_extrinsic(execute).expect("pushes extrinsic");
+	block_builder.push_vine_extrinsic(execute).expect("pushes extrinsic");
 
 	let block = block_builder.build().expect("Finalizes the block").block;
 	let block_hash = block.hash();
@@ -194,7 +194,7 @@ fn query_response_elicits_handler() {
 	});
 	let query_id = query_id.unwrap();
 
-	let mut block_builder = client.init_peer_block_builder();
+	let mut block_builder = client.init_vine_block_builder();
 
 	let response = Response::ExecutionResult(None);
 	let max_weight = 1_000_000;
@@ -210,7 +210,7 @@ fn query_response_elicits_handler() {
 		1,
 	);
 
-	block_builder.push_peer_extrinsic(execute).expect("pushes extrinsic");
+	block_builder.push_vine_extrinsic(execute).expect("pushes extrinsic");
 
 	let block = block_builder.build().expect("Finalizes the block").block;
 	let block_hash = block.hash();

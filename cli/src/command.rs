@@ -47,7 +47,7 @@ fn get_exec_name() -> Option<String> {
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Peer".into()
+		"Vine".into()
 	}
 
 	fn impl_version() -> String {
@@ -63,7 +63,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/Vine-Inc/Peer-L0/issues".into()
+		"https://github.com/Vine-Inc/Vine-L0/issues".into()
 	}
 
 	fn copyright_start_year() -> i32 {
@@ -86,20 +86,20 @@ impl SubstrateCli for Cli {
 			id
 		};
 		Ok(match id {
-			"vine" => Box::new(service::chain_spec::peer_config()?),
+			"vine" => Box::new(service::chain_spec::vine_config()?),
 			#[cfg(feature = "vine-native")]
-			"vine-dev" | "dev" => Box::new(service::chain_spec::peer_development_config()?),
+			"vine-dev" | "dev" => Box::new(service::chain_spec::vine_development_config()?),
 			#[cfg(feature = "vine-native")]
-			"vine-local" => Box::new(service::chain_spec::peer_local_testnet_config()?),
+			"vine-local" => Box::new(service::chain_spec::vine_local_testnet_config()?),
 			#[cfg(feature = "vine-native")]
-			"vine-staging" => Box::new(service::chain_spec::peer_staging_testnet_config()?),
+			"vine-staging" => Box::new(service::chain_spec::vine_staging_testnet_config()?),
 		
 		
 		
 			path => {
 				let path = std::path::PathBuf::from(path);
 
-				let chain_spec = Box::new(service::peerChainSpec::from_json_file(path.clone())?)
+				let chain_spec = Box::new(service::VineChainSpec::from_json_file(path.clone())?)
 					as Box<dyn service::ChainSpec>;
 
 					chain_spec
@@ -209,7 +209,7 @@ where
 
 	// Disallow BEEFY on production networks.
 	if cli.run.beefy &&
-		(chain_spec.is_peer() )
+		(chain_spec.is_vine() )
 	{
 		return Err(Error::Other("BEEFY disallowed on production networks".to_string()))
 	}
@@ -506,7 +506,7 @@ pub fn run() -> Result<()> {
 					#[cfg(feature = "vine-native")]
 					{
 						return runner.sync_run(|config| {
-							cmd.run::<service::vine_runtime::Block, service::peerExecutorDispatch>(config)
+							cmd.run::<service::vine_runtime::Block, service::VineExecutorDispatch>(config)
 								.map_err(|e| Error::SubstrateCli(e))
 						})
 					}
@@ -558,7 +558,7 @@ pub fn run() -> Result<()> {
 			{
 				return runner.async_run(|_| {
 					Ok((
-						cmd.run::<service::vine_runtime::Block, HostFunctionsOf<service::peerExecutorDispatch>>(
+						cmd.run::<service::vine_runtime::Block, HostFunctionsOf<service::vineExecutorDispatch>>(
 						)
 						.map_err(Error::SubstrateCli),
 						task_manager,

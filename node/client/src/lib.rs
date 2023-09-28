@@ -52,10 +52,10 @@ compile_error!("at least one runtime feature must be enabled");
 
 // The native executor instance for vine.
 #[cfg(feature = "vine")]
-pub struct peerExecutorDispatch;
+pub struct VineExecutorDispatch;
 
 #[cfg(feature = "vine")]
-impl sc_executor::NativeExecutionDispatch for peerExecutorDispatch {
+impl sc_executor::NativeExecutionDispatch for VineExecutorDispatch {
 	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
@@ -227,7 +227,7 @@ pub(crate) use with_client;
 #[derive(Clone)]
 pub enum Client {
 	#[cfg(feature = "vine")]
-	vine(Arc<FullClient<vine_runtime::RuntimeApi, peerExecutorDispatch>>),
+	vine(Arc<FullClient<vine_runtime::RuntimeApi, VineExecutorDispatch>>),
 
 }
 

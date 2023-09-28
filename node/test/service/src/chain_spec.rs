@@ -21,40 +21,40 @@ use grandpa::AuthorityId as GrandpaId;
 use pallet_staking::Forcing;
 use vine_primitives::v2::{AccountId, AssignmentId, ValidatorId, MAX_CODE_SIZE, MAX_POV_SIZE};
 use vine_service::chain_spec::{
-	get_account_id_from_seed, get_from_seed, peer_chain_spec_properties, Extensions,
+	get_account_id_from_seed, get_from_seed, vine_chain_spec_properties, Extensions,
 };
 use vine_test_runtime::BABE_GENESIS_EPOCH_CONFIG;
 use sc_chain_spec::{ChainSpec, ChainType};
 use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use sp_core::sr25519;
 use sp_runtime::Perbill;
-use test_runtime_constants::currency::PEERS;
+use test_runtime_constants::currency::BERIS;
 
 const DEFAULT_PROTOCOL_ID: &str = "vine";
 
 /// The `ChainSpec` parameterized for vine test runtime.
-pub type peerChainSpec =
+pub type VineChainSpec =
 	sc_service::GenericChainSpec<vine_test_runtime::GenesisConfig, Extensions>;
 
 /// Local testnet config (multivalidator Alice + Bob)
-pub fn peer_local_testnet_config() -> peerChainSpec {
-	peerChainSpec::from_genesis(
+pub fn vine_local_testnet_config() -> VineChainSpec {
+	VineChainSpec::from_genesis(
 		"Local Testnet",
 		"local_testnet",
 		ChainType::Local,
-		|| peer_local_testnet_genesis(),
+		|| vine_local_testnet_genesis(),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
 		None,
-		Some(peer_chain_spec_properties()),
+		Some(vine_chain_spec_properties()),
 		Default::default(),
 	)
 }
 
 /// Local testnet genesis config (multivalidator Alice + Bob)
-pub fn peer_local_testnet_genesis() -> vine_test_runtime::GenesisConfig {
-	peer_testnet_genesis(
+pub fn vine_local_testnet_genesis() -> vine_test_runtime::GenesisConfig {
+	vine_testnet_genesis(
 		vec![get_authority_keys_from_seed("Alice"), get_authority_keys_from_seed("Bob")],
 		get_account_id_from_seed::<sr25519::Public>("Alice"),
 		None,
@@ -94,7 +94,7 @@ fn testnet_accounts() -> Vec<AccountId> {
 }
 
 /// Helper function to create vine `GenesisConfig` for testing
-fn peer_testnet_genesis(
+fn vine_testnet_genesis(
 	initial_authorities: Vec<(
 		AccountId,
 		AccountId,
@@ -111,8 +111,8 @@ fn peer_testnet_genesis(
 
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * PEERS;
-	const STASH: u128 = 100 * PEERS;
+	const ENDOWMENT: u128 = 1_000_000 * BERIS;
+	const STASH: u128 = 100 * BERIS;
 
 	runtime::GenesisConfig {
 		system: runtime::SystemConfig {

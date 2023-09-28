@@ -29,7 +29,7 @@ pub use block_builder::*;
 pub use vine_test_runtime as runtime;
 pub use vine_test_service::{
 	construct_extrinsic, construct_transfer_extrinsic, Client, FullBackend,
-	peerTestExecutorDispatch,
+	VineTestExecutorDispatch,
 };
 pub use substrate_test_client::*;
 
@@ -37,7 +37,7 @@ pub use substrate_test_client::*;
 pub type Executor = client::LocalCallExecutor<
 	Block,
 	FullBackend,
-	sc_executor::NativeElseWasmExecutor<peerTestExecutorDispatch>,
+	sc_executor::NativeElseWasmExecutor<VineTestExecutorDispatch>,
 >;
 
 /// Test client builder for vine.
@@ -53,7 +53,7 @@ pub struct GenesisParameters;
 
 impl substrate_test_client::GenesisInit for GenesisParameters {
 	fn genesis_storage(&self) -> Storage {
-		vine_test_service::chain_spec::peer_local_testnet_genesis()
+		vine_test_service::chain_spec::vine_local_testnet_genesis()
 			.build_storage()
 			.expect("Builds test runtime genesis storage")
 	}
@@ -97,7 +97,7 @@ mod tests {
 	fn ensure_test_client_can_build_and_import_block() {
 		let mut client = TestClientBuilder::new().build();
 
-		let block_builder = client.init_peer_block_builder();
+		let block_builder = client.init_vine_block_builder();
 		let block = block_builder.build().expect("Finalizes the block").block;
 
 		futures::executor::block_on(client.import(BlockOrigin::Own, block))
@@ -114,8 +114,8 @@ mod tests {
 			sp_keyring::Sr25519Keyring::Bob,
 			1000,
 		);
-		let mut block_builder = client.init_peer_block_builder();
-		block_builder.push_peer_extrinsic(transfer).expect("Pushes extrinsic");
+		let mut block_builder = client.init_vine_block_builder();
+		block_builder.push_vine_extrinsic(transfer).expect("Pushes extrinsic");
 
 		let block = block_builder.build().expect("Finalizes the block").block;
 

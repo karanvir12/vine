@@ -131,7 +131,7 @@ trait BenchmarkCallSigner<RuntimeCall: Encode + Clone, Signer: Pair> {
 
 #[cfg(feature = "vine")]
 impl BenchmarkCallSigner<vine_runtime::RuntimeCall, sp_core::sr25519::Pair>
-	for FullClient<vine_runtime::RuntimeApi, peerExecutorDispatch>
+	for FullClient<vine_runtime::RuntimeApi, VineExecutorDispatch>
 {
 	fn sign_call(
 		&self,

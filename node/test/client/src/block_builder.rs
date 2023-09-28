@@ -32,27 +32,27 @@ pub trait InitpeerBlockBuilder {
 	/// Init a vine specific block builder that works for the test runtime.
 	///
 	/// This will automatically create and push the inherents for you to make the block valid for the test runtime.
-	fn init_peer_block_builder(
+	fn init_vine_block_builder(
 		&self,
 	) -> sc_block_builder::BlockBuilder<Block, Client, FullBackend>;
 
 	/// Init a vine specific block builder at a specific block that works for the test runtime.
 	///
-	/// Same as [`InitpeerBlockBuilder::init_peer_block_builder`] besides that it takes a [`BlockId`] to say
+	/// Same as [`InitpeerBlockBuilder::init_vine_block_builder`] besides that it takes a [`BlockId`] to say
 	/// which should be the parent block of the block that is being build.
-	fn init_peer_block_builder_at(
+	fn init_vine_block_builder_at(
 		&self,
 		at: &BlockId<Block>,
 	) -> sc_block_builder::BlockBuilder<Block, Client, FullBackend>;
 }
 
 impl InitpeerBlockBuilder for Client {
-	fn init_peer_block_builder(&self) -> BlockBuilder<Block, Client, FullBackend> {
+	fn init_vine_block_builder(&self) -> BlockBuilder<Block, Client, FullBackend> {
 		let chain_info = self.chain_info();
-		self.init_peer_block_builder_at(&BlockId::Hash(chain_info.best_hash))
+		self.init_vine_block_builder_at(&BlockId::Hash(chain_info.best_hash))
 	}
 
-	fn init_peer_block_builder_at(
+	fn init_vine_block_builder_at(
 		&self,
 		at: &BlockId<Block>,
 	) -> BlockBuilder<Block, Client, FullBackend> {
@@ -134,14 +134,14 @@ pub trait BlockBuilderExt {
 	/// the block.
 	///
 	/// Returns the result of the application of the extrinsic.
-	fn push_peer_extrinsic(
+	fn push_vine_extrinsic(
 		&mut self,
 		ext: UncheckedExtrinsic,
 	) -> Result<(), sp_blockchain::Error>;
 }
 
 impl BlockBuilderExt for BlockBuilder<'_, Block, Client, FullBackend> {
-	fn push_peer_extrinsic(
+	fn push_vine_extrinsic(
 		&mut self,
 		ext: UncheckedExtrinsic,
 	) -> Result<(), sp_blockchain::Error> {

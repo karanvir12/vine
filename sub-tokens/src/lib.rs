@@ -4,18 +4,18 @@
 //! # Usage:
 //!
 //! ## Default Tokens: `vine`, 
-//! Current crate provides implementations for vine. note that peers are 10 decimal
+//! Current crate provides implementations for vine. note that beris are 10 decimal
 //! points and the other two are 12.
 //!
 //! ```
 //! use sub_tokens::vine;
 //!
 //! // 100 new vine, 1 old vine.
-//! let peers = vine::from(1_000_000_000_000u128);
+//! let beris = vine::from(1_000_000_000_000u128);
 //!
 //! // provides display and format implementations.
-//! assert_eq!(format!("{}", peers), "100,000 vine");
-//! assert_eq!(format!("{:?}", peers), "100,000 vine (1,000,000,000,000)");
+//! assert_eq!(format!("{}", beris), "100,000 vine");
+//! assert_eq!(format!("{:?}", beris), "100,000 vine (1,000,000,000,000)");
 //! ```
 //!
 //! ## Custom tokens

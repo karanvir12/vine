@@ -1135,9 +1135,9 @@ pub enum UpgradeGoAhead {
 }
 
 /// Consensus engine id for vine v1 consensus engine.
-pub const peer_ENGINE_ID: runtime_primitives::ConsensusEngineId = *b"POL1";
+pub const VINE_ENGINE_ID: runtime_primitives::ConsensusEngineId = *b"POL1";
 
-/// A consensus log item for vine validation. To be used with [`peer_ENGINE_ID`].
+/// A consensus log item for vine validation. To be used with [`VINE_ENGINE_ID`].
 #[derive(Decode, Encode, Clone, PartialEq, Eq)]
 pub enum ConsensusLog {
 	/// A parachain or parathread upgraded its code.
@@ -1168,7 +1168,7 @@ impl ConsensusLog {
 		digest_item: &runtime_primitives::DigestItem,
 	) -> Result<Option<Self>, parity_scale_codec::Error> {
 		match digest_item {
-			runtime_primitives::DigestItem::Consensus(id, encoded) if id == &peer_ENGINE_ID =>
+			runtime_primitives::DigestItem::Consensus(id, encoded) if id == &VINE_ENGINE_ID =>
 				Ok(Some(Self::decode(&mut &encoded[..])?)),
 			_ => Ok(None),
 		}
@@ -1177,7 +1177,7 @@ impl ConsensusLog {
 
 impl From<ConsensusLog> for runtime_primitives::DigestItem {
 	fn from(c: ConsensusLog) -> runtime_primitives::DigestItem {
-		Self::Consensus(peer_ENGINE_ID, c.encode())
+		Self::Consensus(VINE_ENGINE_ID, c.encode())
 	}
 }
 

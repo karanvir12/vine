@@ -44,9 +44,9 @@ use telemetry::TelemetryEndpoints;
 
 
 #[cfg(feature = "vine-native")]
-const PEER_STAGING_TELEMETRY_URL: &str = "wss://telemetry.vine.io/submit/";
+const VINE_STAGING_TELEMETRY_URL: &str = "wss://telemetry.vine.io/submit/";
 
-const DEFAULT_PROTOCOL_ID: &str = "Peer";
+const DEFAULT_PROTOCOL_ID: &str = "Vine";
 
 /// Node `ChainSpec` extensions.
 ///
@@ -67,20 +67,20 @@ pub struct Extensions {
 
 /// The `ChainSpec` parameterized for the vine runtime.
 #[cfg(feature = "vine-native")]
-pub type peerChainSpec = service::GenericChainSpec<vine::GenesisConfig, Extensions>;
+pub type VineChainSpec = service::GenericChainSpec<vine::GenesisConfig, Extensions>;
 
 // Dummy chain spec, in case when we don't have the native runtime.
 pub type DummyChainSpec = service::GenericChainSpec<(), Extensions>;
 
 // Dummy chain spec, but that is fine when we don't have the native runtime.
 #[cfg(not(feature = "vine-native"))]
-pub type peerChainSpec = DummyChainSpec;
+pub type VineChainSpec = DummyChainSpec;
 /// The `ChainSpec` parameterized for the `versi` runtime.
 ///
 //
 
-pub fn peer_config() -> Result<peerChainSpec, String> {
-	peerChainSpec::from_json_bytes(&include_bytes!("../chain-specs/vine.json")[..])
+pub fn vine_config() -> Result<VineChainSpec, String> {
+	VineChainSpec::from_json_bytes(&include_bytes!("../chain-specs/vine.json")[..])
 }
 
 
@@ -132,7 +132,7 @@ fn default_parachains_host_configuration(
 	}
 }
 
-pub fn peer_chain_spec_properties() -> serde_json::map::Map<String, serde_json::Value> {
+pub fn vine_chain_spec_properties() -> serde_json::map::Map<String, serde_json::Value> {
 	serde_json::json!({
 		"tokenDecimals": 18,
 		"tokenSymbol":"BERI",
@@ -144,23 +144,23 @@ pub fn peer_chain_spec_properties() -> serde_json::map::Map<String, serde_json::
 
 // vine staging testnet config.
 #[cfg(feature = "vine-native")]
-pub fn peer_staging_testnet_config() -> Result<peerChainSpec, String> {
-	let wasm_binary = vine::WASM_BINARY.ok_or("Peer development wasm not available")?;
+pub fn vine_staging_testnet_config() -> Result<VineChainSpec, String> {
+	let wasm_binary = vine::WASM_BINARY.ok_or("Vine development wasm not available")?;
 	let boot_nodes = vec![];
 
-	Ok(peerChainSpec::from_genesis(
+	Ok(VineChainSpec::from_genesis(
 		"Vine Mainnet",
-		"peer_mainnet",
+		"Vine_mainnet",
 		ChainType::Live,
-		move || peer_staging_testnet_config_genesis(wasm_binary, 100),
+		move || vine_staging_testnet_config_genesis(wasm_binary, 100),
 		boot_nodes,
 		Some(
-			TelemetryEndpoints::new(vec![(PEER_STAGING_TELEMETRY_URL.to_string(), 0)])
+			TelemetryEndpoints::new(vec![(VINE_STAGING_TELEMETRY_URL.to_string(), 0)])
 				.expect("vine Staging telemetry url is valid; qed"),
 		),
 		Some(DEFAULT_PROTOCOL_ID),
 		None,
-		Some(peer_chain_spec_properties()),
+		Some(vine_chain_spec_properties()),
 		Default::default(),
 	))
 }
@@ -175,7 +175,7 @@ fn default_parachains_host_configuration_is_consistent() {
 }
 
 #[cfg(feature = "vine-native")]
-fn peer_session_keys(
+fn vine_session_keys(
 	babe: BabeId,
 	grandpa: GrandpaId,
 	im_online: ImOnlineId,
@@ -194,7 +194,7 @@ fn peer_session_keys(
 }
 
 #[cfg(feature = "vine-native")]
-fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> vine::GenesisConfig {
+fn vine_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> vine::GenesisConfig {
 	// subkey inspect "$SECRET"
 	let endowed_accounts = vec![];
 
@@ -232,7 +232,7 @@ fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> vin
 					(
 						x.0.clone(),
 						x.0.clone(),
-						peer_session_keys(
+						vine_session_keys(
 							x.2.clone(),
 							x.3.clone(),
 							x.4.clone(),
@@ -401,7 +401,7 @@ fn testnet_accounts() -> Vec<AccountId> {
 
 /// Helper function to create vine `GenesisConfig` for testing
 #[cfg(feature = "vine-native")]
-pub fn peer_testnet_genesis(
+pub fn vine_testnet_genesis(
 	wasm_binary: &[u8],
 	initial_authorities: Vec<(
 		AccountId,
@@ -435,7 +435,7 @@ pub fn peer_testnet_genesis(
 					(
 						x.0.clone(),
 						x.0.clone(),
-						peer_session_keys(
+						vine_session_keys(
 							x.2.clone(),
 							x.3.clone(),
 							x.4.clone(),
@@ -533,8 +533,8 @@ pub fn peer_testnet_genesis(
 }
 
 #[cfg(feature = "vine-native")]
-fn peer_development_config_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
-	peer_testnet_genesis(
+fn vine_development_config_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
+	vine_testnet_genesis(
 		wasm_binary,
 		vec![get_authority_keys_from_seed_no_beefy("Alice")],
 		get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -545,27 +545,27 @@ fn peer_development_config_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
 
 /// vine development config (single validator Alice)
 #[cfg(feature = "vine-native")]
-pub fn peer_development_config() -> Result<peerChainSpec, String> {
+pub fn vine_development_config() -> Result<VineChainSpec, String> {
 	let wasm_binary = vine::WASM_BINARY.ok_or("vine development wasm not available")?;
 
-	Ok(peerChainSpec::from_genesis(
+	Ok(VineChainSpec::from_genesis(
 		"Development",
 		"dev",
 		ChainType::Development,
-		move || peer_development_config_genesis(wasm_binary),
+		move || vine_development_config_genesis(wasm_binary),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
 		None,
-		Some(peer_chain_spec_properties()),
+		Some(vine_chain_spec_properties()),
 		Default::default(),
 	))
 }
 
 
 #[cfg(feature = "vine-native")]
-fn peer_local_testnet_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
-	peer_testnet_genesis(
+fn vine_local_testnet_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
+	vine_testnet_genesis(
 		wasm_binary,
 		vec![
 			get_authority_keys_from_seed_no_beefy("Alice"),
@@ -579,19 +579,19 @@ fn peer_local_testnet_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
 
 /// vine local testnet config (multivalidator Alice + Bob)
 #[cfg(feature = "vine-native")]
-pub fn peer_local_testnet_config() -> Result<peerChainSpec, String> {
+pub fn vine_local_testnet_config() -> Result<VineChainSpec, String> {
 	let wasm_binary = vine::WASM_BINARY.ok_or("vine development wasm not available")?;
 
-	Ok(peerChainSpec::from_genesis(
+	Ok(VineChainSpec::from_genesis(
 		"Local Testnet",
 		"local_testnet",
 		ChainType::Local,
-		move || peer_local_testnet_genesis(wasm_binary),
+		move || vine_local_testnet_genesis(wasm_binary),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
 		None,
-		Some(peer_chain_spec_properties()),
+		Some(vine_chain_spec_properties()),
 		Default::default(),
 	))
 }
