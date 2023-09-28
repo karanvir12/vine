@@ -5,7 +5,7 @@ bootnode = true
 [relaychain]
 default_image = "{{ZOMBIENET_INTEGRATION_TEST_IMAGE}}"
 
-command = "peer"
+command = "vine"
 
   [[relaychain.nodes]]
   name = "alice"
@@ -31,7 +31,7 @@ cumulus_based = true
   [parachains.collator]
   name = "collator01"
   image = "{{COL_IMAGE}}"
-  command = "peer-collator"
+  command = "vine-collator"
 
   [[parachains.collator.env]]
   name = "RUST_LOG"

@@ -65,7 +65,7 @@ DM
 DMP/SM
 DMQ
 DoS
-peer
+vine
 peers
 ECDSA
 ed25519
@@ -196,8 +196,8 @@ pessimization
 phragmen
 picosecond/SM
 PoA/MS
-peer/MS
-peer/MS
+vine/MS
+vine/MS
 PoS/MS
 PoV/MS
 PoW/MS

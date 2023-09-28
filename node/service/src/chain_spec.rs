@@ -1,20 +1,20 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
-//! peer chain configurations.
+//! vine chain configurations.
 
 use beefy_primitives::crypto::AuthorityId as BeefyId;
 use frame_support::weights::Weight;
@@ -23,9 +23,9 @@ use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use pallet_staking::Forcing;
 use vine_primitives::v2::{AccountId, AccountPublic, AssignmentId, ValidatorId};
 #[cfg(feature = "vine-native")]
-use vine_runtime as peer;
+use vine_runtime as vine;
 #[cfg(feature = "vine-native")]
-use vine_runtime_constants::currency::UNITS as peer;
+use vine_runtime_constants::currency::UNITS as vine;
 use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use sp_consensus_babe::AuthorityId as BabeId;
 
@@ -44,7 +44,7 @@ use telemetry::TelemetryEndpoints;
 
 
 #[cfg(feature = "vine-native")]
-const PEER_STAGING_TELEMETRY_URL: &str = "wss://telemetry.peer.io/submit/";
+const PEER_STAGING_TELEMETRY_URL: &str = "wss://telemetry.vine.io/submit/";
 
 const DEFAULT_PROTOCOL_ID: &str = "Peer";
 
@@ -65,9 +65,9 @@ pub struct Extensions {
 	pub light_sync_state: sc_sync_state_rpc::LightSyncStateExtension,
 }
 
-/// The `ChainSpec` parameterized for the peer runtime.
+/// The `ChainSpec` parameterized for the vine runtime.
 #[cfg(feature = "vine-native")]
-pub type peerChainSpec = service::GenericChainSpec<peer::GenesisConfig, Extensions>;
+pub type peerChainSpec = service::GenericChainSpec<vine::GenesisConfig, Extensions>;
 
 // Dummy chain spec, in case when we don't have the native runtime.
 pub type DummyChainSpec = service::GenericChainSpec<(), Extensions>;
@@ -80,7 +80,7 @@ pub type peerChainSpec = DummyChainSpec;
 //
 
 pub fn peer_config() -> Result<peerChainSpec, String> {
-	peerChainSpec::from_json_bytes(&include_bytes!("../chain-specs/peer.json")[..])
+	peerChainSpec::from_json_bytes(&include_bytes!("../chain-specs/vine.json")[..])
 }
 
 
@@ -135,28 +135,28 @@ fn default_parachains_host_configuration(
 pub fn peer_chain_spec_properties() -> serde_json::map::Map<String, serde_json::Value> {
 	serde_json::json!({
 		"tokenDecimals": 18,
-		"tokenSymbol":"PEER",
+		"tokenSymbol":"BERI",
 	})
 	.as_object()
 	.expect("Map given; qed")
 	.clone()
 }
 
-// peer staging testnet config.
+// vine staging testnet config.
 #[cfg(feature = "vine-native")]
 pub fn peer_staging_testnet_config() -> Result<peerChainSpec, String> {
-	let wasm_binary = peer::WASM_BINARY.ok_or("Peer development wasm not available")?;
+	let wasm_binary = vine::WASM_BINARY.ok_or("Peer development wasm not available")?;
 	let boot_nodes = vec![];
 
 	Ok(peerChainSpec::from_genesis(
-		"PEER Mainnet",
+		"Vine Mainnet",
 		"peer_mainnet",
 		ChainType::Live,
 		move || peer_staging_testnet_config_genesis(wasm_binary, 100),
 		boot_nodes,
 		Some(
 			TelemetryEndpoints::new(vec![(PEER_STAGING_TELEMETRY_URL.to_string(), 0)])
-				.expect("peer Staging telemetry url is valid; qed"),
+				.expect("vine Staging telemetry url is valid; qed"),
 		),
 		Some(DEFAULT_PROTOCOL_ID),
 		None,
@@ -182,8 +182,8 @@ fn peer_session_keys(
 	para_validator: ValidatorId,
 	para_assignment: AssignmentId,
 	authority_discovery: AuthorityDiscoveryId,
-) -> peer::SessionKeys {
-	peer::SessionKeys {
+) -> vine::SessionKeys {
+	vine::SessionKeys {
 		babe,
 		grandpa,
 		im_online,
@@ -194,7 +194,7 @@ fn peer_session_keys(
 }
 
 #[cfg(feature = "vine-native")]
-fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> peer::GenesisConfig {
+fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> vine::GenesisConfig {
 	// subkey inspect "$SECRET"
 	let endowed_accounts = vec![];
 
@@ -209,23 +209,23 @@ fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> pee
 		AuthorityDiscoveryId,
 	) > = vec![];
 
-	const ENDOWMENT: u128 = 1_000_000_000 * peer;
-	const STASH: u128 = 100 * peer;
+	const ENDOWMENT: u128 = 1_000_000_000 * vine;
+	const STASH: u128 = 100 * vine;
 
-	peer::GenesisConfig {
-		sudo: peer::SudoConfig {
+	vine::GenesisConfig {
+		sudo: vine::SudoConfig {
 			key: Some(get_account_id_from_seed::<sr25519::Public>("Alice")),
 		},
-		system: peer::SystemConfig { code: wasm_binary.to_vec() },
-		balances: peer::BalancesConfig {
+		system: vine::SystemConfig { code: wasm_binary.to_vec() },
+		balances: vine::BalancesConfig {
 			balances: endowed_accounts
 				.iter()
 				.map(|k: &AccountId| (k.clone(), ENDOWMENT))
 				.chain(initial_authorities.iter().map(|x| (x.0.clone(), STASH)))
 				.collect(),
 		},
-		indices: peer::IndicesConfig { indices: vec![] },
-		session: peer::SessionConfig {
+		indices: vine::IndicesConfig { indices: vec![] },
+		session: vine::SessionConfig {
 			keys: initial_authorities
 				.iter()
 				.map(|x| {
@@ -244,12 +244,12 @@ fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> pee
 				})
 				.collect::<Vec<_>>(),
 		},
-		staking: peer::StakingConfig {
+		staking: vine::StakingConfig {
 			validator_count: 50,
 			minimum_validator_count: 4,
 			stakers: initial_authorities
 				.iter()
-				.map(|x| (x.0.clone(), x.1.clone(), STASH, peer::StakerStatus::Validator))
+				.map(|x| (x.0.clone(), x.1.clone(), STASH, vine::StakerStatus::Validator))
 				.collect(),
 			invulnerables: initial_authorities.iter().map(|x| x.0.clone()).collect(),
 			force_era: Forcing::ForceNone,
@@ -258,24 +258,24 @@ fn peer_staging_testnet_config_genesis(wasm_binary: &[u8], chain_id: u64) -> pee
 		},
 		phragmen_election: Default::default(),
 		democracy: Default::default(),
-		council: peer::CouncilConfig { members: vec![], phantom: Default::default() },
-		technical_committee: peer::TechnicalCommitteeConfig {
+		council: vine::CouncilConfig { members: vec![], phantom: Default::default() },
+		technical_committee: vine::TechnicalCommitteeConfig {
 			members: vec![],
 			phantom: Default::default(),
 		},
 		technical_membership: Default::default(),
-		babe: peer::BabeConfig {
+		babe: vine::BabeConfig {
 			authorities: Default::default(),
-			epoch_config: Some(peer::BABE_GENESIS_EPOCH_CONFIG),
+			epoch_config: Some(vine::BABE_GENESIS_EPOCH_CONFIG),
 		},
 		grandpa: Default::default(),
 		im_online: Default::default(),
-		authority_discovery: peer::AuthorityDiscoveryConfig { keys: vec![] },
-		claims: peer::ClaimsConfig { claims: vec![], vesting: vec![] },
-		vesting: peer::VestingConfig { vesting: vec![] },
+		authority_discovery: vine::AuthorityDiscoveryConfig { keys: vec![] },
+		claims: vine::ClaimsConfig { claims: vec![], vesting: vec![] },
+		vesting: vine::VestingConfig { vesting: vec![] },
 		treasury: Default::default(),
 		hrmp: Default::default(),
-		configuration: peer::ConfigurationConfig {
+		configuration: vine::ConfigurationConfig {
 			config: default_parachains_host_configuration(),
 		},
 		paras: Default::default(),
@@ -399,7 +399,7 @@ fn testnet_accounts() -> Vec<AccountId> {
 	]
 }
 
-/// Helper function to create peer `GenesisConfig` for testing
+/// Helper function to create vine `GenesisConfig` for testing
 #[cfg(feature = "vine-native")]
 pub fn peer_testnet_genesis(
 	wasm_binary: &[u8],
@@ -416,19 +416,19 @@ pub fn peer_testnet_genesis(
 	_root_key: AccountId,
 	endowed_accounts: Option<Vec<AccountId>>,
 	chain_id: u64,
-) -> peer::GenesisConfig {
+) -> vine::GenesisConfig {
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * peer;
-	const STASH: u128 = 100 * peer;
+	const ENDOWMENT: u128 = 1_000_000 * vine;
+	const STASH: u128 = 100 * vine;
 
-	peer::GenesisConfig {
-		system: peer::SystemConfig { code: wasm_binary.to_vec() },
-		indices: peer::IndicesConfig { indices: vec![] },
-		balances: peer::BalancesConfig {
+	vine::GenesisConfig {
+		system: vine::SystemConfig { code: wasm_binary.to_vec() },
+		indices: vine::IndicesConfig { indices: vec![] },
+		balances: vine::BalancesConfig {
 			balances: endowed_accounts.iter().map(|k| (k.clone(), ENDOWMENT)).collect(),
 		},
-		session: peer::SessionConfig {
+		session: vine::SessionConfig {
 			keys: initial_authorities
 				.iter()
 				.map(|x| {
@@ -447,12 +447,12 @@ pub fn peer_testnet_genesis(
 				})
 				.collect::<Vec<_>>(),
 		},
-		staking: peer::StakingConfig {
+		staking: vine::StakingConfig {
 			minimum_validator_count: 1,
 			validator_count: initial_authorities.len() as u32,
 			stakers: initial_authorities
 				.iter()
-				.map(|x| (x.0.clone(), x.1.clone(), STASH, peer::StakerStatus::Validator))
+				.map(|x| (x.0.clone(), x.1.clone(), STASH, vine::StakerStatus::Validator))
 				.collect(),
 			invulnerables: initial_authorities.iter().map(|x| x.0.clone()).collect(),
 			force_era: Forcing::NotForcing,
@@ -460,33 +460,33 @@ pub fn peer_testnet_genesis(
 			..Default::default()
 		},
 		phragmen_election: Default::default(),
-		democracy: peer::DemocracyConfig::default(),
-		council: peer::CouncilConfig { members: vec![], phantom: Default::default() },
-		//council: peer::CouncilConfig ::default(),
+		democracy: vine::DemocracyConfig::default(),
+		council: vine::CouncilConfig { members: vec![], phantom: Default::default() },
+		//council: vine::CouncilConfig ::default(),
 
-		technical_committee: peer::TechnicalCommitteeConfig {
+		technical_committee: vine::TechnicalCommitteeConfig {
 			members: vec![],
 			phantom: Default::default(),
 		},
 		technical_membership: Default::default(),
-		babe: peer::BabeConfig {
+		babe: vine::BabeConfig {
 			authorities: Default::default(),
-			epoch_config: Some(peer::BABE_GENESIS_EPOCH_CONFIG),
+			epoch_config: Some(vine::BABE_GENESIS_EPOCH_CONFIG),
 		},
 		grandpa: Default::default(),
 		im_online: Default::default(),
-		authority_discovery: peer::AuthorityDiscoveryConfig { keys: vec![] },
-		claims: peer::ClaimsConfig { claims: vec![], vesting: vec![] },
-		vesting: peer::VestingConfig { vesting: vec![] },
+		authority_discovery: vine::AuthorityDiscoveryConfig { keys: vec![] },
+		claims: vine::ClaimsConfig { claims: vec![], vesting: vec![] },
+		vesting: vine::VestingConfig { vesting: vec![] },
 		treasury: Default::default(),
 		hrmp: Default::default(),
-		configuration: peer::ConfigurationConfig {
+		configuration: vine::ConfigurationConfig {
 			config: default_parachains_host_configuration(),
 		},
 		paras: Default::default(),
 		xcm_pallet: Default::default(),
 		nomination_pools: Default::default(),
-		sudo: peer::SudoConfig {
+		sudo: vine::SudoConfig {
 			key: Some(get_account_id_from_seed::<sr25519::Public>("Alice")),
 		},
 
@@ -533,7 +533,7 @@ pub fn peer_testnet_genesis(
 }
 
 #[cfg(feature = "vine-native")]
-fn peer_development_config_genesis(wasm_binary: &[u8]) -> peer::GenesisConfig {
+fn peer_development_config_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
 	peer_testnet_genesis(
 		wasm_binary,
 		vec![get_authority_keys_from_seed_no_beefy("Alice")],
@@ -543,10 +543,10 @@ fn peer_development_config_genesis(wasm_binary: &[u8]) -> peer::GenesisConfig {
 	)
 }
 
-/// peer development config (single validator Alice)
+/// vine development config (single validator Alice)
 #[cfg(feature = "vine-native")]
 pub fn peer_development_config() -> Result<peerChainSpec, String> {
-	let wasm_binary = peer::WASM_BINARY.ok_or("peer development wasm not available")?;
+	let wasm_binary = vine::WASM_BINARY.ok_or("vine development wasm not available")?;
 
 	Ok(peerChainSpec::from_genesis(
 		"Development",
@@ -564,7 +564,7 @@ pub fn peer_development_config() -> Result<peerChainSpec, String> {
 
 
 #[cfg(feature = "vine-native")]
-fn peer_local_testnet_genesis(wasm_binary: &[u8]) -> peer::GenesisConfig {
+fn peer_local_testnet_genesis(wasm_binary: &[u8]) -> vine::GenesisConfig {
 	peer_testnet_genesis(
 		wasm_binary,
 		vec![
@@ -577,10 +577,10 @@ fn peer_local_testnet_genesis(wasm_binary: &[u8]) -> peer::GenesisConfig {
 	)
 }
 
-/// peer local testnet config (multivalidator Alice + Bob)
+/// vine local testnet config (multivalidator Alice + Bob)
 #[cfg(feature = "vine-native")]
 pub fn peer_local_testnet_config() -> Result<peerChainSpec, String> {
-	let wasm_binary = peer::WASM_BINARY.ok_or("peer development wasm not available")?;
+	let wasm_binary = vine::WASM_BINARY.ok_or("vine development wasm not available")?;
 
 	Ok(peerChainSpec::from_genesis(
 		"Local Testnet",

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::*;
 use futures::{executor, stream::BoxStream};
@@ -43,11 +43,11 @@ use crate::{network::Network, validator_discovery::AuthorityDiscovery, Rep};
 
 #[derive(Debug, PartialEq)]
 pub enum NetworkAction {
-	/// Note a change in reputation for a peer.
+	/// Note a change in reputation for a vine.
 	ReputationChange(PeerId, Rep),
-	/// Disconnect a peer from the given peer-set.
+	/// Disconnect a vine from the given vine-set.
 	DisconnectPeer(PeerId, PeerSet),
-	/// Write a notification to a given peer on the given peer-set.
+	/// Write a notification to a given vine on the given vine-set.
 	WriteNotification(PeerId, PeerSet, Vec<u8>),
 }
 
@@ -167,9 +167,9 @@ impl TestNetworkHandle {
 		self.action_rx.next().await.expect("subsystem concluded early")
 	}
 
-	async fn connect_peer(&mut self, peer: PeerId, peer_set: PeerSet, role: ObservedRole) {
+	async fn connect_peer(&mut self, vine: PeerId, peer_set: PeerSet, role: ObservedRole) {
 		self.send_network_event(NetworkEvent::NotificationStreamOpened {
-			remote: peer,
+			remote: vine,
 			protocol: self.peerset_protocol_names.get_main_name(peer_set),
 			negotiated_fallback: None,
 			role: role.into(),
@@ -232,10 +232,10 @@ fn send_messages_to_peers() {
 	test_harness(|test_harness| async move {
 		let TestHarness { mut network_handle, mut virtual_overseer } = test_harness;
 
-		let peer = PeerId::random();
+		let vine = PeerId::random();
 
 		network_handle
-			.connect_peer(peer.clone(), PeerSet::Validation, ObservedRole::Full)
+			.connect_peer(vine.clone(), PeerSet::Validation, ObservedRole::Full)
 			.timeout(TIMEOUT)
 			.await
 			.expect("Timeout does not occur");
@@ -244,7 +244,7 @@ fn send_messages_to_peers() {
 		// so the single item sink has to be free explicitly
 
 		network_handle
-			.connect_peer(peer.clone(), PeerSet::Collation, ObservedRole::Full)
+			.connect_peer(vine.clone(), PeerSet::Collation, ObservedRole::Full)
 			.timeout(TIMEOUT)
 			.await
 			.expect("Timeout does not occur");
@@ -262,7 +262,7 @@ fn send_messages_to_peers() {
 			virtual_overseer
 				.send(FromOrchestra::Communication {
 					msg: NetworkBridgeTxMessage::SendValidationMessage(
-						vec![peer.clone()],
+						vec![vine.clone()],
 						Versioned::V1(message_v1.clone()),
 					),
 				})
@@ -277,7 +277,7 @@ fn send_messages_to_peers() {
 					.await
 					.expect("Timeout does not occur"),
 				NetworkAction::WriteNotification(
-					peer.clone(),
+					vine.clone(),
 					PeerSet::Validation,
 					WireMessage::ProtocolMessage(message_v1).encode(),
 				)
@@ -299,7 +299,7 @@ fn send_messages_to_peers() {
 			virtual_overseer
 				.send(FromOrchestra::Communication {
 					msg: NetworkBridgeTxMessage::SendCollationMessage(
-						vec![peer.clone()],
+						vec![vine.clone()],
 						Versioned::V1(message_v1.clone()),
 					),
 				})
@@ -312,7 +312,7 @@ fn send_messages_to_peers() {
 					.await
 					.expect("Timeout does not occur"),
 				NetworkAction::WriteNotification(
-					peer.clone(),
+					vine.clone(),
 					PeerSet::Collation,
 					WireMessage::ProtocolMessage(message_v1).encode(),
 				)

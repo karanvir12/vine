@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Network protocol types for parachains.
 
@@ -35,7 +35,7 @@ pub use self::reputation::{ReputationChange, UnifiedReputationChange};
 /// Peer-sets and protocols used for parachains.
 pub mod peer_set;
 
-/// Request/response protocols used in peer.
+/// Request/response protocols used in vine.
 pub mod request_response;
 
 /// Accessing authority discovery service
@@ -152,7 +152,7 @@ macro_rules! our_view {
 	};
 }
 
-/// A succinct representation of a peer's view. This consists of a bounded amount of chain heads
+/// A succinct representation of a vine's view. This consists of a bounded amount of chain heads
 /// and the highest known finalized block number.
 ///
 /// Up to `N` (5?) chain heads.
@@ -506,7 +506,7 @@ pub mod v1 {
 		/// signature of the `PeerId` of the node using the given collator ID key.
 		#[codec(index = 0)]
 		Declare(CollatorId, ParaId, CollatorSignature),
-		/// Advertise a collation to a validator. Can only be sent once the peer has
+		/// Advertise a collation to a validator. Can only be sent once the vine has
 		/// declared that they are a collator with given ID.
 		#[codec(index = 1)]
 		AdvertiseCollation(Hash),
@@ -515,7 +515,7 @@ pub mod v1 {
 		CollationSeconded(Hash, UncheckedSignedFullStatement),
 	}
 
-	/// All network messages on the validation peer-set.
+	/// All network messages on the validation vine-set.
 	#[derive(Debug, Clone, Encode, Decode, PartialEq, Eq, derive_more::From)]
 	pub enum ValidationProtocol {
 		/// Bitfield distribution messages
@@ -532,7 +532,7 @@ pub mod v1 {
 		ApprovalDistribution(ApprovalDistributionMessage),
 	}
 
-	/// All network messages on the collation peer-set.
+	/// All network messages on the collation vine-set.
 	#[derive(Debug, Clone, Encode, Decode, PartialEq, Eq, derive_more::From)]
 	pub enum CollationProtocol {
 		/// Collator protocol messages
@@ -543,7 +543,7 @@ pub mod v1 {
 
 	/// Get the payload that should be signed and included in a `Declare` message.
 	///
-	/// The payload is the local peer id of the node, which serves to prove that it
+	/// The payload is the local vine id of the node, which serves to prove that it
 	/// controls the collator key it is declaring an intention to collate under.
 	pub fn declare_signature_payload(peer_id: &sc_network::PeerId) -> Vec<u8> {
 		let mut payload = peer_id.to_bytes();

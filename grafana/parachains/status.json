@@ -1757,7 +1757,7 @@
   "schemaVersion": 34,
   "style": "dark",
   "tags": [
-    "peer",
+    "vine",
     "Parachains",
     "On-call"
   ],
@@ -1798,8 +1798,8 @@
           },
           {
             "selected": false,
-            "text": "peer",
-            "value": "peer"
+            "text": "vine",
+            "value": "vine"
           }
         ]
 

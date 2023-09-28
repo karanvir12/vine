@@ -8,11 +8,11 @@ ARG IMAGE_NAME
 LABEL io.parity.image.authors="devops-team@parity.io" \
 	io.parity.image.vendor="Parity Technologies" \
 	io.parity.image.title="${IMAGE_NAME}" \
-	io.parity.image.description="Malus - the nemesis of peer" \
-	io.parity.image.source="https://github.com/paritytech/peer/blob/${VCS_REF}/scripts/ci/dockerfiles/malus.Dockerfile" \
+	io.parity.image.description="Malus - the nemesis of vine" \
+	io.parity.image.source="https://github.com/paritytech/vine/blob/${VCS_REF}/scripts/ci/dockerfiles/malus.Dockerfile" \
 	io.parity.image.revision="${VCS_REF}" \
 	io.parity.image.created="${BUILD_DATE}" \
-	io.parity.image.documentation="https://github.com/paritytech/peer/"
+	io.parity.image.documentation="https://github.com/paritytech/vine/"
 
 # show backtraces
 ENV RUST_BACKTRACE 1

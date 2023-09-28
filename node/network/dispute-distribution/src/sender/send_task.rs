@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use std::collections::{HashMap, HashSet};
 
@@ -65,7 +65,7 @@ pub struct SendTask {
 enum DeliveryStatus {
 	/// Request is still in flight.
 	Pending(RemoteHandle<()>),
-	/// Succeeded - no need to send request to this peer anymore.
+	/// Succeeded - no need to send request to this vine anymore.
 	Succeeded,
 }
 
@@ -82,9 +82,9 @@ pub struct TaskFinish {
 
 #[derive(Debug)]
 pub enum TaskResult {
-	/// Task succeeded in getting the request to its peer.
+	/// Task succeeded in getting the request to its vine.
 	Succeeded,
-	/// Task was not able to get the request out to its peer.
+	/// Task was not able to get the request out to its vine.
 	///
 	/// It should be retried in that case.
 	Failed(RequestError),
@@ -104,7 +104,7 @@ impl SendTask {
 	/// Initiates sending a dispute message to peers.
 	///
 	/// Creation of new `SendTask`s is subject to rate limiting. As each `SendTask` will trigger
-	/// sending a message to each validator, hence for employing a per-peer rate limit, we need to
+	/// sending a message to each validator, hence for employing a per-vine rate limit, we need to
 	/// limit the construction of new `SendTask`s.
 	pub async fn new<Context>(
 		ctx: &mut Context,

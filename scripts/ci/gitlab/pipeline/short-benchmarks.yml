@@ -2,7 +2,7 @@
 # Here are all jobs that are executed during "short-benchmarks" stage
 
 # Run all pallet benchmarks only once to check if there are any errors
-short-benchmark-peer:          &short-bench
+short-benchmark-vine:          &short-bench
   stage:                           short-benchmarks
   extends:
     - .test-pr-refs
@@ -12,9 +12,9 @@ short-benchmark-peer:          &short-bench
     - job:                         build-short-benchmark
       artifacts:                   true
   variables:
-    RUNTIME:                       peer
+    RUNTIME:                       vine
   script:
-    - ./artifacts/peer benchmark pallet --execution wasm --wasm-execution compiled --chain $RUNTIME-dev --pallet "*" --extrinsic "*" --steps 2 --repeat 1
+    - ./artifacts/vine benchmark pallet --execution wasm --wasm-execution compiled --chain $RUNTIME-dev --pallet "*" --extrinsic "*" --steps 2 --repeat 1
 
 short-benchmark:
   <<:                              *short-bench

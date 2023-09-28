@@ -21,21 +21,21 @@ build-linux-stable:
     # Ensure we run the UI tests.
     RUN_UI_TESTS: 1
   script:
-    - time cargo build --profile testnet --features pyroscope --verbose --bin peer
+    - time cargo build --profile testnet --features pyroscope --verbose --bin vine
     # pack artifacts
     - mkdir -p ./artifacts
     - VERSION="${CI_COMMIT_REF_NAME}" # will be tag or branch name
-    - mv ./target/testnet/peer ./artifacts/.
+    - mv ./target/testnet/vine ./artifacts/.
     - pushd artifacts
-    - sha256sum peer | tee peer.sha256
-    - shasum -c peer.sha256
+    - sha256sum vine | tee vine.sha256
+    - shasum -c vine.sha256
     - popd
     - EXTRATAG="${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
-    - echo "peer version = ${VERSION} (EXTRATAG = ${EXTRATAG})"
+    - echo "vine version = ${VERSION} (EXTRATAG = ${EXTRATAG})"
     - echo -n ${VERSION} > ./artifacts/VERSION
     - echo -n ${EXTRATAG} > ./artifacts/EXTRATAG
     - echo -n ${CI_JOB_ID} > ./artifacts/BUILD_LINUX_JOB_ID
-    - RELEASE_VERSION=$(./artifacts/peer -V | awk '{print $2}'| awk -F "-" '{print $1}')
+    - RELEASE_VERSION=$(./artifacts/vine -V | awk '{print $2}'| awk -F "-" '{print $1}')
     - echo -n "v${RELEASE_VERSION}" > ./artifacts/BUILD_RELEASE_VERSION
     - cp -r scripts/* ./artifacts
 
@@ -50,13 +50,13 @@ check-transaction-versions:
       artifacts:                   true
   before_script:
     - apt-get -y update; apt-get -y install jq lsof
-    - npm install --ignore-scripts -g @peer/metadata-cmp
+    - npm install --ignore-scripts -g @vine/metadata-cmp
     # Set git config
-    - git config remote.origin.url "https://github.com/paritytech/peer.git"
+    - git config remote.origin.url "https://github.com/paritytech/vine.git"
     # - git fetch origin release
   script:
     - ./scripts/ci/gitlab/check_extrinsics_ordering.sh
-  # TODO: fixme, more info https://github.com/paritytech/peer/issues/6422
+  # TODO: fixme, more info https://github.com/paritytech/vine/issues/6422
   allow_failure:                   true
 
 build-test-collators:
@@ -167,7 +167,7 @@ build-implementers-guide:
     - .kubernetes-env
     - .test-refs
     - .collect-artifacts-short
-  # git depth is set on purpose: https://github.com/paritytech/peer/issues/6284
+  # git depth is set on purpose: https://github.com/paritytech/vine/issues/6284
   variables:
     GIT_STRATEGY:                  clone
     GIT_DEPTH:                     0
@@ -191,4 +191,4 @@ build-short-benchmark:
   script:
     - cargo +nightly build --profile release --locked --features=runtime-benchmarks
     - mkdir artifacts
-    - cp ./target/release/peer ./artifacts/
+    - cp ./target/release/vine ./artifacts/

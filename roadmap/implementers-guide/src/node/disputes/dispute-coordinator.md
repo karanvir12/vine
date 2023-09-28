@@ -234,7 +234,7 @@ ones in the previous set and will be able to record votes on chain.
 Still, for maximum accountability we need to make sure a previous authority set
 can communicate votes to the next one, regardless of any chain: This is yet to
 be implemented see section "Resiliency" in dispute-distribution and
-[this](https://github.com/paritytech/peer/issues/3398) ticket.
+[this](https://github.com/paritytech/vine/issues/3398) ticket.
 
 ## Coordinating Actual Dispute Participation
 
@@ -259,7 +259,7 @@ along and trigger participation no matter what.
 
 ### Spam Considerations
 
-In peer's security model, it is important that attempts to attack the system
+In vine's security model, it is important that attempts to attack the system
 result in a slash of the offenders. Therefore we need to make sure that this
 slash is actually happening. Attackers could try to prevent the slashing from
 taking place, by overwhelming validators with disputes in such a way that no
@@ -355,7 +355,7 @@ block number of the parent when we are inserting the dispute in the queue. To
 account for races, we will promote any existing participation request to the
 priority queue once we learn about an including block. NOTE: this is still work
 in progress and is tracked by [this
-issue](https://github.com/paritytech/peer/issues/5875).
+issue](https://github.com/paritytech/vine/issues/5875).
 
 ### Abandoned Forks
 
@@ -573,7 +573,7 @@ this goal as it massively reduces the amount of candidates that can be disputed.
 
 This makes attempts to overwhelm the system with disputes significantly harder
 and counter measures way easier. We can limit inclusion for example (as
-suggested [here](https://github.com/paritytech/peer/issues/5898) in case of
+suggested [here](https://github.com/paritytech/vine/issues/5898) in case of
 high dispute load. Another measure we have at our disposal is that on finality
 lag block production will slow down, implicitly reducing the rate of new
 candidates that can be disputed. Hence, the cutting-off of the unlimited

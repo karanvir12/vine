@@ -1,16 +1,16 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Large statement requesting background task logic.
 
@@ -54,14 +54,14 @@ pub enum RequesterMessage {
 		relay_parent: Hash,
 		/// The candidate we fetched data for.
 		candidate_hash: CandidateHash,
-		/// Data was fetched from this peer.
+		/// Data was fetched from this vine.
 		from_peer: PeerId,
-		/// Response we received from above peer.
+		/// Response we received from above vine.
 		response: CommittedCandidateReceipt,
 		/// Peers which failed providing the data.
 		bad_peers: Vec<PeerId>,
 	},
-	/// Report a peer which behaved worse than just not providing data:
+	/// Report a vine which behaved worse than just not providing data:
 	ReportPeer(PeerId, UnifiedReputationChange),
 	/// Ask subsystem to send a request for us.
 	SendRequest(Requests),
@@ -101,11 +101,11 @@ pub async fn fetch(
 	loop {
 		let span = span.child("try-available-peers");
 
-		while let Some(peer) = new_peers.pop() {
-			let _span = span.child("try-peer").with_peer_id(&peer);
+		while let Some(vine) = new_peers.pop() {
+			let _span = span.child("try-vine").with_peer_id(&vine);
 
 			let (outgoing, pending_response) =
-				OutgoingRequest::new(Recipient::Peer(peer), req.clone());
+				OutgoingRequest::new(Recipient::Peer(vine), req.clone());
 			if let Err(err) = sender
 				.feed(RequesterMessage::SendRequest(Requests::StatementFetchingV1(outgoing)))
 				.await
@@ -127,7 +127,7 @@ pub async fn fetch(
 						metrics.on_unexpected_statement_large();
 
 						if let Err(err) =
-							sender.feed(RequesterMessage::ReportPeer(peer, COST_WRONG_HASH)).await
+							sender.feed(RequesterMessage::ReportPeer(vine, COST_WRONG_HASH)).await
 						{
 							gum::warn!(
 								target: LOG_TARGET,
@@ -135,7 +135,7 @@ pub async fn fetch(
 								"Sending reputation change failed: This should not happen."
 							);
 						}
-						// We want to get rid of this peer:
+						// We want to get rid of this vine:
 						continue
 					}
 
@@ -143,7 +143,7 @@ pub async fn fetch(
 						.feed(RequesterMessage::Finished {
 							relay_parent,
 							candidate_hash,
-							from_peer: peer,
+							from_peer: vine,
 							response: statement,
 							bad_peers: tried_peers,
 						})
@@ -165,7 +165,7 @@ pub async fn fetch(
 					gum::debug!(
 						target: LOG_TARGET,
 						?err,
-						"Receiving response failed with error - trying next peer."
+						"Receiving response failed with error - trying next vine."
 					);
 
 					metrics.on_received_response(false);
@@ -173,7 +173,7 @@ pub async fn fetch(
 				},
 			}
 
-			tried_peers.push(peer);
+			tried_peers.push(vine);
 		}
 
 		new_peers = std::mem::take(&mut tried_peers);

@@ -5,8 +5,8 @@
 {%- set substrate_prio = 0 -%}
 
 {# We fetch the various priorities #}
-{%- if peer.meta.C -%}
-    {%- set peer_prio = peer.meta.C.max -%}
+{%- if vine.meta.C -%}
+    {%- set peer_prio = vine.meta.C.max -%}
 {%- endif -%}
 {%- if substrate.meta.C -%}
     {%- set substrate_prio = substrate.meta.C.max -%}

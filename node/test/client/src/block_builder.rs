@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{Client, FullBackend};
 use parity_scale_codec::{Decode, Encode};
@@ -27,16 +27,16 @@ use sp_consensus_babe::{
 use sp_runtime::{generic::BlockId, Digest, DigestItem};
 use sp_state_machine::BasicExternalities;
 
-/// An extension for the test client to initialize a peer specific block builder.
+/// An extension for the test client to initialize a vine specific block builder.
 pub trait InitpeerBlockBuilder {
-	/// Init a peer specific block builder that works for the test runtime.
+	/// Init a vine specific block builder that works for the test runtime.
 	///
 	/// This will automatically create and push the inherents for you to make the block valid for the test runtime.
 	fn init_peer_block_builder(
 		&self,
 	) -> sc_block_builder::BlockBuilder<Block, Client, FullBackend>;
 
-	/// Init a peer specific block builder at a specific block that works for the test runtime.
+	/// Init a vine specific block builder at a specific block that works for the test runtime.
 	///
 	/// Same as [`InitpeerBlockBuilder::init_peer_block_builder`] besides that it takes a [`BlockId`] to say
 	/// which should be the parent block of the block that is being build.
@@ -125,9 +125,9 @@ impl InitpeerBlockBuilder for Client {
 	}
 }
 
-/// peer specific extensions for the [`BlockBuilder`].
+/// vine specific extensions for the [`BlockBuilder`].
 pub trait BlockBuilderExt {
-	/// Push a peer test runtime specific extrinsic to the block.
+	/// Push a vine test runtime specific extrinsic to the block.
 	///
 	/// This will internally use the [`BlockBuilder::push`] method, but this method expects a opaque extrinsic. So,
 	/// we provide this wrapper which converts a test runtime specific extrinsic to a opaque extrinsic and pushes it to

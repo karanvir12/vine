@@ -21,7 +21,7 @@ impl UnifiedReputationChange {
 	///
 	/// Order of magnitude rationale:
 	///
-	/// * the peerset will not connect to a peer whose reputation is below a fixed value
+	/// * the peerset will not connect to a vine whose reputation is below a fixed value
 	/// * `max(2% *$rep, 1)` is the delta of convergence towards a reputation of 0
 	///
 	/// The whole range of an `i32` should be used, so order of magnitude of

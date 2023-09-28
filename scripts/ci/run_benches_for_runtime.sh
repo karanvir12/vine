@@ -2,7 +2,7 @@
 
 # Runs all benchmarks for all pallets, for a given runtime, provided by $1
 # Should be run on a reference machine to gain accurate benchmarks
-# current reference machine: ssh://git@github.com/PEER-Inc/peer-substrate.git/pull/5848
+# current reference machine: ssh://git@github.com/Vine-Inc/vine-substrate.git/pull/5848
 
 runtime="$1"
 
@@ -11,7 +11,7 @@ cargo build --profile production --locked --features=runtime-benchmarks
 
 # Load all pallet names in an array.
 PALLETS=($(
-  ./target/production/peer benchmark pallet --list --chain="${runtime}-dev" |\
+  ./target/production/vine benchmark pallet --list --chain="${runtime}-dev" |\
     tail -n+2 |\
     cut -d',' -f1 |\
     sort |\
@@ -36,7 +36,7 @@ for PALLET in "${PALLETS[@]}"; do
   fi
 
   OUTPUT=$(
-    ./target/production/peer benchmark pallet \
+    ./target/production/vine benchmark pallet \
     --chain="${runtime}-dev" \
     --steps=50 \
     --repeat=20 \
@@ -56,7 +56,7 @@ done
 # Update the block and extrinsic overhead weights.
 echo "[+] Benchmarking block and extrinsic overheads..."
 OUTPUT=$(
-  ./target/production/peer benchmark overhead \
+  ./target/production/vine benchmark overhead \
   --chain="${runtime}-dev" \
   --execution=wasm \
   --wasm-execution=compiled \

@@ -4,7 +4,7 @@
 # This image is used in testnets
 # Release image is handled by the Github Action here:
 # .github/workflows/publish-docker-release.yml
-publish-peer-debug-image:
+publish-vine-debug-image:
   stage:                           publish
   extends:
     - .kubernetes-env
@@ -25,7 +25,7 @@ publish-peer-debug-image:
     DOCKER_PASS:                   ${PARITYPR_PASS}
     # scripts/ci/dockerfiles/peer_injected_debug.Dockerfile
     DOCKERFILE:                    ci/dockerfiles/peer_injected_debug.Dockerfile
-    IMAGE_NAME:                    docker.io/paritypr/peer-debug
+    IMAGE_NAME:                    docker.io/paritypr/vine-debug
   needs:
     - job:                         build-linux-stable
       artifacts:                   true
@@ -125,7 +125,7 @@ publish-s3-release:
   variables:
     CI_IMAGE:                      paritytech/awscli:latest
     GIT_STRATEGY:                  none
-    PREFIX:                        "builds/peer/${ARCH}-${DOCKER_OS}"
+    PREFIX:                        "builds/vine/${ARCH}-${DOCKER_OS}"
   rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: never
@@ -146,10 +146,10 @@ publish-s3-release:
     - |
       cat <<-EOM
       |
-      |  peer binary paths:
+      |  vine binary paths:
       |
-      |  - https://releases.parity.io/${PREFIX}/${EXTRATAG}/peer
-      |  - https://releases.parity.io/${PREFIX}/${VERSION}/peer
+      |  - https://releases.parity.io/${PREFIX}/${EXTRATAG}/vine
+      |  - https://releases.parity.io/${PREFIX}/${VERSION}/vine
       |
       EOM
   after_script:
@@ -211,6 +211,6 @@ publish-rustdoc:
     - git commit -m "Updated docs for ${CI_COMMIT_REF_NAME}" ||
         echo "___Nothing to commit___"
     - git push origin gh-pages --force
-    - echo "___Rustdoc was successfully published to https://paritytech.github.io/peer/___"
+    - echo "___Rustdoc was successfully published to https://paritytech.github.io/vine/___"
   after_script:
     - rm -rf .git/ ./*

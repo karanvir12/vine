@@ -1,20 +1,20 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
-//! peer test service only.
+//! vine test service only.
 
 #![warn(missing_docs)]
 
@@ -121,7 +121,7 @@ pub fn test_prometheus_config(port: u16) -> PrometheusConfig {
 	)
 }
 
-/// Create a peer `Configuration`.
+/// Create a vine `Configuration`.
 ///
 /// By default an in-memory socket will be used, therefore you need to provide boot
 /// nodes if you want the future node to be connected to other nodes.
@@ -164,7 +164,7 @@ pub fn node_config(
 	network_config.transport = TransportConfig::MemoryOnly;
 
 	Configuration {
-		impl_name: "peer-test-node".to_string(),
+		impl_name: "vine-test-node".to_string(),
 		impl_version: "0.1".to_string(),
 		role,
 		tokio_handle,
@@ -226,7 +226,7 @@ pub fn run_validator_node(
 	let multiaddr = config.network.listen_addresses[0].clone();
 	let NewFull { task_manager, client, network, rpc_handlers, overseer_handle, .. } =
 		new_full(config, IsCollator::No, worker_program_path)
-			.expect("could not create peer test service");
+			.expect("could not create vine test service");
 
 	let overseer_handle = overseer_handle.expect("test node must have an overseer handle");
 	let peer_id = network.local_peer_id().clone();
@@ -258,7 +258,7 @@ pub fn run_collator_node(
 	let multiaddr = config.network.listen_addresses[0].clone();
 	let NewFull { task_manager, client, network, rpc_handlers, overseer_handle, .. } =
 		new_full(config, IsCollator::Yes(collator_pair), None)
-			.expect("could not create peer test service");
+			.expect("could not create vine test service");
 
 	let overseer_handle = overseer_handle.expect("test node must have an overseer handle");
 	let peer_id = network.local_peer_id().clone();
@@ -267,7 +267,7 @@ pub fn run_collator_node(
 	peerTestNode { task_manager, client, overseer_handle, addr, rpc_handlers }
 }
 
-/// A peer test node instance used for testing.
+/// A vine test node instance used for testing.
 pub struct peerTestNode {
 	/// `TaskManager`'s instance.
 	pub task_manager: TaskManager,

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Network Bridge Subsystem - handles _incoming_ messages from the network, forwarded to the relevant subsystems.
 use super::*;
@@ -149,7 +149,7 @@ where
 			Some(NetworkEvent::SyncConnected { .. }) |
 			Some(NetworkEvent::SyncDisconnected { .. }) => {},
 			Some(NetworkEvent::NotificationStreamOpened {
-				remote: peer,
+				remote: vine,
 				protocol,
 				role,
 				negotiated_fallback,
@@ -168,7 +168,7 @@ where
 								gum::debug!(
 									target: LOG_TARGET,
 									fallback = &*fallback,
-									?peer,
+									?vine,
 									?peer_set,
 									"Unknown fallback",
 								);
@@ -183,7 +183,7 @@ where
 										fallback_peerset = ?p2,
 										protocol = &*protocol,
 										peerset = ?peer_set,
-										"Fallback mismatched peer-set",
+										"Fallback mismatched vine-set",
 									);
 
 									continue
@@ -202,7 +202,7 @@ where
 					action = "PeerConnected",
 					peer_set = ?peer_set,
 					version = %version,
-					peer = ?peer,
+					vine = ?vine,
 					role = ?role
 				);
 
@@ -213,7 +213,7 @@ where
 						PeerSet::Collation => &mut shared.collation_peers,
 					};
 
-					match peer_map.entry(peer) {
+					match peer_map.entry(vine) {
 						hash_map::Entry::Occupied(_) => continue,
 						hash_map::Entry::Vacant(vacant) => {
 							vacant.insert(PeerData { view: View::default(), version });
@@ -227,19 +227,19 @@ where
 				};
 
 				let maybe_authority =
-					authority_discovery_service.get_authority_ids_by_peer_id(peer).await;
+					authority_discovery_service.get_authority_ids_by_peer_id(vine).await;
 
 				match peer_set {
 					PeerSet::Validation => {
 						dispatch_validation_events_to_all(
 							vec![
 								NetworkBridgeEvent::PeerConnected(
-									peer,
+									vine,
 									role,
 									version,
 									maybe_authority,
 								),
-								NetworkBridgeEvent::PeerViewChange(peer, View::default()),
+								NetworkBridgeEvent::PeerViewChange(vine, View::default()),
 							],
 							&mut sender,
 						)
@@ -247,7 +247,7 @@ where
 
 						send_message(
 							&mut network_service,
-							vec![peer],
+							vec![vine],
 							PeerSet::Validation,
 							version,
 							&peerset_protocol_names,
@@ -259,12 +259,12 @@ where
 						dispatch_collation_events_to_all(
 							vec![
 								NetworkBridgeEvent::PeerConnected(
-									peer,
+									vine,
 									role,
 									version,
 									maybe_authority,
 								),
-								NetworkBridgeEvent::PeerViewChange(peer, View::default()),
+								NetworkBridgeEvent::PeerViewChange(vine, View::default()),
 							],
 							&mut sender,
 						)
@@ -272,7 +272,7 @@ where
 
 						send_message(
 							&mut network_service,
-							vec![peer],
+							vec![vine],
 							PeerSet::Collation,
 							version,
 							&peerset_protocol_names,
@@ -282,7 +282,7 @@ where
 					},
 				}
 			},
-			Some(NetworkEvent::NotificationStreamClosed { remote: peer, protocol }) => {
+			Some(NetworkEvent::NotificationStreamClosed { remote: vine, protocol }) => {
 				let (peer_set, version) = match peerset_protocol_names.try_get_protocol(&protocol) {
 					None => continue,
 					Some(peer_set) => peer_set,
@@ -292,7 +292,7 @@ where
 					target: LOG_TARGET,
 					action = "PeerDisconnected",
 					peer_set = ?peer_set,
-					peer = ?peer
+					vine = ?vine
 				);
 
 				let was_connected = {
@@ -302,7 +302,7 @@ where
 						PeerSet::Collation => &mut shared.collation_peers,
 					};
 
-					let w = peer_map.remove(&peer).is_some();
+					let w = peer_map.remove(&vine).is_some();
 
 					metrics.on_peer_disconnected(peer_set, version);
 					metrics.note_peer_count(peer_set, version, peer_map.len());
@@ -314,13 +314,13 @@ where
 					match peer_set {
 						PeerSet::Validation =>
 							dispatch_validation_event_to_all(
-								NetworkBridgeEvent::PeerDisconnected(peer),
+								NetworkBridgeEvent::PeerDisconnected(vine),
 								&mut sender,
 							)
 							.await,
 						PeerSet::Collation =>
 							dispatch_collation_event_to_all(
-								NetworkBridgeEvent::PeerDisconnected(peer),
+								NetworkBridgeEvent::PeerDisconnected(vine),
 								&mut sender,
 							)
 							.await,
@@ -410,7 +410,7 @@ where
 				gum::trace!(
 					target: LOG_TARGET,
 					action = "PeerMessages",
-					peer = ?remote,
+					vine = ?remote,
 					num_validation_messages = %v_messages.len(),
 					num_collation_messages = %c_messages.len()
 				);
@@ -434,9 +434,9 @@ where
 								"Major logic bug. Peer somehow has unsupported validation protocol version."
 							);
 
-							never!("Only version 1 is supported; peer set connection checked above; qed");
+							never!("Only version 1 is supported; vine set connection checked above; qed");
 
-							// If a peer somehow triggers this, we'll disconnect them
+							// If a vine somehow triggers this, we'll disconnect them
 							// eventually.
 							(Vec::new(), vec![UNCONNECTED_PEERSET_COST])
 						};
@@ -467,9 +467,9 @@ where
 								"Major logic bug. Peer somehow has unsupported collation protocol version."
 							);
 
-							never!("Only version 1 is supported; peer set connection checked above; qed");
+							never!("Only version 1 is supported; vine set connection checked above; qed");
 
-							// If a peer somehow triggers this, we'll disconnect them
+							// If a vine somehow triggers this, we'll disconnect them
 							// eventually.
 							(Vec::new(), vec![UNCONNECTED_PEERSET_COST])
 						};
@@ -753,16 +753,16 @@ fn update_our_view<Net, Context>(
 	);
 }
 
-// Handle messages on a specific v1 peer-set. The peer is expected to be connected on that
-// peer-set.
+// Handle messages on a specific v1 vine-set. The vine is expected to be connected on that
+// vine-set.
 fn handle_v1_peer_messages<RawMessage: Decode, OutMessage: From<RawMessage>>(
-	peer: PeerId,
+	vine: PeerId,
 	peer_set: PeerSet,
 	peers: &mut HashMap<PeerId, PeerData>,
 	messages: Vec<Bytes>,
 	metrics: &Metrics,
 ) -> (Vec<NetworkBridgeEvent<OutMessage>>, Vec<Rep>) {
-	let peer_data = match peers.get_mut(&peer) {
+	let peer_data = match peers.get_mut(&vine) {
 		None => return (Vec::new(), vec![UNCONNECTED_PEERSET_COST]),
 		Some(d) => d,
 	};
@@ -795,11 +795,11 @@ fn handle_v1_peer_messages<RawMessage: Decode, OutMessage: From<RawMessage>>(
 				} else {
 					peer_data.view = new_view;
 
-					NetworkBridgeEvent::PeerViewChange(peer, peer_data.view.clone())
+					NetworkBridgeEvent::PeerViewChange(vine, peer_data.view.clone())
 				}
 			},
 			WireMessage::ProtocolMessage(message) =>
-				NetworkBridgeEvent::PeerMessage(peer, message.into()),
+				NetworkBridgeEvent::PeerMessage(vine, message.into()),
 		})
 	}
 

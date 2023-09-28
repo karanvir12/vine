@@ -27,9 +27,9 @@ vine-service = { path = "../../../../node/service", features = [] }
 vine-node-primitives = { path = "../../../../node/primitives" }
 vine-node-subsystem = { path = "../../../../node/subsystem" }
 
-sc-cli = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-core = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-service = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+sc-cli = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-service = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
 # This one is tricky. Even though it is not used directly by the collator, we still need it for the
 # `puppet_worker` binary, which is required for the integration test. However, this shouldn't be
@@ -40,8 +40,8 @@ vine-node-core-pvf = { path = "../../../../node/core/pvf" }
 vine-parachain = { path = "../../.." }
 vine-test-service = { path = "../../../../node/test/service" }
 
-substrate-test-utils = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-service = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-keyring = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+substrate-test-utils = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-service = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
 tokio = { version = "1.22.0", features = ["macros"] }

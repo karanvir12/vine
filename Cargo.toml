@@ -4,7 +4,7 @@ path = "src/main.rs"
 
 [package]
 name = "Vine"
-description = "Implementation of a `https://peer.network` node in Rust based on the Substrate framework."
+description = "Implementation of a `https://vine.network` node in Rust based on the Substrate framework."
 license = "GPL-3.0-only"
 rust-version = "1.64.0" # workspace properties
 readme = "README.md"
@@ -13,9 +13,9 @@ edition.workspace = true
 version.workspace = true
 
 [workspace.package]
-authors = ["Peer Inc <admin@peer.io>"]
+authors = ["Vine Inc <admin@vine.io>"]
 edition = "2021"
-repository = "https://github.com/paritytech/peer.git"
+repository = "https://github.com/paritytech/vine.git"
 version = "0.9.36"
 
 [dependencies]
@@ -28,7 +28,7 @@ assert_cmd = "2.0.4"
 nix = "0.24.1"
 tempfile = "3.2.0"
 tokio = "1.22.0"
-substrate-rpc-client = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+substrate-rpc-client = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 vine-core-primitives = { path = "core-primitives" }
  
 [workspace]
@@ -42,8 +42,8 @@ members = [
 	"runtime/common/slot_range_helper",
 	"runtime/metrics",
 	"runtime/parachains",
-	"runtime/peer",
-	"runtime/peer/constants",
+	"runtime/vine",
+	"runtime/vine/constants",
 	"runtime/test-runtime",
 	"runtime/test-runtime/constants",
 	"statement-table",
@@ -171,7 +171,7 @@ yamux = { opt-level = 3 }
 zeroize = { opt-level = 3 }
 
 [profile.release]
-# peer runtime requires unwinding.
+# vine runtime requires unwinding.
 panic = "unwind"
 opt-level = 3
 
@@ -200,33 +200,33 @@ pyroscope = ["vine-cli/pyroscope"]
 
 # Configuration for building a .deb package - for use with `cargo-deb`
 [package.metadata.deb]
-name = "peer"
-extended-description = "Implementation of a https://peer.network node in Rust based on the Substrate framework."
+name = "vine"
+extended-description = "Implementation of a https://vine.network node in Rust based on the Substrate framework."
 section = "misc"
 maintainer = "martin@parity.io"
 license-file = ["LICENSE", "0"]
 # https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
 maintainer-scripts = "scripts/packaging/deb-maintainer-scripts"
 assets = [
-	["target/release/peer", "/usr/bin/", "755"],
-	["scripts/packaging/peer.service", "/lib/systemd/system/", "644"]
+	["target/release/vine", "/usr/bin/", "755"],
+	["scripts/packaging/vine.service", "/lib/systemd/system/", "644"]
 ]
 conf-files = [
-	"/etc/default/peer"
+	"/etc/default/vine"
 ]
 
 # Configuration for building an .rpm package - for use with `cargo-rpm`
 [package.metadata.rpm]
-package = "peer"
+package = "vine"
 
 [package.metadata.rpm.cargo]
 buildflags = ["--release"]
 
 [package.metadata.rpm.targets]
-peer = { path = "/usr/bin/peer" }
+vine = { path = "/usr/bin/vine" }
 
 [package.metadata.rpm.files]
-"../scripts/packaging/peer.service" = { path = "/usr/lib/systemd/system/peer.service", mode = "644" }
+"../scripts/packaging/vine.service" = { path = "/usr/lib/systemd/system/vine.service", mode = "644" }
 
 [package.metadata.spellcheck]
 config = "./scripts/ci/gitlab/spellcheck.toml"

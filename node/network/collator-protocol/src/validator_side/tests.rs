@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::*;
 use assert_matches::assert_matches;
@@ -262,10 +262,10 @@ async fn assert_collator_disconnect(virtual_overseer: &mut VirtualOverseer, expe
 	assert_matches!(
 		overseer_recv(virtual_overseer).await,
 		AllMessages::NetworkBridgeTx(NetworkBridgeTxMessage::DisconnectPeer(
-			peer,
+			vine,
 			peer_set,
 		)) => {
-			assert_eq!(expected_peer, peer);
+			assert_eq!(expected_peer, vine);
 			assert_eq!(PeerSet::Collation, peer_set);
 		}
 	);
@@ -298,14 +298,14 @@ async fn assert_fetch_collation_request(
 /// Connect and declare a collator
 async fn connect_and_declare_collator(
 	virtual_overseer: &mut VirtualOverseer,
-	peer: PeerId,
+	vine: PeerId,
 	collator: CollatorPair,
 	para_id: ParaId,
 ) {
 	overseer_send(
 		virtual_overseer,
 		CollatorProtocolMessage::NetworkBridgeUpdate(NetworkBridgeEvent::PeerConnected(
-			peer.clone(),
+			vine.clone(),
 			ObservedRole::Full,
 			CollationVersion::V1.into(),
 			None,
@@ -316,11 +316,11 @@ async fn connect_and_declare_collator(
 	overseer_send(
 		virtual_overseer,
 		CollatorProtocolMessage::NetworkBridgeUpdate(NetworkBridgeEvent::PeerMessage(
-			peer.clone(),
+			vine.clone(),
 			Versioned::V1(protocol_v1::CollatorProtocolMessage::Declare(
 				collator.public(),
 				para_id,
-				collator.sign(&protocol_v1::declare_signature_payload(&peer)),
+				collator.sign(&protocol_v1::declare_signature_payload(&vine)),
 			)),
 		)),
 	)
@@ -330,13 +330,13 @@ async fn connect_and_declare_collator(
 /// Advertise a collation.
 async fn advertise_collation(
 	virtual_overseer: &mut VirtualOverseer,
-	peer: PeerId,
+	vine: PeerId,
 	relay_parent: Hash,
 ) {
 	overseer_send(
 		virtual_overseer,
 		CollatorProtocolMessage::NetworkBridgeUpdate(NetworkBridgeEvent::PeerMessage(
-			peer,
+			vine,
 			Versioned::V1(protocol_v1::CollatorProtocolMessage::AdvertiseCollation(relay_parent)),
 		)),
 	)
@@ -433,9 +433,9 @@ fn collator_reporting_works() {
 		assert_matches!(
 			overseer_recv(&mut virtual_overseer).await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep),
+				NetworkBridgeTxMessage::ReportPeer(vine, rep),
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_REPORT_BAD);
 			}
 		);
@@ -465,7 +465,7 @@ fn collator_authentication_verification_works() {
 		)
 		.await;
 
-		// the peer sends a declare message but sign the wrong payload
+		// the vine sends a declare message but sign the wrong payload
 		overseer_send(
 			&mut virtual_overseer,
 			CollatorProtocolMessage::NetworkBridgeUpdate(NetworkBridgeEvent::PeerMessage(
@@ -483,9 +483,9 @@ fn collator_authentication_verification_works() {
 		assert_matches!(
 			overseer_recv(&mut virtual_overseer).await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep),
+				NetworkBridgeTxMessage::ReportPeer(vine, rep),
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_INVALID_SIGNATURE);
 			}
 		);
@@ -709,10 +709,10 @@ fn reject_connection_to_next_group() {
 		assert_matches!(
 			overseer_recv(&mut virtual_overseer).await,
 			AllMessages::NetworkBridgeTx(NetworkBridgeTxMessage::ReportPeer(
-				peer,
+				vine,
 				rep,
 			)) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_UNNEEDED_COLLATOR);
 			}
 		);
@@ -802,10 +802,10 @@ fn fetch_next_collation_on_invalid_collation() {
 		assert_matches!(
 			overseer_recv(&mut virtual_overseer).await,
 			AllMessages::NetworkBridgeTx(NetworkBridgeTxMessage::ReportPeer(
-				peer,
+				vine,
 				rep,
 			)) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_REPORT_BAD);
 			}
 		);
@@ -1017,10 +1017,10 @@ fn disconnect_if_wrong_declare() {
 		assert_matches!(
 			overseer_recv(&mut virtual_overseer).await,
 			AllMessages::NetworkBridgeTx(NetworkBridgeTxMessage::ReportPeer(
-				peer,
+				vine,
 				rep,
 			)) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_UNNEEDED_COLLATOR);
 			}
 		);

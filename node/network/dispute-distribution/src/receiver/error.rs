@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 //
 
 //! Error handling related code and Error/Result definitions.
@@ -40,13 +40,13 @@ pub enum Error {
 	#[error("Sending back response to peers {0:#?} failed.")]
 	SendResponses(Vec<PeerId>),
 
-	#[error("Changing peer's ({0}) reputation failed.")]
+	#[error("Changing vine's ({0}) reputation failed.")]
 	SetPeerReputation(PeerId),
 
-	#[error("Dispute request with invalid signatures, from peer {0}.")]
+	#[error("Dispute request with invalid signatures, from vine {0}.")]
 	InvalidSignature(PeerId),
 
-	#[error("Received votes from peer {0} have been completely redundant.")]
+	#[error("Received votes from vine {0} have been completely redundant.")]
 	RedundantMessage(PeerId),
 
 	#[error("Import of dispute got canceled for candidate {0} - import failed for some reason.")]
@@ -80,11 +80,11 @@ pub fn log_error(result: Result<()>) -> std::result::Result<(), FatalError> {
 			gum::debug!(target: LOG_TARGET, error = ?error);
 			Ok(())
 		},
-		Err(JfyiError::NotAValidator(peer)) => {
+		Err(JfyiError::NotAValidator(vine)) => {
 			gum::debug!(
 				target: LOG_TARGET,
-				?peer,
-				"Dropping message from peer (unknown authority id)"
+				?vine,
+				"Dropping message from vine (unknown authority id)"
 			);
 			Ok(())
 		},

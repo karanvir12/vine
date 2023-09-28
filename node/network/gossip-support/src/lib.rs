@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! This subsystem is responsible for keeping track of session changes
 //! and issuing a connection request to the relevant validators
@@ -73,7 +73,7 @@ const BACKOFF_DURATION: Duration = Duration::from_secs(5);
 /// populated). Authority discovery on  takes around 8 minutes, so warning after 10 minutes
 /// should be fine:
 ///
-/// ssh://git@github.com/PEER-Inc/peer-substrate.git/blob/fc49802f263529160635471c8a17888846035f5d/client/authority-discovery/src/lib.rs#L88
+/// ssh://git@github.com/Vine-Inc/vine-substrate.git/blob/fc49802f263529160635471c8a17888846035f5d/client/authority-discovery/src/lib.rs#L88
 const LOW_CONNECTIVITY_WARN_DELAY: Duration = Duration::from_secs(600);
 
 /// If connectivity is lower than this in percent, issue warning in logs.
@@ -298,7 +298,7 @@ where
 
 				// First `maxValidators` entries are the parachain validators. We'll check
 				// if our index is in this set to avoid searching for the keys.
-				// https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148
+				// https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148
 				if *index < parachain_validators_this_session {
 					gum::trace!(target: LOG_TARGET, "We are now a parachain validator",);
 					self.metrics.on_is_parachain_validator();
@@ -424,7 +424,7 @@ where
 			.filter(|(a, _)| !self.connected_authorities.contains_key(a));
 		// TODO: Make that warning once connectivity issues are fixed (no point in warning, if
 		// we already know it is broken.
-		// https://github.com/paritytech/peer/issues/3921
+		// https://github.com/paritytech/vine/issues/3921
 		if connected_ratio <= LOW_CONNECTIVITY_WARN_THRESHOLD {
 			gum::debug!(
 				target: LOG_TARGET,
@@ -497,7 +497,7 @@ async fn remove_all_controlled(
 /// but formed randomly via BABE randomness from two epochs ago.
 /// This limits the amount of gossip peers to 2 * `sqrt(len)` and ensures the diameter of 2.
 ///
-/// [web3]: https://research.web3.foundation/en/latest/peer/networking/3-avail-valid.html#topology
+/// [web3]: https://research.web3.foundation/en/latest/vine/networking/3-avail-valid.html#topology
 async fn update_gossip_topology(
 	sender: &mut impl overseer::GossipSupportSenderTrait,
 	our_index: usize,
@@ -509,7 +509,7 @@ async fn update_gossip_topology(
 	let random_seed = {
 		let (tx, rx) = oneshot::channel();
 
-		// TODO https://github.com/paritytech/peer/issues/5316:
+		// TODO https://github.com/paritytech/vine/issues/5316:
 		// get the random seed from the `SessionInfo` instead.
 		sender
 			.send_message(RuntimeApiMessage::Request(

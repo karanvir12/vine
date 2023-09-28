@@ -4,7 +4,7 @@
 ### Burn In
 
 Ensure that Parity DevOps has run the new release on  and
-peer validators for at least 12 hours prior to publishing the release.
+vine validators for at least 12 hours prior to publishing the release.
 
 ### Build Artifacts
 
@@ -57,7 +57,7 @@ functions. Compare the metadata of the current and new runtimes and ensure that
 the `module index, call index` tuples map to the same set of functions. In case
 of a breaking change, increase `transaction_version`.
 
-To verify the order has not changed, you may manually start the following [Github Action](https://github.com/paritytech/peer/actions/workflows/extrinsic-ordering-check-from-bin.yml). It takes around a minute to run and will produce the report as artifact you need to manually check.
+To verify the order has not changed, you may manually start the following [Github Action](https://github.com/paritytech/vine/actions/workflows/extrinsic-ordering-check-from-bin.yml). It takes around a minute to run and will produce the report as artifact you need to manually check.
 
 The things to look for in the output are lines like:
   - `[Identity] idx 28 -> 25 (calls 15)` - indicates the index for `Identity` has changed
@@ -77,8 +77,8 @@ date to include them.
 
 There are three benchmarking machines reserved for updating the weights at
 release-time. To initialise a benchmark run for each production runtime
-( peer):
-* Go to https://gitlab.parity.io/parity/peer/-/pipelines?page=1&scope=branches&ref=master
+( vine):
+* Go to https://gitlab.parity.io/parity/vine/-/pipelines?page=1&scope=branches&ref=master
 * Click the link to the last pipeline run for master
 * Start each of the manual jobs:
 
@@ -92,7 +92,7 @@ release-time. To initialise a benchmark run for each production runtime
 * The weights should be (Currently manually) checked to make sure there are no
     big outliers (i.e., twice or half the weight).
 
-### peer JS
+### vine JS
 
-Ensure that a release of [peer JS API]() contains any new types or
+Ensure that a release of [vine JS API]() contains any new types or
 interfaces necessary to interact with the new runtime.

@@ -1,4 +1,4 @@
 # Further Reading
 
-- peer Wiki on Consensus: <https://wiki.peer.network/docs/learn-consensus>
-- peer Spec: <https://github.com/w3f/peer-spec>
+- vine Wiki on Consensus: <https://wiki.vine.network/docs/learn-consensus>
+- vine Spec: <https://github.com/w3f/vine-spec>

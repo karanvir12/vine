@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Message types for the overseer and subsystems.
 //!
@@ -302,9 +302,9 @@ pub enum DisputeCoordinatorMessage {
 /// The result of `DisputeCoordinatorMessage::ImportStatements`.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ImportStatementsResult {
-	/// Import was invalid (candidate was not available)  and the sending peer should get banned.
+	/// Import was invalid (candidate was not available)  and the sending vine should get banned.
 	InvalidImport,
-	/// Import was valid and can be confirmed to peer.
+	/// Import was valid and can be confirmed to vine.
 	ValidImport,
 }
 
@@ -341,16 +341,16 @@ pub enum NetworkBridgeRxMessage {
 /// Messages received from other subsystems by the network bridge subsystem.
 #[derive(Debug)]
 pub enum NetworkBridgeTxMessage {
-	/// Report a peer for their actions.
+	/// Report a vine for their actions.
 	ReportPeer(PeerId, UnifiedReputationChange),
 
-	/// Disconnect a peer from the given peer-set without affecting their reputation.
+	/// Disconnect a vine from the given vine-set without affecting their reputation.
 	DisconnectPeer(PeerId, PeerSet),
 
-	/// Send a message to one or more peers on the validation peer-set.
+	/// Send a message to one or more peers on the validation vine-set.
 	SendValidationMessage(Vec<PeerId>, net_protocol::VersionedValidationProtocol),
 
-	/// Send a message to one or more peers on the collation peer-set.
+	/// Send a message to one or more peers on the collation vine-set.
 	SendCollationMessage(Vec<PeerId>, net_protocol::VersionedCollationProtocol),
 
 	/// Send a batch of validation messages.
@@ -364,7 +364,7 @@ pub enum NetworkBridgeTxMessage {
 	SendCollationMessages(Vec<(Vec<PeerId>, net_protocol::VersionedCollationProtocol)>),
 
 	/// Send requests via substrate request/response.
-	/// Second parameter, tells what to do if we are not yet connected to the peer.
+	/// Second parameter, tells what to do if we are not yet connected to the vine.
 	SendRequests(Vec<Requests>, IfDisconnected),
 
 	/// Connect to peers who represent the given `validator_ids`.
@@ -392,7 +392,7 @@ pub enum NetworkBridgeTxMessage {
 	ConnectToResolvedValidators {
 		/// Each entry corresponds to the addresses of an already resolved validator.
 		validator_addrs: Vec<HashSet<Multiaddr>>,
-		/// The peer set we want the connection on.
+		/// The vine set we want the connection on.
 		peer_set: PeerSet,
 	},
 }
@@ -806,7 +806,7 @@ pub enum AssignmentCheckResult {
 	AcceptedDuplicate,
 	/// The vote was valid but too far in the future to accept right now.
 	TooFarInFuture,
-	/// The vote was bad and should be ignored, reporting the peer who propagated it.
+	/// The vote was bad and should be ignored, reporting the vine who propagated it.
 	Bad(AssignmentCheckError),
 }
 
@@ -833,7 +833,7 @@ pub enum AssignmentCheckError {
 pub enum ApprovalCheckResult {
 	/// The vote was accepted and should be propagated onwards.
 	Accepted,
-	/// The vote was bad and should be ignored, reporting the peer who propagated it.
+	/// The vote was bad and should be ignored, reporting the vine who propagated it.
 	Bad(ApprovalCheckError),
 }
 

@@ -6,9 +6,9 @@ This section of the guide provides type definitions of various categories.
 
 Diagrams are rendered in high resolution; open them in a separate tab to see full scale.
 
-These data types are defined in `peer/primitives/src/v1.rs`:
+These data types are defined in `vine/primitives/src/v1.rs`:
 
-```peer process
+```vine process
 digraph {
     rankdir = LR;
     node [shape = plain]
@@ -337,9 +337,9 @@ digraph {
 }
 ```
 
-These data types are defined in `peer/parachain/src/primitives.rs`:
+These data types are defined in `vine/parachain/src/primitives.rs`:
 
-```peer process
+```vine process
 digraph {
     rankdir = LR;
     node [shape = plain]

@@ -4,8 +4,8 @@
 
 FROM rust as builder
 
-WORKDIR /usr/src/peer
-COPY peer/  /usr/src/peer
+WORKDIR /usr/src/vine
+COPY vine/  /usr/src/vine
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ca-certificates \
@@ -22,13 +22,13 @@ RUN export PATH="$PATH:$HOME/.cargo/bin" && \
     rustup default stable
 
 
-WORKDIR /usr/src/peer
+WORKDIR /usr/src/vine
 
-RUN cargo build --release --bin peer --features disputes --verbose
-RUN cp -v /usr/src/peer/target/release/peer /usr/local/bin
+RUN cargo build --release --bin vine --features disputes --verbose
+RUN cp -v /usr/src/vine/target/release/vine /usr/local/bin
 
 # check if executable works in this container
-RUN /usr/local/bin/peer --version
+RUN /usr/local/bin/vine --version
 
 #
 ### Runtime
@@ -38,7 +38,7 @@ FROM debian:buster-slim as runtime
 RUN apt-get update && \
     apt-get install -y curl tini
 
-COPY --from=builder /usr/src/peer/target/release/peer /usr/local/bin
+COPY --from=builder /usr/src/vine/target/release/vine /usr/local/bin
 # Non-root user for security purposes.
 #
 # UIDs below 10,000 are a security risk, as a container breakout could result
@@ -54,13 +54,13 @@ RUN groupadd --gid 10001 nonroot && \
             --gid nonroot \
             --groups nonroot \
             --uid 10000 nonroot
-WORKDIR /home/nonroot/peer
+WORKDIR /home/nonroot/vine
 
 RUN chown -R nonroot. /home/nonroot
 
 # Use the non-root user to run our application
 USER nonroot
 # check if executable works in this container
-RUN /usr/local/bin/peer --version
+RUN /usr/local/bin/vine --version
 # Tini allows us to avoid several Docker edge cases, see https://github.com/krallin/tini.
-ENTRYPOINT ["tini", "--", "/usr/local/bin/peer"]
+ENTRYPOINT ["tini", "--", "/usr/local/bin/vine"]

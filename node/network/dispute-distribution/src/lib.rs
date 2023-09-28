@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! # Sending and receiving of `DisputeRequest`s.
 //!
@@ -100,8 +100,8 @@ const LOG_TARGET: &'static str = "parachain::dispute-distribution";
 
 /// Rate limit on the `receiver` side.
 ///
-/// If messages from one peer come in at a higher rate than every `RECEIVE_RATE_LIMIT` on average, we
-/// start dropping messages from that peer to enforce that limit.
+/// If messages from one vine come in at a higher rate than every `RECEIVE_RATE_LIMIT` on average, we
+/// start dropping messages from that vine to enforce that limit.
 pub const RECEIVE_RATE_LIMIT: Duration = Duration::from_millis(100);
 
 /// Rate limit on the `sender` side.

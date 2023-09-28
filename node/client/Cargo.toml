@@ -7,42 +7,42 @@ edition.workspace = true
 [dependencies]
 async-trait = "0.1.57"
 futures = "0.3.21"
-frame-benchmarking = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-frame-benchmarking-cli = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-pallet-transaction-payment = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-pallet-transaction-payment-rpc-runtime-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-frame-system = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-frame-system-rpc-runtime-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+frame-benchmarking = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+frame-system = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
-sp-consensus = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-storage = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-runtime = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-blockchain = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-core = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-keyring = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-inherents = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-timestamp = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-session = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-authority-discovery = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-finality-grandpa = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-consensus-babe = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-transaction-pool = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-offchain = { package = "sp-offchain", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-block-builder = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-mmr-primitives = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer" }
+sp-consensus = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-storage = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-inherents = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-timestamp = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-session = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-finality-grandpa = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-consensus-babe = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-transaction-pool = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-offchain = { package = "sp-offchain", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-block-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-mmr-primitives = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36" }
 
-sc-consensus = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-executor = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-client-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-service = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer" }
+sc-consensus = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-executor = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-service = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36" }
 
-beefy-primitives = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", package="sp-beefy",branch = "mainnet-peer" }
+beefy-primitives = { git = "https://github.com/paritytech/substrate", package="sp-beefy",branch = "polkadot-v0.9.36" }
 
 fp-rpc = { path = "../../evm-primitives/rpc" }
 
-# peer Runtimes
-vine-runtime = { path = "../../runtime/peer", optional = true }
+# vine Runtimes
+vine-runtime = { path = "../../runtime/vine", optional = true }
 
 
 vine-core-primitives = { path = "../../core-primitives" }
@@ -52,8 +52,8 @@ vine-node-core-parachains-inherent = { path = "../core/parachains-inherent" }
 vine-runtime-common = { path = "../../runtime/common" }
 
 [features]
-default = ["peer"]
-peer = ["vine-runtime"]
+default = ["vine"]
+vine = ["vine-runtime"]
 runtime-metrics = [
     "vine-runtime/runtime-metrics",
 ]

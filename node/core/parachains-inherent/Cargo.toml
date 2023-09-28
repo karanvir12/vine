@@ -13,6 +13,6 @@ async-trait = "0.1.57"
 vine-node-subsystem = { path = "../../subsystem" }
 vine-overseer = { path = "../../overseer" }
 vine-primitives = { path = "../../../primitives" }
-sp-blockchain = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-inherents = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-runtime = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-inherents = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }

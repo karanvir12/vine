@@ -14,7 +14,7 @@ vine-node-core-pvf = { path = "../../core/pvf" }
 vine-erasure-coding = { path = "../../../erasure-coding" }
 vine-node-primitives = { path = "../../primitives" }
 
-vine-runtime = { path = "../../../runtime/peer" }
+vine-runtime = { path = "../../../runtime/vine" }
 
 [[bin]]
 name = "gen-ref-constants"

@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use std::marker::PhantomData;
 
@@ -37,8 +37,8 @@ pub use error::{Error, FatalError, JfyiError, Result};
 /// `NetworkConfiguration` for more information.
 #[derive(Debug)]
 pub struct IncomingRequest<Req> {
-	/// `PeerId` of sending peer.
-	pub peer: PeerId,
+	/// `PeerId` of sending vine.
+	pub vine: PeerId,
 	/// The sent request.
 	pub payload: Req,
 	/// Sender for sending response back.
@@ -64,12 +64,12 @@ where
 
 	/// Create new `IncomingRequest`.
 	pub fn new(
-		peer: PeerId,
+		vine: PeerId,
 		payload: Req,
 		pending_response: oneshot::Sender<netconfig::OutgoingResponse>,
 	) -> Self {
 		Self {
-			peer,
+			vine,
 			payload,
 			pending_response: OutgoingResponseSender { pending_response, phantom: PhantomData {} },
 		}
@@ -82,7 +82,7 @@ where
 	///
 	/// Params:
 	///		- The raw request to decode
-	///		- Reputation changes to apply for the peer in case decoding fails.
+	///		- Reputation changes to apply for the vine in case decoding fails.
 	fn try_from_raw(
 		raw: sc_network::config::IncomingRequest,
 		reputation_changes: Vec<UnifiedReputationChange>,
@@ -113,7 +113,7 @@ where
 	/// This is mostly useful for testing.
 	pub fn into_raw(self) -> sc_network::config::IncomingRequest {
 		sc_network::config::IncomingRequest {
-			peer: self.peer,
+			peer: self.vine,
 			payload: self.payload.encode(),
 			pending_response: self.pending_response.pending_response,
 		}
@@ -153,7 +153,7 @@ where
 	///
 	/// On success we return `Ok(())`, on error we return the not sent `Response`.
 	///
-	/// `netconfig::OutgoingResponse` exposes a way of modifying the peer's reputation. If needed we
+	/// `netconfig::OutgoingResponse` exposes a way of modifying the vine's reputation. If needed we
 	/// can change this function to expose this feature as well.
 	pub fn send_response(self, resp: Req::Response) -> std::result::Result<(), Req::Response> {
 		self.pending_response
@@ -167,8 +167,8 @@ where
 
 	/// Send response with additional options.
 	///
-	/// This variant allows for waiting for the response to be sent out, allows for changing peer's
-	/// reputation and allows for not sending a response at all (for only changing the peer's
+	/// This variant allows for waiting for the response to be sent out, allows for changing vine's
+	/// reputation and allows for not sending a response at all (for only changing the vine's
 	/// reputation).
 	pub fn send_outgoing_response(
 		self,
@@ -196,11 +196,11 @@ pub struct OutgoingResponse<Response> {
 	pub result: std::result::Result<Response, ()>,
 
 	/// Reputation changes accrued while handling the request. To be applied to the reputation of
-	/// the peer sending the request.
+	/// the vine sending the request.
 	pub reputation_changes: Vec<UnifiedReputationChange>,
 
 	/// If provided, the `oneshot::Sender` will be notified when the request has been sent to the
-	/// peer.
+	/// vine.
 	pub sent_feedback: Option<oneshot::Sender<()>>,
 }
 

@@ -1,21 +1,21 @@
-//! Small crate to represent tokens in peer .  Also provides macro and
+//! Small crate to represent tokens in vine .  Also provides macro and
 //! functionalities for any substrate based chain.
 //!
 //! # Usage:
 //!
-//! ## Default Tokens: `peer`, 
-//! Current crate provides implementations for peer. note that peers are 10 decimal
+//! ## Default Tokens: `vine`, 
+//! Current crate provides implementations for vine. note that peers are 10 decimal
 //! points and the other two are 12.
 //!
 //! ```
-//! use sub_tokens::peer;
+//! use sub_tokens::vine;
 //!
-//! // 100 new peer, 1 old peer.
-//! let peers = peer::from(1_000_000_000_000u128);
+//! // 100 new vine, 1 old vine.
+//! let peers = vine::from(1_000_000_000_000u128);
 //!
 //! // provides display and format implementations.
-//! assert_eq!(format!("{}", peers), "100,000 peer");
-//! assert_eq!(format!("{:?}", peers), "100,000 peer (1,000,000,000,000)");
+//! assert_eq!(format!("{}", peers), "100,000 vine");
+//! assert_eq!(format!("{:?}", peers), "100,000 vine (1,000,000,000,000)");
 //! ```
 //!
 //! ## Custom tokens
@@ -95,7 +95,7 @@ macro_rules! impl_token {
 	};
 }
 
-impl_token!(peer, 1_0_000_000_000u128, u128);
+impl_token!(vine, 1_0_000_000_000u128, u128);
 
 pub mod dynamic {
 	use super::*;

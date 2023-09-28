@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Support data structures for `MultiLocation`, primarily the `Junction` datatype.
 
@@ -27,8 +27,8 @@ pub enum NetworkId {
 	Any,
 	/// Some named network.
 	Named(WeakBoundedVec<u8, ConstU32<32>>),
-	/// The peer Relay chain
-	peer,
+	/// The vine Relay chain
+	vine,
 
 }
 
@@ -41,14 +41,14 @@ pub enum BodyId {
 	Named(WeakBoundedVec<u8, ConstU32<32>>),
 	/// An indexed body.
 	Index(#[codec(compact)] u32),
-	/// The unambiguous executive body (for peer, this would be the peer council).
+	/// The unambiguous executive body (for vine, this would be the vine council).
 	Executive,
-	/// The unambiguous technical body (for peer, this would be the Technical Committee).
+	/// The unambiguous technical body (for vine, this would be the Technical Committee).
 	Technical,
-	/// The unambiguous legislative body (for peer, this could be considered the opinion of a majority of
+	/// The unambiguous legislative body (for vine, this could be considered the opinion of a majority of
 	/// lock-voters).
 	Legislative,
-	/// The unambiguous judicial body (this doesn't exist on peer, but if it were to get a "grand oracle", it
+	/// The unambiguous judicial body (this doesn't exist on vine, but if it were to get a "grand oracle", it
 	/// may be considered as that).
 	Judicial,
 }
@@ -110,7 +110,7 @@ pub enum Junction {
 	Parent,
 	/// An indexed parachain belonging to and operated by the context.
 	///
-	/// Generally used when the context is a peer Relay-chain.
+	/// Generally used when the context is a vine Relay-chain.
 	Parachain(#[codec(compact)] u32),
 	/// A 32-byte identifier for an account of a specific network that is respected as a sovereign endpoint within
 	/// the context.

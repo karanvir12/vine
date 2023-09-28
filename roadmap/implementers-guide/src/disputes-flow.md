@@ -31,7 +31,7 @@ stateDiagram-v2
     HasPoV --> RequestDisputeAvailabilityData: nope
     HasCode --> RequestDisputeAvailabilityData: nope
     RequestDisputeAvailabilityData --> VerifyWithRuntime: Received
-    RequestDisputeAvailabilityData --> RequestDisputeAvailabilityData: Timed out - pick another peer
+    RequestDisputeAvailabilityData --> RequestDisputeAvailabilityData: Timed out - pick another vine
 
     VerifyWithRuntime --> CastVoteValid: Block Valid
     VerifyWithRuntime --> CastVoteInvalid: Block Invalid
@@ -53,7 +53,7 @@ stateDiagram-v2
     IncomingRequestDisputeAvailabilityData --> RespondUnavailable
     IncomingRequestDisputeAvailabilityData --> DisputeDataAvail
     DisputeDataAvail --> RespondWithDisputeAvailabilityData: Send
-    VoteGossipReceived --> Track: implies source peer has<br />dispute availablity data
+    VoteGossipReceived --> Track: implies source vine has<br />dispute availablity data
 ```
 
 ---
@@ -80,7 +80,7 @@ The dispute availability message must contain code, persisted validation data, a
 
 Only peers that already voted shall be queried for the dispute availability data.
 
-The peer to be queried for disputes data, must be picked at random.
+The vine to be queried for disputes data, must be picked at random.
 
 A validator must retain code, persisted validation data and PoV until a block, that contains the dispute resolution, is finalized - plus an additional 24 hours.
 

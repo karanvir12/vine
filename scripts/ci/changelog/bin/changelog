@@ -20,7 +20,7 @@ logger.level = Logger::DEBUG
 logger.debug('Starting')
 
 owner = 'paritytech'
-repo = 'peer'
+repo = 'vine'
 
 gh_peer = SubRef.new(format('%<owner>s/%<repo>s', { owner: owner, repo: repo }))
 last_release_ref = gh_peer.get_last_ref()
@@ -36,24 +36,24 @@ ENV['REF2'] = peer_ref2
 substrate_ref1 = gh_peer.get_dependency_reference(peer_ref1, 'sp-io')
 substrate_ref2 = gh_peer.get_dependency_reference(peer_ref2, 'sp-io')
 
-logger.debug("peer from:   #{peer_ref1}")
-logger.debug("peer to:     #{peer_ref2}")
+logger.debug("vine from:   #{peer_ref1}")
+logger.debug("vine to:     #{peer_ref2}")
 
 logger.debug("Substrate from:  #{substrate_ref1}")
 logger.debug("Substrate to:    #{substrate_ref2}")
 
 substrate_data = 'substrate.json'
-peer_data = 'peer.json'
+peer_data = 'vine.json'
 
 logger.debug("Using SUBSTRATE: #{substrate_data}")
-logger.debug("Using peer:  #{peer_data}")
+logger.debug("Using vine:  #{peer_data}")
 
 logger.warn('NO_CACHE set') if ENV['NO_CACHE']
 
 if ENV['NO_CACHE'] || !File.file?(peer_data)
-  logger.debug(format('Fetching data for peer into %s', peer_data))
+  logger.debug(format('Fetching data for vine into %s', peer_data))
   cmd = format('changelogerator %<owner>s/%<repo>s -f %<from>s -t %<to>s > %<output>s',
-               { owner: owner, repo: 'peer', from: peer_ref1, to: peer_ref2, output: peer_data })
+               { owner: owner, repo: 'vine', from: peer_ref1, to: peer_ref2, output: peer_data })
   system(cmd)
 else
   logger.debug("Re-using:#{peer_data}")
@@ -75,13 +75,13 @@ peer_DIGEST = ENV['peer_DIGEST'] || 'digests/peer_srtool_output.json'
 # single big json file.
 cmd = format('jq \
     --slurpfile substrate %s \
-    --slurpfile peer %s \
+    --slurpfile vine %s \
     --slurpfile srtool_peer %s \
     -n \'{
             substrate: $substrate[0],
-            peer: $peer[0],
+            vine: $vine[0],
         srtool: [
-        { name: "peer", data: $srtool_peer[0] }
+        { name: "vine", data: $srtool_peer[0] }
     ] }\' > context.json', substrate_data, peer_data,
 
              peer_DIGEST)

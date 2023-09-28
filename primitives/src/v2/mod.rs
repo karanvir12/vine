@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! `V1` Primitives.
 
@@ -107,7 +107,7 @@ pub trait TypeIndex {
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize, Hash))]
 pub struct ValidatorIndex(pub u32);
 
-// We should really get https://github.com/paritytech/peer/issues/2403 going ..
+// We should really get https://github.com/paritytech/vine/issues/2403 going ..
 impl From<u32> for ValidatorIndex {
 	fn from(n: u32) -> Self {
 		ValidatorIndex(n)
@@ -260,7 +260,7 @@ pub mod well_known_keys {
 
 	/// The MQC head for the downward message queue of the given para. See more in the `Dmp` module.
 	///
-	/// The storage entry stores a `Hash`. This is peer hash which is at the moment
+	/// The storage entry stores a `Hash`. This is vine hash which is at the moment
 	/// `blake2b-256`.
 	pub fn dmq_mqc_head(para_id: Id) -> Vec<u8> {
 		let prefix = hex!["63f78c98723ddc9073523ef3beefda0c4d7fefc408aac59dbfe80a72ac8e3ce5"];
@@ -544,7 +544,7 @@ impl PartialOrd for CommittedCandidateReceipt {
 impl Ord for CommittedCandidateReceipt {
 	fn cmp(&self, other: &Self) -> sp_std::cmp::Ordering {
 		// TODO: compare signatures or something more sane
-		// https://github.com/paritytech/peer/issues/222
+		// https://github.com/paritytech/vine/issues/222
 		self.descriptor()
 			.para_id
 			.cmp(&other.descriptor().para_id)
@@ -1023,7 +1023,7 @@ impl ApprovalVote {
 	}
 }
 
-/// Custom validity errors used in peer while validating transactions.
+/// Custom validity errors used in vine while validating transactions.
 #[repr(u8)]
 pub enum ValidityError {
 	/// The Ethereum signature is invalid.
@@ -1134,10 +1134,10 @@ pub enum UpgradeGoAhead {
 	GoAhead,
 }
 
-/// Consensus engine id for peer v1 consensus engine.
+/// Consensus engine id for vine v1 consensus engine.
 pub const peer_ENGINE_ID: runtime_primitives::ConsensusEngineId = *b"POL1";
 
-/// A consensus log item for peer validation. To be used with [`peer_ENGINE_ID`].
+/// A consensus log item for vine validation. To be used with [`peer_ENGINE_ID`].
 #[derive(Decode, Encode, Clone, PartialEq, Eq)]
 pub enum ConsensusLog {
 	/// A parachain or parathread upgraded its code.
@@ -1620,7 +1620,7 @@ pub struct SessionInfo {
 	///
 	/// NOTE: There might be more authorities in the current session, than `validators` participating
 	/// in parachain consensus. See
-	/// [`max_validators`](https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
+	/// [`max_validators`](https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
 	///
 	/// `SessionInfo::validators` will be limited to to `max_validators` when set.
 	pub validators: IndexedVec<ValidatorIndex, ValidatorId>,
@@ -1629,13 +1629,13 @@ pub struct SessionInfo {
 	/// NOTE: The first `validators.len()` entries will match the corresponding validators in
 	/// `validators`, afterwards any remaining authorities can be found. This is any authorities not
 	/// participating in parachain consensus - see
-	/// [`max_validators`](https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148)
+	/// [`max_validators`](https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148)
 	pub discovery_keys: Vec<AuthorityDiscoveryId>,
 	/// The assignment keys for validators.
 	///
 	/// NOTE: There might be more authorities in the current session, than validators participating
 	/// in parachain consensus. See
-	/// [`max_validators`](https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
+	/// [`max_validators`](https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
 	///
 	/// Therefore:
 	/// ```ignore
@@ -1695,7 +1695,7 @@ pub struct OldV1SessionInfo {
 	///
 	/// NOTE: There might be more authorities in the current session, than `validators` participating
 	/// in parachain consensus. See
-	/// [`max_validators`](https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
+	/// [`max_validators`](https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
 	///
 	/// `SessionInfo::validators` will be limited to to `max_validators` when set.
 	pub validators: IndexedVec<ValidatorIndex, ValidatorId>,
@@ -1704,13 +1704,13 @@ pub struct OldV1SessionInfo {
 	/// NOTE: The first `validators.len()` entries will match the corresponding validators in
 	/// `validators`, afterwards any remaining authorities can be found. This is any authorities not
 	/// participating in parachain consensus - see
-	/// [`max_validators`](https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148)
+	/// [`max_validators`](https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148)
 	pub discovery_keys: Vec<AuthorityDiscoveryId>,
 	/// The assignment keys for validators.
 	///
 	/// NOTE: There might be more authorities in the current session, than validators participating
 	/// in parachain consensus. See
-	/// [`max_validators`](https://github.com/paritytech/peer/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
+	/// [`max_validators`](https://github.com/paritytech/vine/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148).
 	///
 	/// Therefore:
 	/// ```ignore

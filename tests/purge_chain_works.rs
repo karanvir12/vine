@@ -33,7 +33,7 @@ async fn purge_chain_rocksdb_works() {
 
 	let tmpdir = tempdir().expect("could not create temp dir");
 
-	let mut cmd = Command::new(cargo_bin("peer"))
+	let mut cmd = Command::new(cargo_bin("vine"))
 		.stdout(process::Stdio::piped())
 		.stderr(process::Stdio::piped())
 		.args(["--dev", "-d"])
@@ -60,7 +60,7 @@ async fn purge_chain_rocksdb_works() {
 	assert!(tmpdir.path().join("chains/dev/db/full/parachains").exists());
 
 	// Purge chain
-	let status = Command::new(cargo_bin("peer"))
+	let status = Command::new(cargo_bin("vine"))
 		.args(["purge-chain", "--dev", "-d"])
 		.arg(tmpdir.path())
 		.arg("-y")
@@ -83,7 +83,7 @@ async fn purge_chain_paritydb_works() {
 
 	let tmpdir = tempdir().expect("could not create temp dir");
 
-	let mut cmd = Command::new(cargo_bin("peer"))
+	let mut cmd = Command::new(cargo_bin("vine"))
 		.stdout(process::Stdio::piped())
 		.stderr(process::Stdio::piped())
 		.args(["--dev", "-d"])
@@ -110,7 +110,7 @@ async fn purge_chain_paritydb_works() {
 	assert!(tmpdir.path().join("chains/dev/paritydb/parachains").exists());
 
 	// Purge chain
-	let status = Command::new(cargo_bin("peer"))
+	let status = Command::new(cargo_bin("vine"))
 		.args(["purge-chain", "--dev", "-d"])
 		.arg(tmpdir.path())
 		.arg("--database")

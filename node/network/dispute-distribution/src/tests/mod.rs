@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 //
 
 //! Subsystem unit tests
@@ -267,12 +267,12 @@ fn batching_works() {
 		let mut rx_responses = Vec::new();
 
 		let message = make_dispute_message(candidate.clone(), BOB_INDEX, FERDIE_INDEX).await;
-		let peer = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Bob);
-		rx_responses.push(send_network_dispute_request(req_tx, peer, message.clone().into()).await);
+		let vine = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Bob);
+		rx_responses.push(send_network_dispute_request(req_tx, vine, message.clone().into()).await);
 
 		let message = make_dispute_message(candidate.clone(), CHARLIE_INDEX, FERDIE_INDEX).await;
-		let peer = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Charlie);
-		rx_responses.push(send_network_dispute_request(req_tx, peer, message.clone().into()).await);
+		let vine = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Charlie);
+		rx_responses.push(send_network_dispute_request(req_tx, vine, message.clone().into()).await);
 		gum::trace!("Imported 3 votes into batch");
 
 		Delay::new(BATCH_COLLECTING_INTERVAL).await;
@@ -282,14 +282,14 @@ fn batching_works() {
 		gum::trace!("Importing duplicate votes");
 		let mut rx_responses_duplicate = Vec::new();
 		let message = make_dispute_message(candidate.clone(), BOB_INDEX, FERDIE_INDEX).await;
-		let peer = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Bob);
+		let vine = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Bob);
 		rx_responses_duplicate
-			.push(send_network_dispute_request(req_tx, peer, message.clone().into()).await);
+			.push(send_network_dispute_request(req_tx, vine, message.clone().into()).await);
 
 		let message = make_dispute_message(candidate.clone(), CHARLIE_INDEX, FERDIE_INDEX).await;
-		let peer = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Charlie);
+		let vine = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Charlie);
 		rx_responses_duplicate
-			.push(send_network_dispute_request(req_tx, peer, message.clone().into()).await);
+			.push(send_network_dispute_request(req_tx, vine, message.clone().into()).await);
 
 		for rx_response in rx_responses_duplicate {
 			assert_matches!(
@@ -391,19 +391,19 @@ fn receive_rate_limit_is_enforced() {
 
 		let mut rx_responses = Vec::new();
 
-		let peer = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Bob);
+		let vine = MOCK_AUTHORITY_DISCOVERY.get_peer_id_by_authority(Sr25519Keyring::Bob);
 
 		let message = make_dispute_message(candidate.clone(), BOB_INDEX, FERDIE_INDEX).await;
-		rx_responses.push(send_network_dispute_request(req_tx, peer, message.clone().into()).await);
+		rx_responses.push(send_network_dispute_request(req_tx, vine, message.clone().into()).await);
 
 		let message = make_dispute_message(candidate.clone(), CHARLIE_INDEX, FERDIE_INDEX).await;
-		rx_responses.push(send_network_dispute_request(req_tx, peer, message.clone().into()).await);
+		rx_responses.push(send_network_dispute_request(req_tx, vine, message.clone().into()).await);
 
 		gum::trace!("Import one too much:");
 
 		let message = make_dispute_message(candidate.clone(), CHARLIE_INDEX, ALICE_INDEX).await;
 		let rx_response_flood =
-			send_network_dispute_request(req_tx, peer, message.clone().into()).await;
+			send_network_dispute_request(req_tx, vine, message.clone().into()).await;
 
 		assert_matches!(
 			rx_response_flood.await,
@@ -703,12 +703,12 @@ fn dispute_retries_and_works_across_session_boundaries() {
 
 async fn send_network_dispute_request(
 	req_tx: &mut mpsc::Sender<sc_network::config::IncomingRequest>,
-	peer: PeerId,
+	vine: PeerId,
 	message: DisputeRequest,
 ) -> oneshot::Receiver<sc_network::config::OutgoingResponse> {
 	let (pending_response, rx_response) = oneshot::channel();
 	let req =
-		sc_network::config::IncomingRequest { peer, payload: message.encode(), pending_response };
+		sc_network::config::IncomingRequest { vine, payload: message.encode(), pending_response };
 	req_tx.feed(req).await.unwrap();
 	rx_response
 }
@@ -719,7 +719,7 @@ async fn send_network_dispute_request(
 async fn nested_network_dispute_request<'a, F, O>(
 	handle: &'a mut TestSubsystemContextHandle<DisputeDistributionMessage>,
 	req_tx: &'a mut mpsc::Sender<sc_network::config::IncomingRequest>,
-	peer: PeerId,
+	vine: PeerId,
 	message: DisputeRequest,
 	import_result: ImportStatementsResult,
 	need_session_info: bool,
@@ -733,7 +733,7 @@ async fn nested_network_dispute_request<'a, F, O>(
 		+ 'a,
 	O: Future<Output = ()> + 'a,
 {
-	let rx_response = send_network_dispute_request(req_tx, peer, message.clone().into()).await;
+	let rx_response = send_network_dispute_request(req_tx, vine, message.clone().into()).await;
 
 	if need_session_info {
 		// Subsystem might need `SessionInfo` for determining indices:
@@ -904,7 +904,7 @@ async fn check_sent_requests(
 			)
 			.collect();
 
-			let receivers_raw: Vec<_> = reqs.iter().map(|r| r.peer.clone()).collect();
+			let receivers_raw: Vec<_> = reqs.iter().map(|r| r.vine.clone()).collect();
 			let receivers: HashSet<_> = receivers_raw.clone().clone().into_iter().collect();
 			assert_eq!(receivers_raw.len(), receivers.len(), "No duplicates are expected.");
 			assert_eq!(receivers.len(), expected_receivers.len());

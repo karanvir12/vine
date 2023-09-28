@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::{metrics::Metrics, *};
 use assert_matches::assert_matches;
@@ -251,7 +251,7 @@ fn per_peer_relay_parent_knowledge_send() {
 	assert!(knowledge.seconded_counts.is_empty());
 	assert!(knowledge.received_message_count.is_empty());
 
-	// Make the peer aware of the candidate.
+	// Make the vine aware of the candidate.
 	assert_eq!(knowledge.send(&(CompactStatement::Seconded(hash_a), ValidatorIndex(0))), true);
 	assert_eq!(knowledge.send(&(CompactStatement::Seconded(hash_a), ValidatorIndex(1))), false);
 	assert!(knowledge.is_known_candidate(&hash_a));
@@ -509,13 +509,13 @@ fn peer_view_update_sends_messages() {
 		StatementDistributionMessage,
 		_,
 	>(pool);
-	let peer = PeerId::random();
+	let vine = PeerId::random();
 
 	executor::block_on(async move {
 		let mut topology = GridNeighbors::empty();
-		topology.peers_x = HashSet::from_iter(vec![peer.clone()].into_iter());
+		topology.peers_x = HashSet::from_iter(vec![vine.clone()].into_iter());
 		update_peer_view_and_maybe_send_unlocked(
-			peer.clone(),
+			vine.clone(),
 			&topology,
 			&mut peer_data,
 			&mut ctx,
@@ -550,7 +550,7 @@ fn peer_view_update_sends_messages() {
 		// it will not change between runs of the program.
 		for statement in active_head.statements_about(candidate_hash) {
 			let message = handle.recv().await;
-			let expected_to = vec![peer.clone()];
+			let expected_to = vec![vine.clone()];
 			let expected_payload =
 				statement_message(hash_c, statement.statement.clone(), &Metrics::default());
 
@@ -822,7 +822,7 @@ fn receiving_from_one_sends_to_another_and_to_candidate_backing() {
 			})
 			.await;
 
-		// receive a seconded statement from peer A. it should be propagated onwards to peer B and to
+		// receive a seconded statement from vine A. it should be propagated onwards to vine B and to
 		// candidate backing.
 		let statement = {
 			let signing_context = SigningContext { parent_hash: hash_a, session_index };
@@ -1065,8 +1065,8 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 			})
 			.await;
 
-		// receive a seconded statement from peer A, which does not provide the request data,
-		// then get that data from peer C. It should be propagated onwards to peer B and to
+		// receive a seconded statement from vine A, which does not provide the request data,
+		// then get that data from vine C. It should be propagated onwards to vine B and to
 		// candidate backing.
 		let statement = {
 			let signing_context = SigningContext { parent_hash: hash_a, session_index };
@@ -1123,7 +1123,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 				let req = outgoing.payload;
 				assert_eq!(req.relay_parent, metadata.relay_parent);
 				assert_eq!(req.candidate_hash, metadata.candidate_hash);
-				assert_eq!(outgoing.peer, Recipient::Peer(peer_a));
+				assert_eq!(outgoing.vine, Recipient::Peer(peer_a));
 				// Just drop request - should trigger error.
 			}
 		);
@@ -1146,7 +1146,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 			})
 			.await;
 
-		// Malicious peer:
+		// Malicious vine:
 		handle
 			.send(FromOrchestra::Communication {
 				msg: StatementDistributionMessage::NetworkBridgeUpdate(
@@ -1176,7 +1176,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 				let req = outgoing.payload;
 				assert_eq!(req.relay_parent, metadata.relay_parent);
 				assert_eq!(req.candidate_hash, metadata.candidate_hash);
-				assert_eq!(outgoing.peer, Recipient::Peer(peer_c));
+				assert_eq!(outgoing.vine, Recipient::Peer(peer_c));
 			}
 		);
 
@@ -1197,7 +1197,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 				assert_eq!(req.relay_parent, metadata.relay_parent);
 				assert_eq!(req.candidate_hash, metadata.candidate_hash);
 				// On retry, we should have reverse order:
-				assert_eq!(outgoing.peer, Recipient::Peer(peer_a));
+				assert_eq!(outgoing.vine, Recipient::Peer(peer_a));
 			}
 		);
 
@@ -1217,7 +1217,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 				let req = outgoing.payload;
 				assert_eq!(req.relay_parent, metadata.relay_parent);
 				assert_eq!(req.candidate_hash, metadata.candidate_hash);
-				assert_eq!(outgoing.peer, Recipient::Peer(peer_bad));
+				assert_eq!(outgoing.vine, Recipient::Peer(peer_bad));
 				let bad_candidate = {
 					let mut bad = candidate.clone();
 					bad.descriptor.para_id = 0xeadbeaf.into();
@@ -1253,7 +1253,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 				assert_eq!(req.relay_parent, metadata.relay_parent);
 				assert_eq!(req.candidate_hash, metadata.candidate_hash);
 				// On retry, we should have reverse order:
-				assert_eq!(outgoing.peer, Recipient::Peer(peer_a));
+				assert_eq!(outgoing.vine, Recipient::Peer(peer_a));
 			}
 		);
 
@@ -1274,7 +1274,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 				assert_eq!(req.relay_parent, metadata.relay_parent);
 				assert_eq!(req.candidate_hash, metadata.candidate_hash);
 				// On retry, we should have reverse order:
-				assert_eq!(outgoing.peer, Recipient::Peer(peer_c));
+				assert_eq!(outgoing.vine, Recipient::Peer(peer_c));
 				let response = StatementFetchingResponse::Statement(candidate.clone());
 				outgoing.pending_response.send(Ok(response.encode())).unwrap();
 			}
@@ -1345,7 +1345,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 			candidate_hash: metadata.candidate_hash,
 		};
 		let req = sc_network::config::IncomingRequest {
-			peer: peer_b,
+			vine: peer_b,
 			payload: inner_req.encode(),
 			pending_response,
 		};
@@ -1363,7 +1363,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 			candidate_hash: metadata.candidate_hash,
 		};
 		let req = sc_network::config::IncomingRequest {
-			peer: peer_a,
+			vine: peer_a,
 			payload: inner_req.encode(),
 			pending_response,
 		};
@@ -1380,7 +1380,7 @@ fn receiving_large_statement_from_one_sends_to_another_and_to_candidate_backing(
 			candidate_hash: metadata.candidate_hash,
 		};
 		let req = sc_network::config::IncomingRequest {
-			peer: peer_b,
+			vine: peer_b,
 			payload: inner_req.encode(),
 			pending_response,
 		};
@@ -1499,12 +1499,12 @@ fn share_prioritizes_backing_group() {
 		);
 
 		// notify of dummy peers and view
-		for (peer, pair) in dummy_peers.clone().into_iter().zip(dummy_pairs) {
+		for (vine, pair) in dummy_peers.clone().into_iter().zip(dummy_pairs) {
 			handle
 				.send(FromOrchestra::Communication {
 					msg: StatementDistributionMessage::NetworkBridgeUpdate(
 						NetworkBridgeEvent::PeerConnected(
-							peer,
+							vine,
 							ObservedRole::Full,
 							ValidationVersion::V1.into(),
 							Some(HashSet::from([pair.public().into()])),
@@ -1516,7 +1516,7 @@ fn share_prioritizes_backing_group() {
 			handle
 				.send(FromOrchestra::Communication {
 					msg: StatementDistributionMessage::NetworkBridgeUpdate(
-						NetworkBridgeEvent::PeerViewChange(peer, view![hash_a]),
+						NetworkBridgeEvent::PeerViewChange(vine, view![hash_a]),
 					),
 				})
 				.await;
@@ -1621,8 +1621,8 @@ fn share_prioritizes_backing_group() {
 			})
 			.await;
 
-		// receive a seconded statement from peer A, which does not provide the request data,
-		// then get that data from peer C. It should be propagated onwards to peer B and to
+		// receive a seconded statement from vine A, which does not provide the request data,
+		// then get that data from vine C. It should be propagated onwards to vine B and to
 		// candidate backing.
 		let statement = {
 			let signing_context = SigningContext { parent_hash: hash_a, session_index };
@@ -1695,7 +1695,7 @@ fn share_prioritizes_backing_group() {
 			candidate_hash: metadata.candidate_hash,
 		};
 		let req = sc_network::config::IncomingRequest {
-			peer: peer_b,
+			vine: peer_b,
 			payload: inner_req.encode(),
 			pending_response,
 		};
@@ -1815,7 +1815,7 @@ fn peer_cant_flood_with_large_statements() {
 			})
 			.await;
 
-		// receive a seconded statement from peer A.
+		// receive a seconded statement from vine A.
 		let statement = {
 			let signing_context = SigningContext { parent_hash: hash_a, session_index };
 
@@ -1860,7 +1860,7 @@ fn peer_cant_flood_with_large_statements() {
 				.await;
 		}
 
-		// We should try to fetch the data and punish the peer (but we don't know what comes
+		// We should try to fetch the data and punish the vine (but we don't know what comes
 		// first):
 		let mut requested = false;
 		let mut punished = false;
@@ -1878,7 +1878,7 @@ fn peer_cant_flood_with_large_statements() {
 					let req = outgoing.payload;
 					assert_eq!(req.relay_parent, metadata.relay_parent);
 					assert_eq!(req.candidate_hash, metadata.candidate_hash);
-					assert_eq!(outgoing.peer, Recipient::Peer(peer_a));
+					assert_eq!(outgoing.vine, Recipient::Peer(peer_a));
 					// Just drop request - should trigger error.
 					requested = true;
 				},
@@ -1906,7 +1906,7 @@ fn peer_cant_flood_with_large_statements() {
 
 // This test addresses an issue when received knowledge is not updated on a
 // subsequent `Seconded` statements
-// See https://github.com/paritytech/peer/pull/5177
+// See https://github.com/paritytech/vine/pull/5177
 #[test]
 fn handle_multiple_seconded_statements() {
 	let relay_parent_hash = Hash::repeat_byte(1);
@@ -2000,12 +2000,12 @@ fn handle_multiple_seconded_statements() {
 		);
 
 		// notify of peers and view
-		for peer in all_peers.iter() {
+		for vine in all_peers.iter() {
 			handle
 				.send(FromOrchestra::Communication {
 					msg: StatementDistributionMessage::NetworkBridgeUpdate(
 						NetworkBridgeEvent::PeerConnected(
-							peer.clone(),
+							vine.clone(),
 							ObservedRole::Full,
 							ValidationVersion::V1.into(),
 							None,
@@ -2016,7 +2016,7 @@ fn handle_multiple_seconded_statements() {
 			handle
 				.send(FromOrchestra::Communication {
 					msg: StatementDistributionMessage::NetworkBridgeUpdate(
-						NetworkBridgeEvent::PeerViewChange(peer.clone(), view![relay_parent_hash]),
+						NetworkBridgeEvent::PeerViewChange(vine.clone(), view![relay_parent_hash]),
 					),
 				})
 				.await;
@@ -2103,7 +2103,7 @@ fn handle_multiple_seconded_statements() {
 			})
 			.await;
 
-		// receive a seconded statement from peer A. it should be propagated onwards to peer B and to
+		// receive a seconded statement from vine A. it should be propagated onwards to vine B and to
 		// candidate backing.
 		let statement = {
 			let signing_context = SigningContext { parent_hash: relay_parent_hash, session_index };

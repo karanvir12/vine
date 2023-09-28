@@ -1,22 +1,22 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
-//! # peer Staking Miner.
+//! # vine Staking Miner.
 //!
-//! Simple bot capable of monitoring a peer (and cousins) chain and submitting solutions to the
+//! Simple bot capable of monitoring a vine (and cousins) chain and submitting solutions to the
 //! `pallet-election-provider-multi-phase`. See `--help` for more details.
 //!
 //! # Implementation Notes:
@@ -61,11 +61,11 @@ use std::{ops::Deref, sync::Arc, time::Duration};
 use tracing_subscriber::{fmt, EnvFilter};
 
 pub(crate) enum AnyRuntime {
-	peer,
+	vine,
 
 }
 
-pub(crate) static mut RUNTIME: AnyRuntime = AnyRuntime::peer;
+pub(crate) static mut RUNTIME: AnyRuntime = AnyRuntime::vine;
 
 macro_rules! construct_runtime_prelude {
 	($runtime:ident) => { paste::paste! {
@@ -173,7 +173,7 @@ fn signed_ext_builder_(
 	)
 }
 
-construct_runtime_prelude!(peer);
+construct_runtime_prelude!(vine);
 construct_runtime_prelude!();
 construct_runtime_prelude!();
 
@@ -188,7 +188,7 @@ macro_rules! any_runtime {
 	($($code:tt)*) => {
 		unsafe {
 			match $crate::RUNTIME {
-				$crate::AnyRuntime::peer => {
+				$crate::AnyRuntime::vine => {
 					#[allow(unused)]
 					use $crate::vine_runtime_exports::*;
 					$($code)*
@@ -215,7 +215,7 @@ macro_rules! any_runtime_unit {
 	($($code:tt)*) => {
 		unsafe {
 			match $crate::RUNTIME {
-				$crate::AnyRuntime::peer => {
+				$crate::AnyRuntime::vine => {
 					#[allow(unused)]
 					use $crate::vine_runtime_exports::*;
 					let _ = $($code)*;
@@ -540,16 +540,16 @@ async fn main() {
 
 	let chain: String = rpc.system_chain().await.expect("system_chain infallible; qed.");
 	match chain.to_lowercase().as_str() {
-		"peer" | "development" => {
+		"vine" | "development" => {
 			sp_core::crypto::set_default_ss58_version(
 				sp_core::crypto::Ss58AddressFormatRegistry::peerAccount.into(),
 			);
-			sub_tokens::dynamic::set_name("peer");
+			sub_tokens::dynamic::set_name("vine");
 			sub_tokens::dynamic::set_decimal_points(10_000_000_000);
 			// safety: this program will always be single threaded, thus accessing global static is
 			// safe.
 			unsafe {
-				RUNTIME = AnyRuntime::peer;
+				RUNTIME = AnyRuntime::vine;
 			}
 		},
 		
@@ -629,7 +629,7 @@ mod tests {
 	#[test]
 	fn any_runtime_works() {
 		unsafe {
-			RUNTIME = AnyRuntime::peer;
+			RUNTIME = AnyRuntime::vine;
 		}
 		let peer_version = any_runtime! { get_version::<Runtime>() };
 
@@ -638,7 +638,7 @@ mod tests {
 		}
 		let _version = any_runtime! { get_version::<Runtime>() };
 
-		assert_eq!(peer_version.spec_name, "peer".into());
+		assert_eq!(peer_version.spec_name, "vine".into());
 		assert_eq!(_version.spec_name, "".into());
 	}
 }

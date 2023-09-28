@@ -1,5 +1,5 @@
 
-= peer Service
+= vine Service
 
 placeholder
-//TODO Write content :) (https://github.com/paritytech/peer/issues/159)
+//TODO Write content :) (https://github.com/paritytech/vine/issues/159)

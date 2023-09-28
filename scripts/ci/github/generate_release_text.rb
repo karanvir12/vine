@@ -41,7 +41,7 @@ github_client = Octokit::Client.new(
   access_token: token
 )
 
-peer_path = ENV['GITHUB_WORKSPACE'] + '/peer/'
+peer_path = ENV['GITHUB_WORKSPACE'] + '/vine/'
 
 # Generate an ERB renderer based on the template .erb file
 renderer = ERB.new(
@@ -49,16 +49,16 @@ renderer = ERB.new(
   trim_mode: '<>'
 )
 
-# get ref of last peer release
+# get ref of last vine release
 last_ref = 'refs/tags/' + github_client.latest_release(ENV['GITHUB_REPOSITORY']).tag_name
 logger("Last ref: " + last_ref)
 
-logger("Generate changelog for peer")
+logger("Generate changelog for vine")
 peer_cl = Changelog.new(
-  'paritytech/peer', last_ref, current_ref, token: token
+  'paritytech/vine', last_ref, current_ref, token: token
 )
 
-# Gets the substrate commit hash used for a given peer ref
+# Gets the substrate commit hash used for a given vine ref
 def get_substrate_commit(client, ref)
   cargo = TOML::Parser.new(
     Base64.decode64(
@@ -125,7 +125,7 @@ release_priority = Changelog.highest_priority_for_changes(client_changes)
 # Pulled from the previous Github step
 rustc_stable = ENV['RUSTC_STABLE']
 rustc_nightly = ENV['RUSTC_NIGHTLY']
-vine_runtime = get_runtime('peer', peer_path)
+vine_runtime = get_runtime('vine', peer_path)
 
 
 # These json files should have been downloaded as part of the build-runtimes
@@ -133,7 +133,7 @@ vine_runtime = get_runtime('peer', peer_path)
 
 peer_json = JSON.parse(
   File.read(
-    "#{ENV['GITHUB_WORKSPACE']}/peer-srtool-json/peer_srtool_output.json"
+    "#{ENV['GITHUB_WORKSPACE']}/vine-srtool-json/peer_srtool_output.json"
   )
 )
 

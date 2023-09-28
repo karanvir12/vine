@@ -25,23 +25,23 @@ scale-codec = { package = "parity-scale-codec", version = "3.2.1", default-featu
 tokio = { version = "1.24", features = ["sync"] }
 
 # Substrate
-prometheus-endpoint = { package = "substrate-prometheus-endpoint", version = "0.10.0-dev", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-client-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sc-network = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sc-network-common = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sp-consensus = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
+prometheus-endpoint = { package = "substrate-prometheus-endpoint", version = "0.10.0-dev", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sc-network = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sc-network-common = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sp-consensus = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
 
-sc-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sc-service = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sc-transaction-pool = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sc-transaction-pool-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sp-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-block-builder = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-blockchain = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sp-core = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-io = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-runtime ={ git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-storage = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
+sc-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sc-service = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sc-transaction-pool = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sc-transaction-pool-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-block-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-io = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-runtime ={ git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-storage = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
 # Frontier
 fp-ethereum = { version = "1.0.0-dev", path = "../../evm-primitives/ethereum", default-features = false }
 fc-db = { path = "../db" }
@@ -52,10 +52,10 @@ fp-storage = { version = "2.0.0", path = "../../evm-primitives/storage" }
 [dev-dependencies]
 tempfile = "3.3.0"
 # Substrate
-sc-block-builder = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sc-client-db = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-consensus ={ git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-substrate-test-runtime-client = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
+sc-block-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sc-client-db = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-consensus ={ git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+substrate-test-runtime-client = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
 
 [features]
 rpc-binary-search-estimate = []

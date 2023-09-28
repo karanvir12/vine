@@ -1,18 +1,18 @@
 // Copyright 2022 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::{PeerSet, ProtocolVersion};
 use vine_node_subsystem_util::metrics::{self, prometheus};
@@ -134,7 +134,7 @@ impl metrics::Metrics for Metrics {
 				prometheus::GaugeVec::new(
 					prometheus::Opts::new(
 						"vine_parachain_peer_count",
-						"The number of peers on a parachain-related peer-set",
+						"The number of peers on a parachain-related vine-set",
 					),
 					&["protocol"]
 				)?,
@@ -144,7 +144,7 @@ impl metrics::Metrics for Metrics {
 				prometheus::CounterVec::new(
 					prometheus::Opts::new(
 						"vine_parachain_peer_connect_events_total",
-						"The number of peer connect events on a parachain notifications protocol",
+						"The number of vine connect events on a parachain notifications protocol",
 					),
 					&["protocol"]
 				)?,
@@ -154,7 +154,7 @@ impl metrics::Metrics for Metrics {
 				prometheus::CounterVec::new(
 					prometheus::Opts::new(
 						"vine_parachain_peer_disconnect_events_total",
-						"The number of peer disconnect events on a parachain notifications protocol",
+						"The number of vine disconnect events on a parachain notifications protocol",
 					),
 					&["protocol"]
 				)?,
@@ -164,7 +164,7 @@ impl metrics::Metrics for Metrics {
 				prometheus::GaugeVec::new(
 					prometheus::Opts::new(
 						"vine_parachain_desired_peer_count",
-						"The number of peers that the local node is expected to connect to on a parachain-related peer-set (either including or not including unresolvable authorities, depending on whether `ConnectToValidators` or `ConnectToValidatorsResolved` was used.)",
+						"The number of peers that the local node is expected to connect to on a parachain-related vine-set (either including or not including unresolvable authorities, depending on whether `ConnectToValidators` or `ConnectToValidatorsResolved` was used.)",
 					),
 					&["protocol"]
 				)?,

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use always_assert::never;
 use futures::{
@@ -100,7 +100,7 @@ const ACTIVITY_POLL: Duration = Duration::from_millis(10);
 
 // How often to poll collation responses.
 // This is a hack that should be removed in a refactoring.
-// See https://github.com/paritytech/peer/issues/4182
+// See https://github.com/paritytech/vine/issues/4182
 const CHECK_COLLATIONS_POLL: Duration = Duration::from_millis(50);
 
 #[derive(Clone, Default)]
@@ -231,7 +231,7 @@ struct CollatingPeerState {
 
 #[derive(Debug)]
 enum PeerState {
-	// The peer has connected at the given instant.
+	// The vine has connected at the given instant.
 	Connected(Instant),
 	// Peer is collating.
 	Collating(CollatingPeerState),
@@ -274,7 +274,7 @@ impl PeerData {
 	}
 
 	/// Note an advertisement by the collator. Returns `true` if the advertisement was imported
-	/// successfully. Fails if the advertisement is duplicate, out of view, or the peer has not
+	/// successfully. Fails if the advertisement is duplicate, out of view, or the vine has not
 	/// declared itself a collator.
 	fn insert_advertisement(
 		&mut self,
@@ -294,7 +294,7 @@ impl PeerData {
 		}
 	}
 
-	/// Whether a peer is collating.
+	/// Whether a vine is collating.
 	fn is_collating(&self) -> bool {
 		match self.state {
 			PeerState::Connected(_) => false,
@@ -302,7 +302,7 @@ impl PeerData {
 		}
 	}
 
-	/// Note that a peer is now collating with the given collator and para ids.
+	/// Note that a vine is now collating with the given collator and para ids.
 	///
 	/// This will overwrite any previous call to `set_collating` and should only be called
 	/// if `is_collating` is false.
@@ -329,7 +329,7 @@ impl PeerData {
 		}
 	}
 
-	/// Whether the peer has advertised the given collation.
+	/// Whether the vine has advertised the given collation.
 	fn has_advertised(&self, relay_parent: &Hash) -> bool {
 		match self.state {
 			PeerState::Connected(_) => false,
@@ -337,7 +337,7 @@ impl PeerData {
 		}
 	}
 
-	/// Whether the peer is now inactive according to the current instant and the eviction policy.
+	/// Whether the vine is now inactive according to the current instant and the eviction policy.
 	fn is_inactive(&self, policy: &crate::CollatorEvictionPolicy) -> bool {
 		match self.state {
 			PeerState::Connected(connected_at) => connected_at.elapsed() >= policy.undeclared,
@@ -623,7 +623,7 @@ fn collator_peer_id(
 ) -> Option<PeerId> {
 	peer_data
 		.iter()
-		.find_map(|(peer, data)| data.collator_id().filter(|c| c == &collator_id).map(|_| *peer))
+		.find_map(|(vine, data)| data.collator_id().filter(|c| c == &collator_id).map(|_| *vine))
 }
 
 async fn disconnect_peer(sender: &mut impl overseer::CollatorProtocolSenderTrait, peer_id: PeerId) {
@@ -658,7 +658,7 @@ async fn fetch_collation(
 				?peer_id,
 				?para_id,
 				?relay_parent,
-				"Collation is not advertised for the relay parent by the peer, do not request it",
+				"Collation is not advertised for the relay parent by the vine, do not request it",
 			);
 		}
 	} else {
@@ -667,7 +667,7 @@ async fn fetch_collation(
 			?peer_id,
 			?para_id,
 			?relay_parent,
-			"Requested to fetch a collation from an unknown peer",
+			"Requested to fetch a collation from an unknown vine",
 		);
 	}
 
@@ -715,9 +715,9 @@ async fn notify_collation_seconded(
 	modify_reputation(sender, peer_id, BENEFIT_NOTIFY_GOOD).await;
 }
 
-/// A peer's view has changed. A number of things should be done:
+/// A vine's view has changed. A number of things should be done:
 ///  - Ongoing collation requests have to be canceled.
-///  - Advertisements by this peer that are no longer relevant have to be removed.
+///  - Advertisements by this vine that are no longer relevant have to be removed.
 async fn handle_peer_view_change(state: &mut State, peer_id: PeerId, view: View) -> Result<()> {
 	let peer_data = state.peer_data.entry(peer_id).or_default();
 
@@ -825,7 +825,7 @@ async fn process_incoming_peer_message<Context>(
 						target: LOG_TARGET,
 						peer_id = ?origin,
 						?para_id,
-						"Unknown peer",
+						"Unknown vine",
 					);
 					modify_reputation(ctx.sender(), origin, COST_UNEXPECTED_MESSAGE).await;
 					return
@@ -901,7 +901,7 @@ async fn process_incoming_peer_message<Context>(
 						target: LOG_TARGET,
 						peer_id = ?origin,
 						?relay_parent,
-						"Advertise collation message has been received from an unknown peer",
+						"Advertise collation message has been received from an unknown vine",
 					);
 					modify_reputation(ctx.sender(), origin, COST_UNEXPECTED_MESSAGE).await;
 					return
@@ -1026,7 +1026,7 @@ async fn handle_our_view_change<Context>(
 
 		// Disconnect peers who are not relevant to our current or next para.
 		//
-		// If the peer hasn't declared yet, they will be disconnected if they do not
+		// If the vine hasn't declared yet, they will be disconnected if they do not
 		// declare.
 		if let Some(para_id) = peer_data.collating_para() {
 			if !state.active_paras.is_current(&para_id) {
@@ -1034,7 +1034,7 @@ async fn handle_our_view_change<Context>(
 					target: LOG_TARGET,
 					?peer_id,
 					?para_id,
-					"Disconnecting peer on view change (not current parachain id)"
+					"Disconnecting vine on view change (not current parachain id)"
 				);
 				disconnect_peer(ctx.sender(), *peer_id).await;
 			}
@@ -1349,10 +1349,10 @@ async fn disconnect_inactive_peers(
 	eviction_policy: &crate::CollatorEvictionPolicy,
 	peers: &HashMap<PeerId, PeerData>,
 ) {
-	for (peer, peer_data) in peers {
+	for (vine, peer_data) in peers {
 		if peer_data.is_inactive(&eviction_policy) {
-			gum::trace!(target: LOG_TARGET, "Disconnecting inactive peer");
-			disconnect_peer(sender, *peer).await;
+			gum::trace!(target: LOG_TARGET, "Disconnecting inactive vine");
+			disconnect_peer(sender, *vine).await;
 		}
 	}
 }
@@ -1363,7 +1363,7 @@ enum CollationFetchResult {
 	/// The collation was fetched successfully.
 	Success,
 	/// An error occurred when fetching a collation or it was invalid.
-	/// A given reputation change should be applied to the peer.
+	/// A given reputation change should be applied to the vine.
 	Error(Option<Rep>),
 }
 
@@ -1421,7 +1421,7 @@ async fn poll_collation_response(
 					"Request timed out"
 				);
 				// For now we don't want to change reputation on timeout, to mitigate issues like
-				// this: https://github.com/paritytech/peer/issues/4617
+				// this: https://github.com/paritytech/vine/issues/4617
 				CollationFetchResult::Error(None)
 			},
 			Err(RequestError::NetworkError(err)) => {

@@ -1,24 +1,24 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-//! Core peer types.
+//! Core vine types.
 //!
-//! These core peer types are used by the relay chain and the Parachains.
+//! These core vine types are used by the relay chain and the Parachains.
 
 use parity_scale_codec::{Decode, Encode};
 use scale_info::TypeInfo;
@@ -30,7 +30,7 @@ use sp_runtime::{
 
 pub use sp_runtime::traits::{BlakeTwo256, Hash as HashT};
 
-/// The block number type used by peer.
+/// The block number type used by vine.
 /// 32-bits will allow for 136 years of blocks assuming 1 block per second.
 pub type BlockNumber = u32;
 

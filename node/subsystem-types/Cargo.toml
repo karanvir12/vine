@@ -14,11 +14,11 @@ vine-node-network-protocol = { path = "../network/protocol" }
 vine-statement-table = { path = "../../statement-table" }
 vine-node-jaeger = { path = "../jaeger" }
 orchestra = "0.0.2"
-sc-network = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-consensus-babe = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-authority-discovery = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+sc-network = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-consensus-babe = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 smallvec = "1.8.0"
-substrate-prometheus-endpoint = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+substrate-prometheus-endpoint = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 thiserror = "1.0.31"
 async-trait = "0.1.57"

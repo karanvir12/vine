@@ -1,5 +1,5 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
 // Substrate is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -88,11 +88,11 @@ impl StatementKind {
 			StatementKind::Regular =>
 				&b"I hereby agree to the terms of the statement whose SHA-256 multihash is \
 				Qmc1XYqT6S39WNp2UeiRUrZichUWUPpGEThDE6dAb3f6Ny. (This may be found at the URL: \
-				https://statement.peer.network/regular.html)"[..],
+				https://statement.vine.network/regular.html)"[..],
 			StatementKind::Saft =>
 				&b"I hereby agree to the terms of the statement whose SHA-256 multihash is \
 				QmXEkMahfhHJPzT3RjkXiZVFi77ZeVeuxtAjhojGRNYckz. (This may be found at the URL: \
-				https://statement.peer.network/saft.html)"[..],
+				https://statement.vine.network/saft.html)"[..],
 		}
 	}
 }

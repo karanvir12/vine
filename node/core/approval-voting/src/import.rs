@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Block import logic for the approval voting subsystem.
 //!
@@ -193,7 +193,7 @@ async fn imported_block_info<Context>(
 		// block in BABE has the epoch _it was authored in_ within its post-state. So we use the
 		// block, and not its parent.
 		//
-		// It's worth nothing that peer session changes, at least for the purposes of parachains,
+		// It's worth nothing that vine session changes, at least for the purposes of parachains,
 		// would function the same way, except for the fact that they're always delayed by one block.
 		// This gives us the opposite invariant for sessions - the parent block's post-state gives
 		// us the canonical information about the session index for any of its children, regardless
@@ -477,7 +477,7 @@ pub(crate) async fn handle_new_head<Context, B: Backend>(
 		let validator_group_lens: Vec<usize> =
 			session_info.validator_groups.iter().map(|v| v.len()).collect();
 		// insta-approve candidates on low-node testnets:
-		// cf. https://github.com/paritytech/peer/issues/2411
+		// cf. https://github.com/paritytech/vine/issues/2411
 		let num_candidates = included_candidates.len();
 		let approved_bitfield = {
 			if needed_approvals == 0 {

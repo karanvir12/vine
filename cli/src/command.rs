@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::cli::{Cli, Subcommand};
 use frame_benchmarking_cli::{BenchmarkCmd, ExtrinsicFactory, SUBSTRATE_REFERENCE_HARDWARE};
@@ -63,7 +63,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/PEER-Inc/Peer-L0/issues".into()
+		"https://github.com/Vine-Inc/Peer-L0/issues".into()
 	}
 
 	fn copyright_start_year() -> i32 {
@@ -71,28 +71,28 @@ impl SubstrateCli for Cli {
 	}
 
 	fn executable_name() -> String {
-		"peer".into()
+		"vine".into()
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 		let id = if id == "" {
 			let n = get_exec_name().unwrap_or_default();
-			["peer", "versi"]
+			["vine", "versi"]
 				.iter()
 				.cloned()
 				.find(|&chain| n.starts_with(chain))
-				.unwrap_or("peer")
+				.unwrap_or("vine")
 		} else {
 			id
 		};
 		Ok(match id {
-			"peer" => Box::new(service::chain_spec::peer_config()?),
+			"vine" => Box::new(service::chain_spec::peer_config()?),
 			#[cfg(feature = "vine-native")]
-			"peer-dev" | "dev" => Box::new(service::chain_spec::peer_development_config()?),
+			"vine-dev" | "dev" => Box::new(service::chain_spec::peer_development_config()?),
 			#[cfg(feature = "vine-native")]
-			"peer-local" => Box::new(service::chain_spec::peer_local_testnet_config()?),
+			"vine-local" => Box::new(service::chain_spec::peer_local_testnet_config()?),
 			#[cfg(feature = "vine-native")]
-			"peer-staging" => Box::new(service::chain_spec::peer_staging_testnet_config()?),
+			"vine-staging" => Box::new(service::chain_spec::peer_staging_testnet_config()?),
 		
 		
 		
@@ -119,7 +119,7 @@ impl SubstrateCli for Cli {
 		}
 
 		#[cfg(not(feature = "vine-native"))]
-		panic!("No runtime feature (peer, ) is enabled")
+		panic!("No runtime feature (vine, ) is enabled")
 	}
 }
 
@@ -133,7 +133,7 @@ fn set_default_ss58_version(_spec: &Box<dyn service::ChainSpec>) {
 }
 
 const DEV_ONLY_ERROR_PATTERN: &'static str =
-	"can only use subcommand with --chain [peer-dev], got ";
+	"can only use subcommand with --chain [vine-dev], got ";
 
 fn ensure_dev(spec: &Box<dyn service::ChainSpec>) -> std::result::Result<(), String> {
 	if spec.is_dev() {
@@ -151,7 +151,7 @@ macro_rules! unwrap_client {
 	) => {
 		match $client.as_ref() {
 			#[cfg(feature = "vine-native")]
-			vine_client::Client::peer($client) => $code,
+			vine_client::Client::vine($client) => $code,
 			#[allow(unreachable_patterns)]
 			_ => Err(Error::CommandNotImplemented),
 		}
@@ -264,7 +264,7 @@ where
 	})
 }
 
-/// Parses peer specific CLI arguments and run the service.
+/// Parses vine specific CLI arguments and run the service.
 pub fn run() -> Result<()> {
 	let cli: Cli = Cli::from_args();
 
@@ -278,7 +278,7 @@ pub fn run() -> Result<()> {
 		// The pyroscope agent requires a `http://` prefix, so we just do that.
 		let mut agent = pyro::PyroscopeAgent::builder(
 			"http://".to_owned() + address.to_string().as_str(),
-			"peer".to_owned(),
+			"vine".to_owned(),
 		)
 		.sample_rate(113)
 		.build()?;
@@ -324,7 +324,7 @@ pub fn run() -> Result<()> {
 
 			Ok(runner.async_run(|mut config| {
 				let (client, _, _, task_manager) =
-					service::new_chain_ops(&mut config, None).map_err(Error::PeerService)?;
+					service::new_chain_ops(&mut config, None).map_err(Error::VineService)?;
 				Ok((cmd.run(client, config.database).map_err(Error::SubstrateCli), task_manager))
 			})?)
 		},
@@ -502,7 +502,7 @@ pub fn run() -> Result<()> {
 
 	
 
-					// else we assume it is peer.
+					// else we assume it is vine.
 					#[cfg(feature = "vine-native")]
 					{
 						return runner.sync_run(|config| {
@@ -519,7 +519,7 @@ pub fn run() -> Result<()> {
 					cmd.run(&config, SUBSTRATE_REFERENCE_HARDWARE.clone())
 						.map_err(Error::SubstrateCli)
 				}),
-				// NOTE: this allows the peer client to leniently implement
+				// NOTE: this allows the vine client to leniently implement
 				// new benchmark commands.
 				#[allow(unreachable_patterns)]
 				_ => Err(Error::CommandNotImplemented),
@@ -553,7 +553,7 @@ pub fn run() -> Result<()> {
 
 	
 
-			// else we assume it is peer.
+			// else we assume it is vine.
 			#[cfg(feature = "vine-native")]
 			{
 				return runner.async_run(|_| {
@@ -566,7 +566,7 @@ pub fn run() -> Result<()> {
 				})
 			}
 			#[cfg(not(feature = "vine-native"))]
-			panic!("No runtime feature (peer) is enabled")
+			panic!("No runtime feature (vine) is enabled")
 		},
 		#[cfg(not(feature = "try-runtime"))]
 		Some(Subcommand::TryRuntime) => Err(Error::Other(

@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Collator Protocol allows collators and validators talk to each other.
 //! This subsystem implements both sides of the collator protocol.
@@ -122,20 +122,20 @@ impl<Context> CollatorProtocolSubsystem {
 	}
 }
 
-/// Modify the reputation of a peer based on its behavior.
+/// Modify the reputation of a vine based on its behavior.
 async fn modify_reputation(
 	sender: &mut impl overseer::CollatorProtocolSenderTrait,
-	peer: PeerId,
+	vine: PeerId,
 	rep: Rep,
 ) {
 	gum::trace!(
 		target: LOG_TARGET,
 		rep = ?rep,
-		peer_id = %peer,
-		"reputation change for peer",
+		peer_id = %vine,
+		"reputation change for vine",
 	);
 
-	sender.send_message(NetworkBridgeTxMessage::ReportPeer(peer, rep)).await;
+	sender.send_message(NetworkBridgeTxMessage::ReportPeer(vine, rep)).await;
 }
 
 /// Wait until tick and return the timestamp for the following one.

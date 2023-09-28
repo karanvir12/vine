@@ -1,5 +1,5 @@
 {# This macro shows ONE change #}
-{%- macro change(c, cml="[C]", peer="[P]", sub="[S]") -%}
+{%- macro change(c, cml="[C]", vine="[P]", sub="[S]") -%}
 
 {%- if c.meta.C and c.meta.C.value >= 7 -%}
 {%- set prio = " ‼️ HIGH" -%}
@@ -25,8 +25,8 @@
 {%- set audit = "" -%}
 {%- endif -%}
 
-{%- if c.html_url is containing("peer") -%}
-{%- set repo = peer -%}
+{%- if c.html_url is containing("vine") -%}
+{%- set repo = vine -%}
 {%- elif c.html_url is containing("substrate") -%}
 {%- set repo = sub -%}
 {%- else -%}

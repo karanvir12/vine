@@ -5,7 +5,7 @@ require 'test/unit'
 
 class TestChangelog < Test::Unit::TestCase
   def test_get_dep_ref_peer
-    c = SubRef.new('paritytech/peer')
+    c = SubRef.new('paritytech/vine')
     ref = '13c2695'
     package = 'sc-cli'
     result = c.get_dependency_reference(ref, package)
@@ -13,7 +13,7 @@ class TestChangelog < Test::Unit::TestCase
   end
 
   def test_get_dep_ref_invalid_ref
-    c = SubRef.new('paritytech/peer')
+    c = SubRef.new('paritytech/vine')
     ref = '9999999'
     package = 'sc-cli'
     assert_raise do

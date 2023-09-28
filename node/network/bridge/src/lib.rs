@@ -1,20 +1,20 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Network Bridge Subsystem - protocol multiplexer for peer.
+//! The Network Bridge Subsystem - protocol multiplexer for vine.
 //!
 //! Split into incoming (`..In`) and outgoing (`..Out`) subsystems.
 
@@ -59,14 +59,14 @@ pub use self::tx::*;
 mod rx;
 pub use self::rx::*;
 
-/// The maximum amount of heads a peer is allowed to have in their view at any time.
+/// The maximum amount of heads a vine is allowed to have in their view at any time.
 ///
 /// We use the same limit to compute the view sent to peers locally.
 pub(crate) const MAX_VIEW_HEADS: usize = 5;
 
 pub(crate) const MALFORMED_MESSAGE_COST: Rep = Rep::CostMajor("Malformed Network-bridge message");
 pub(crate) const UNCONNECTED_PEERSET_COST: Rep =
-	Rep::CostMinor("Message sent to un-connected peer-set");
+	Rep::CostMinor("Message sent to un-connected vine-set");
 pub(crate) const MALFORMED_VIEW_COST: Rep = Rep::CostMajor("Malformed view");
 pub(crate) const EMPTY_VIEW_COST: Rep = Rep::CostMajor("Peer sent us an empty view");
 
@@ -75,16 +75,16 @@ pub(crate) const EMPTY_VIEW_COST: Rep = Rep::CostMajor("Peer sent us an empty vi
 /// As transmitted to and received from subsystems.
 #[derive(Debug, Encode, Decode, Clone)]
 pub(crate) enum WireMessage<M> {
-	/// A message from a peer on a specific protocol.
+	/// A message from a vine on a specific protocol.
 	#[codec(index = 1)]
 	ProtocolMessage(M),
-	/// A view update from a peer.
+	/// A view update from a vine.
 	#[codec(index = 2)]
 	ViewUpdate(View),
 }
 
 pub(crate) struct PeerData {
-	/// The Latest view sent by the peer.
+	/// The Latest view sent by the vine.
 	view: View,
 	version: ProtocolVersion,
 }

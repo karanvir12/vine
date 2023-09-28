@@ -7,64 +7,64 @@ edition.workspace = true
 
 [dependencies]
 # Substrate Client
-sc-authority-discovery = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-babe = { package = "sc-consensus-babe", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-beefy-primitives = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git" , package="sp-beefy",branch = "mainnet-peer" }
-beefy-gadget = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-frame-support = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-grandpa = { package = "sc-finality-grandpa", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-mmr-gadget = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-mmr-primitives = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-block-builder = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-chain-spec = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-client-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-client-db = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-consensus = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-consensus-slots = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-executor = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-network = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-network-common = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-network-sync = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-transaction-pool = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-sync-state-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-keystore = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-basic-authorship = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-offchain = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-sysinfo = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-service = { package = "sc-service", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer" }
-telemetry = { package = "sc-telemetry", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+sc-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+babe = { package = "sc-consensus-babe", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+beefy-primitives = { git = "https://github.com/paritytech/substrate" , package="sp-beefy",branch = "polkadot-v0.9.36" }
+beefy-gadget = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+frame-support = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+grandpa = { package = "sc-finality-grandpa", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+mmr-gadget = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-mmr-primitives = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-block-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-chain-spec = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-client-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-client-db = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-consensus = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-consensus-slots = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-executor = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-network = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-network-common = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-network-sync = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-transaction-pool = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-sync-state-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-keystore = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-basic-authorship = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-offchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-sysinfo = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+service = { package = "sc-service", git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36" }
+telemetry = { package = "sc-telemetry", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
 # Substrate Primitives
-sp-authority-discovery = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-authorship = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-consensus_common = { package = "sp-consensus", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-grandpa_primitives = { package = "sp-finality-grandpa", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-inherents = { package = "sp-inherents", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-block-builder = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-blockchain = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-core = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-io = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-keystore = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-offchain = { package = "sp-offchain", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-runtime = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-session = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-storage = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-transaction-pool = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-trie = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-timestamp = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-consensus-babe = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sp-state-machine = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+sp-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-authorship = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+consensus_common = { package = "sp-consensus", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+grandpa_primitives = { package = "sp-finality-grandpa", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+inherents = { package = "sp-inherents", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-block-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-io = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-keystore = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-offchain = { package = "sp-offchain", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-session = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-storage = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-transaction-pool = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-trie = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-timestamp = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-consensus-babe = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-state-machine = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
 # Substrate Pallets
-pallet-babe = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-pallet-im-online = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-pallet-staking = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-pallet-transaction-payment-rpc-runtime-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+pallet-babe = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+pallet-im-online = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+pallet-staking = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
 # Substrate Other
-frame-system-rpc-runtime-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-prometheus-endpoint = { package = "substrate-prometheus-endpoint", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+prometheus-endpoint = { package = "substrate-prometheus-endpoint", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
 # External Crates
 futures = "0.3.21"
@@ -80,7 +80,7 @@ parity-db = { version = "0.4.2", optional = true }
 async-trait = "0.1.57"
 lru = "0.8"
 
-# peer
+# vine
 vine-node-core-parachains-inherent = { path = "../core/parachains-inherent" }
 vine-overseer = { path = "../overseer" }
 vine-client = { path = "../client", default-features = false, optional = true }
@@ -94,13 +94,13 @@ vine-node-subsystem-types = { path = "../subsystem-types" }
 vine-runtime-parachains = { path = "../../runtime/parachains" }
 vine-node-network-protocol = { path = "../network/protocol" }
 
-# peer Runtime Constants
-vine_runtime_constants = { path = "../../runtime/peer/constants", optional = true }
+# vine Runtime Constants
+vine_runtime_constants = { path = "../../runtime/vine/constants", optional = true }
 
-# peer Runtimes
-vine-runtime = { path = "../../runtime/peer", optional = true }
+# vine Runtimes
+vine-runtime = { path = "../../runtime/vine", optional = true }
 
-# peer Subsystems
+# vine Subsystems
 vine-approval-distribution = { path = "../network/approval-distribution", optional = true }
 vine-availability-bitfield-distribution = { path = "../network/bitfield-distribution", optional = true }
 vine-availability-distribution = { path = "../network/availability-distribution", optional = true }
@@ -125,19 +125,19 @@ vine-statement-distribution = { path = "../network/statement-distribution", opti
 
 # RPC
 jsonrpsee = { version = "0.16.2", features = ["server"] }
-sc-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-consensus-babe-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-consensus-epochs = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-sc-finality-grandpa-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+sc-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-consensus-babe-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-consensus-epochs = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-finality-grandpa-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
-txpool-api = { package = "sc-transaction-pool-api", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-frame-rpc-system = { package = "substrate-frame-rpc-system", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-mmr-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-beefy-gadget-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-substrate-state-trie-migration-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
-pallet-transaction-payment-rpc = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" }
+txpool-api = { package = "sc-transaction-pool-api", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+frame-rpc-system = { package = "substrate-frame-rpc-system", git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+mmr-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+beefy-gadget-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+substrate-state-trie-migration-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+pallet-transaction-payment-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
 
-# vine-runtime = { version = "3.0.0-dev", path = "../runtime/peer" }
+# vine-runtime = { version = "3.0.0-dev", path = "../runtime/vine" }
 
 # Frontier
 fc-cli = { path = "../../evm-client/cli" }
@@ -196,10 +196,10 @@ full-node = [
 	"parity-db",
 ]
 
-# Configure the native runtimes to use. peer is enabled by default.
+# Configure the native runtimes to use. vine is enabled by default.
 #
 # Validators require the native runtime currently
-vine-native = [ "vine-runtime", "vine_runtime_constants", "vine-client/peer" ]
+vine-native = [ "vine-runtime", "vine_runtime_constants", "vine-client/vine" ]
 
 runtime-benchmarks = [
 	"vine-runtime?/runtime-benchmarks",

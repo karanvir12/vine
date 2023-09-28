@@ -5,8 +5,8 @@ authors.workspace = true
 edition.workspace = true
 
 [dependencies]
-sp-std = { package = "sp-std", git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false, branch = "mainnet-peer" }
-sp-tracing = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer" }
+sp-std = { package = "sp-std", git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.36" }
+sp-tracing = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36" }
 parity-scale-codec = { version = "3.1.5", default-features = false }
 primitives = { package = "vine-primitives", path = "../../primitives", default-features = false }
 

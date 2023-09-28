@@ -1,18 +1,18 @@
 // Copyright 2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The bitfield signing subsystem produces `SignedAvailabilityBitfield`s once per block.
 
@@ -51,7 +51,7 @@ mod tests;
 const SPAWNED_TASK_DELAY: Duration = Duration::from_millis(1500);
 const LOG_TARGET: &str = "parachain::bitfield-signing";
 
-// TODO: use `fatality` (https://github.com/paritytech/peer/issues/5540).
+// TODO: use `fatality` (https://github.com/paritytech/vine/issues/5540).
 /// Errors we may encounter in the course of executing the `BitfieldSigningSubsystem`.
 #[derive(Debug, thiserror::Error)]
 #[allow(missing_docs)]

@@ -1,5 +1,0 @@
-
-= peer Runtime
-
-placeholder
-//TODO Write content :) (https://github.com/paritytech/peer/issues/159)

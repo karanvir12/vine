@@ -25,7 +25,7 @@ The process of generating a collation for a parachain is very parachain-specific
 ///
 /// This differs from `CandidateCommitments` in two ways:
 ///
-/// - does not contain the erasure root; that's computed at the peer level, not at Cumulus
+/// - does not contain the erasure root; that's computed at the vine level, not at Cumulus
 /// - contains a proof of validity.
 pub struct Collation {
   /// Messages destined to be interpreted by the Relay chain itself.
@@ -99,7 +99,7 @@ On `ActiveLeavesUpdate`:
 * If there is no collation generation config, ignore.
 * Otherwise, for each `activated` head in the update:
   * Determine if the para is scheduled on any core by fetching the `availability_cores` Runtime API.
-    > TODO: figure out what to do in the case of occupied cores; see [this issue](https://github.com/paritytech/peer/issues/1573).
+    > TODO: figure out what to do in the case of occupied cores; see [this issue](https://github.com/paritytech/vine/issues/1573).
   * Determine an occupied core assumption to make about the para. Scheduled cores can make `OccupiedCoreAssumption::Free`.
   * Use the Runtime API subsystem to fetch the full validation data.
   * Invoke the `collator`, and use its outputs to produce a `CandidateReceipt`, signed with the configuration's `key`.

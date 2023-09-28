@@ -1,18 +1,18 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Primitive types used on the node-side.
 //!
@@ -130,7 +130,7 @@ macro_rules! new_session_window_size {
 }
 
 /// It would be nice to draw this from the chain state, but we have no tools for it right now.
-/// On peer this is 1 day, and on it's 6 hours.
+/// On vine this is 1 day, and on it's 6 hours.
 ///
 /// Number of sessions we want to consider in disputes.
 pub const DISPUTE_WINDOW: SessionWindowSize = new_session_window_size!(6);
@@ -308,7 +308,7 @@ impl MaybeCompressedPoV {
 ///
 /// This differs from `CandidateCommitments` in two ways:
 ///
-/// - does not contain the erasure root; that's computed at the peer level, not at Cumulus
+/// - does not contain the erasure root; that's computed at the vine level, not at Cumulus
 /// - contains a proof of validity.
 #[derive(Clone, Encode, Decode)]
 #[cfg(not(target_os = "unknown"))]

@@ -1,18 +1,18 @@
 // Copyright 2022 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::*;
 
@@ -115,7 +115,7 @@ impl ToTokens for ValueWithAliasIdent {
 pub(crate) struct ValueWithFormatMarker {
 	pub marker: FormatMarker,
 	pub ident: Ident,
-	pub peer: Option<Token![.]>,
+	pub vine: Option<Token![.]>,
 	pub inner: Punctuated<syn::Member, Token![.]>,
 }
 
@@ -127,8 +127,8 @@ impl Parse for ValueWithFormatMarker {
 		let mut inner = Punctuated::<syn::Member, Token![.]>::new();
 
 		let lookahead = input.lookahead1();
-		let peer = if lookahead.peek(Token![.]) {
-			let peer = Some(input.parse::<Token![.]>()?);
+		let vine = if lookahead.peek(Token![.]) {
+			let vine = Some(input.parse::<Token![.]>()?);
 
 			loop {
 				let member = input.parse::<syn::Member>()?;
@@ -143,11 +143,11 @@ impl Parse for ValueWithFormatMarker {
 				inner.push_punct(token);
 			}
 
-			peer
+			vine
 		} else {
 			None
 		};
-		Ok(Self { marker, ident, peer, inner })
+		Ok(Self { marker, ident, vine, inner })
 	}
 }
 
@@ -155,10 +155,10 @@ impl ToTokens for ValueWithFormatMarker {
 	fn to_tokens(&self, tokens: &mut TokenStream) {
 		let marker = &self.marker;
 		let ident = &self.ident;
-		let peer = &self.peer;
+		let vine = &self.vine;
 		let inner = &self.inner;
 		tokens.extend(quote! {
-			#marker #ident #peer #inner
+			#marker #ident #vine #inner
 		})
 	}
 }

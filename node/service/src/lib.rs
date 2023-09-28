@@ -1,20 +1,20 @@
 // Copyright 2017-2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
-//! peer service. Specialized wrapper over substrate service.
+//! vine service. Specialized wrapper over substrate service.
 
 // #![deny(unused_results)]
 
@@ -285,7 +285,7 @@ pub enum Error {
 
 /// Can be called for a `Configuration` to identify which network the configuration targets.
 pub trait IdentifyVariant {
-	/// Returns if this is a configuration for the `peer` network.
+	/// Returns if this is a configuration for the `vine` network.
 	fn is_peer(&self) -> bool;
 
 	fn is_versi(&self) -> bool;
@@ -296,7 +296,7 @@ pub trait IdentifyVariant {
 
 impl IdentifyVariant for Box<dyn ChainSpec> {
 	fn is_peer(&self) -> bool {
-		self.id().starts_with("peer") || self.id().starts_with("peer")
+		self.id().starts_with("vine") || self.id().starts_with("vine")
 	}
 	
 	fn is_versi(&self) -> bool {
@@ -331,7 +331,7 @@ pub fn open_database(db_source: &DatabaseSource) -> Result<Arc<dyn Database>, Er
 				)?
 			},
 		DatabaseSource::Custom { .. } => {
-			unimplemented!("No peer subsystem db for custom source.");
+			unimplemented!("No vine subsystem db for custom source.");
 		},
 	};
 	Ok(parachains_db)
@@ -973,7 +973,7 @@ where
 
 	let genesis_hash = client.block_hash(0).ok().flatten().expect("Genesis block exists; qed");
 
-	// Note: GrandPa is pushed before the peer-specific protocols. This doesn't change
+	// Note: GrandPa is pushed before the vine-specific protocols. This doesn't change
 	// anything in terms of behaviour, but makes the logs more consistent with the other
 	// Substrate nodes.
 	let grandpa_protocol_name = grandpa::protocol_standard_name(&genesis_hash, &config.chain_spec);
@@ -1526,7 +1526,7 @@ where
 	let config = grandpa::Config {
 		// FIXME substrate#1578 make this available through chainspec
 		// Grandpa performance can be improved a bit by tuning this parameter, see:
-		// https://github.com/paritytech/peer/issues/5464
+		// https://github.com/paritytech/vine/issues/5464
 		gossip_duration: Duration::from_millis(1000),
 		justification_period: 512,
 		name: Some(name),
@@ -1643,7 +1643,7 @@ pub fn new_chain_ops(
 
 	#[cfg(feature = "vine-native")]
 	{
-		return chain_ops!(config, jaeger_agent, telemetry_worker_handle; vine_runtime, peerExecutorDispatch, peer)
+		return chain_ops!(config, jaeger_agent, telemetry_worker_handle; vine_runtime, peerExecutorDispatch, vine)
 	}
 	#[cfg(not(feature = "vine-native"))]
 	Err(Error::NoRuntime)
@@ -1681,14 +1681,14 @@ pub fn build_full(
 			overseer_enable_anyways,
 			overseer_gen,
 			overseer_message_channel_override.map(|capacity| {
-				gum::warn!("Channel capacity should _never_ be tampered with on peer!");
+				gum::warn!("Channel capacity should _never_ be tampered with on vine!");
 				capacity
 			}),
 			malus_finality_delay,
 			hwbench,
 		)
 		.map(|full| 
-			full.with_client(Client::peer)	
+			full.with_client(Client::vine)	
 			
 		)
 	}

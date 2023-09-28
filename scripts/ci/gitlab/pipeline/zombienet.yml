@@ -8,11 +8,11 @@ zombienet-tests-parachains-smoke-test:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-malus-image
     - job:                         publish-test-collators-image
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/smoke"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/smoke"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE}"
@@ -30,7 +30,7 @@ zombienet-tests-parachains-smoke-test:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-parachains-pvf:
   stage:                           zombienet
@@ -39,10 +39,10 @@ zombienet-tests-parachains-pvf:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-test-collators-image
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE}"
@@ -60,7 +60,7 @@ zombienet-tests-parachains-pvf:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-parachains-disputes:
   stage:                           zombienet
@@ -69,11 +69,11 @@ zombienet-tests-parachains-disputes:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-test-collators-image
     - job:                         publish-malus-image
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
@@ -91,7 +91,7 @@ zombienet-tests-parachains-disputes:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-parachains-disputes-garbage-candidate:
   stage:                           zombienet
@@ -100,11 +100,11 @@ zombienet-tests-parachains-disputes-garbage-candidate:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-test-collators-image
     - job:                         publish-malus-image
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
@@ -122,7 +122,7 @@ zombienet-tests-parachains-disputes-garbage-candidate:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-test-parachains-upgrade-smoke-test:
   stage:                           zombienet
@@ -131,20 +131,20 @@ zombienet-test-parachains-upgrade-smoke-test:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-malus-image
     - job:                         publish-test-collators-image
   variables:
-    GH_DIR:                        'https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/smoke'
+    GH_DIR:                        'https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/smoke'
   before_script:
     - echo "ZombieNet Tests Config"
     - echo "${PARACHAINS_IMAGE_NAME}:${PARACHAINS_IMAGE_TAG}"
-    - echo "docker.io/parity/peer-collator:latest"
+    - echo "docker.io/parity/vine-collator:latest"
     - echo "${ZOMBIENET_IMAGE}"
     - echo "${GH_DIR}"
     - export DEBUG=zombie,zombie::network-node
     - export ZOMBIENET_INTEGRATION_TEST_IMAGE=${PARACHAINS_IMAGE_NAME}:${PARACHAINS_IMAGE_TAG}
-    - export COL_IMAGE="docker.io/parity/peer-collator:latest" # Use cumulus lastest image
+    - export COL_IMAGE="docker.io/parity/vine-collator:latest" # Use cumulus lastest image
   script:
     - /home/nonroot/zombie-net/scripts/ci/run-test-env-manager.sh
         --github-remote-dir="${GH_DIR}"
@@ -152,7 +152,7 @@ zombienet-test-parachains-upgrade-smoke-test:
   allow_failure:                   true
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-misc-paritydb:
   stage:                           zombienet
@@ -161,11 +161,11 @@ zombienet-tests-misc-paritydb:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-test-collators-image
       artifacts:                   true
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/misc"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/misc"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
@@ -181,7 +181,7 @@ zombienet-tests-misc-paritydb:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-misc-upgrade-node:
   stage:                           zombienet
@@ -190,22 +190,22 @@ zombienet-tests-misc-upgrade-node:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-test-collators-image
     - job:                         build-linux-stable
       artifacts:                   true
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/misc"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/misc"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
     - echo "${PARACHAINS_IMAGE_NAME} ${PARACHAINS_IMAGE_TAG}"
     - echo "${GH_DIR}"
     - export DEBUG=zombie,zombie::network-node
-    - export ZOMBIENET_INTEGRATION_TEST_IMAGE="docker.io/parity/peer:latest"
+    - export ZOMBIENET_INTEGRATION_TEST_IMAGE="docker.io/parity/vine:latest"
     - export COL_IMAGE=${COLLATOR_IMAGE_NAME}:${COLLATOR_IMAGE_TAG}
     - BUILD_LINUX_JOB_ID="$(cat ./artifacts/BUILD_LINUX_JOB_ID)"
-    - export peer_PR_BIN_URL="https://gitlab.parity.io/parity/mirrors/peer/-/jobs/${BUILD_LINUX_JOB_ID}/artifacts/raw/artifacts/peer"
+    - export peer_PR_BIN_URL="https://gitlab.parity.io/parity/mirrors/vine/-/jobs/${BUILD_LINUX_JOB_ID}/artifacts/raw/artifacts/vine"
   script:
     - /home/nonroot/zombie-net/scripts/ci/run-test-env-manager.sh
         --github-remote-dir="${GH_DIR}"
@@ -213,7 +213,7 @@ zombienet-tests-misc-upgrade-node:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-malus-dispute-valid:
   stage:                           zombienet
@@ -222,11 +222,11 @@ zombienet-tests-malus-dispute-valid:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
     - job:                         publish-malus-image
     - job:                         publish-test-collators-image
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/node/malus/integrationtests"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/node/malus/integrationtests"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
@@ -244,7 +244,7 @@ zombienet-tests-malus-dispute-valid:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-deregister-register-validator:
   stage:                           zombienet
@@ -253,10 +253,10 @@ zombienet-tests-deregister-register-validator:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
       artifacts:                   true
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/smoke"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/smoke"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
@@ -272,7 +272,7 @@ zombienet-tests-deregister-register-validator:
   allow_failure:                   false
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test
 
 zombienet-tests-beefy-and-mmr:
   stage:                           zombienet
@@ -281,9 +281,9 @@ zombienet-tests-beefy-and-mmr:
     - .kubernetes-env
     - .zombienet-refs
   needs:
-    - job:                         publish-peer-debug-image
+    - job:                         publish-vine-debug-image
   variables:
-    GH_DIR:                        "https://github.com/paritytech/peer/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
+    GH_DIR:                        "https://github.com/paritytech/vine/tree/${CI_COMMIT_SHORT_SHA}/zombienet_tests/functional"
   before_script:
     - echo "Zombie-net Tests Config"
     - echo "${ZOMBIENET_IMAGE_NAME}"
@@ -298,4 +298,4 @@ zombienet-tests-beefy-and-mmr:
   allow_failure:                   true
   retry: 2
   tags:
-    - zombienet-peer-integration-test
+    - zombienet-vine-integration-test

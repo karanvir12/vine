@@ -5,7 +5,7 @@
   "bootNodes": [],
   "telemetryEndpoints": [
     [
-      "/dns/telemetry.peer.io/tcp/443/x-parity-wss/%2Fsubmit%2F",
+      "/dns/telemetry.vine.io/tcp/443/x-parity-wss/%2Fsubmit%2F",
       0
     ]
   ],

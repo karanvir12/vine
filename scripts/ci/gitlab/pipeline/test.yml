@@ -47,8 +47,8 @@ check-dependent-cumulus:
     DEPENDENT_REPO: cumulus
     EXTRA_DEPENDENCIES: substrate
     COMPANION_OVERRIDES: |
-      peer: release-v*
-      cumulus: peer-v*
+      vine: release-v*
+      cumulus: vine-v*
 
 test-node-metrics:
   stage:                           test

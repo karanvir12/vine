@@ -1,18 +1,18 @@
 // Copyright 2020-2021 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
-// peer is free software: you can redistribute it and/or modify
+// vine is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// peer is distributed in the hope that it will be useful,
+// vine is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with peer.  If not, see <http://www.gnu.org/licenses/>.
+// along with vine.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::*;
 use assert_matches::assert_matches;
@@ -83,7 +83,7 @@ fn prewarmed_state(
 					span: PerLeafSpan::new(Arc::new(jaeger::Span::Disabled), "test"),
 				},
 		},
-		peer_views: peers.iter().cloned().map(|peer| (peer, view!(relay_parent))).collect(),
+		peer_views: peers.iter().cloned().map(|vine| (vine, view!(relay_parent))).collect(),
 		topologies,
 		view: our_view!(relay_parent),
 	}
@@ -233,9 +233,9 @@ fn receive_invalid_signature() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_SIGNATURE_INVALID)
 			}
 		);
@@ -294,9 +294,9 @@ fn receive_invalid_validator_index() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_VALIDATOR_INDEX_INVALID)
 			}
 		);
@@ -370,14 +370,14 @@ fn receive_duplicate_messages() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, BENEFIT_VALID_MESSAGE_FIRST)
 			}
 		);
 
-		// let peer A send the same message again
+		// let vine A send the same message again
 		launch!(handle_network_msg(
 			&mut ctx,
 			&mut state,
@@ -389,14 +389,14 @@ fn receive_duplicate_messages() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_a);
+				assert_eq!(vine, peer_a);
 				assert_eq!(rep, BENEFIT_VALID_MESSAGE)
 			}
 		);
 
-		// let peer B send the initial message again
+		// let vine B send the initial message again
 		launch!(handle_network_msg(
 			&mut ctx,
 			&mut state,
@@ -408,9 +408,9 @@ fn receive_duplicate_messages() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_PEER_DUPLICATE_MESSAGE)
 			}
 		);
@@ -581,7 +581,7 @@ fn changing_view() {
 			&mut rng,
 		));
 
-		// make peer b interested
+		// make vine b interested
 		launch!(handle_network_msg(
 			&mut ctx,
 			&mut state,
@@ -613,13 +613,13 @@ fn changing_view() {
 			}
 		);
 
-		// reputation change for peer B
+		// reputation change for vine B
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, BENEFIT_VALID_MESSAGE_FIRST)
 			}
 		);
@@ -633,7 +633,7 @@ fn changing_view() {
 		));
 
 		assert!(state.peer_views.contains_key(&peer_b));
-		assert_eq!(state.peer_views.get(&peer_b).expect("Must contain value for peer B"), &view![]);
+		assert_eq!(state.peer_views.get(&peer_b).expect("Must contain value for vine B"), &view![]);
 
 		// on rx of the same message, since we are not interested,
 		// should give penalty
@@ -645,13 +645,13 @@ fn changing_view() {
 			&mut rng,
 		));
 
-		// reputation change for peer B
+		// reputation change for vine B
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, COST_PEER_DUPLICATE_MESSAGE)
 			}
 		);
@@ -677,13 +677,13 @@ fn changing_view() {
 			&mut rng,
 		));
 
-		// reputation change for peer B
+		// reputation change for vine B
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_a);
+				assert_eq!(vine, peer_a);
 				assert_eq!(rep, COST_NOT_IN_VIEW)
 			}
 		);
@@ -766,9 +766,9 @@ fn do_not_send_message_back_to_origin() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peer_b);
+				assert_eq!(vine, peer_b);
 				assert_eq!(rep, BENEFIT_VALID_MESSAGE_FIRST)
 			}
 		);
@@ -834,8 +834,8 @@ fn topology_test() {
 	.flatten()
 	.expect("should be signed");
 
-	peers_x.iter().chain(peers_y.iter()).for_each(|peer| {
-		state.peer_views.insert(peer.clone(), view![hash]);
+	peers_x.iter().chain(peers_y.iter()).for_each(|vine| {
+		state.peer_views.insert(vine.clone(), view![hash]);
 	});
 
 	let msg = BitfieldGossipMessage {
@@ -876,8 +876,8 @@ fn topology_test() {
 				let topology = state.topologies.get_current_topology().local_grid_neighbors();
 				// It should send message to all peers in y direction and to 4 random peers in x direction
 				assert_eq!(peers_y.len() + 4, peers.len());
-				assert!(topology.peers_y.iter().all(|peer| peers.contains(&peer)));
-				assert!(topology.peers_x.iter().filter(|peer| peers.contains(&peer)).count() == 4);
+				assert!(topology.peers_y.iter().all(|vine| peers.contains(&vine)));
+				assert!(topology.peers_x.iter().filter(|vine| peers.contains(&vine)).count() == 4);
 				// Must never include originator
 				assert!(!peers.contains(&peers_x[0]));
 				assert_eq!(send_msg, msg.clone().into_validation_protocol());
@@ -887,9 +887,9 @@ fn topology_test() {
 		assert_matches!(
 			handle.recv().await,
 			AllMessages::NetworkBridgeTx(
-				NetworkBridgeTxMessage::ReportPeer(peer, rep)
+				NetworkBridgeTxMessage::ReportPeer(vine, rep)
 			) => {
-				assert_eq!(peer, peers_x[0]);
+				assert_eq!(vine, peers_x[0]);
 				assert_eq!(rep, BENEFIT_VALID_MESSAGE_FIRST)
 			}
 		);

@@ -50,7 +50,7 @@ check-try-runtime:
     # Check that everything compiles with `try-runtime` feature flag.
     - cargo check --features try-runtime --all
 
-# More info can be found here: https://github.com/paritytech/peer/pull/5865
+# More info can be found here: https://github.com/paritytech/vine/pull/5865
 # Works only in PRs with E1 label
 .check-runtime-migration:
   stage:                           check
@@ -62,7 +62,7 @@ check-try-runtime:
     - |
       export has_runtimemigration_label=$(curl -sS -H "Accept: application/vnd.github+json" \
         -H "Authorization: token $GITHUB_PR_TOKEN" \
-        https://api.github.com/repos/paritytech/peer/issues/$CI_COMMIT_REF_NAME/labels | grep "E1" | wc -l)
+        https://api.github.com/repos/paritytech/vine/issues/$CI_COMMIT_REF_NAME/labels | grep "E1" | wc -l)
     - |
       if [[ $has_runtimemigration_label != 0 ]]; then
         echo "Found label runtimemigration. Running tests"
@@ -73,7 +73,7 @@ check-try-runtime:
         echo "runtimemigration label not found. Skipping"
       fi
 
-check-runtime-migration-peer:
+check-runtime-migration-vine:
   stage:                           check
   extends:
     - .docker-env
@@ -81,7 +81,7 @@ check-runtime-migration-peer:
     - .compiler-info
     - .check-runtime-migration
   variables:
-    NETWORK:                       "peer"
+    NETWORK:                       "vine"
 
 check-runtime-migratio:
   stage:                           check

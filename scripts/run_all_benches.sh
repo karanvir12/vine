@@ -2,10 +2,10 @@
 
 # Runs all benchmarks for all pallets, for each of the runtimes specified below
 # Should be run on a reference machine to gain accurate benchmarks
-# current reference machine: ssh://git@github.com/PEER-Inc/peer-substrate.git/pull/5848
+# current reference machine: ssh://git@github.com/Vine-Inc/vine-substrate.git/pull/5848
 
 runtimes=(
-  peer
+  vine
 
 )
 

@@ -1,13 +1,13 @@
 [Unit]
-Description=peer Node
+Description=vine Node
 After=network.target
-Documentation=https://github.com/paritytech/peer
+Documentation=https://github.com/paritytech/vine
 
 [Service]
-EnvironmentFile=-/etc/default/peer
-ExecStart=/usr/bin/peer $peer_CLI_ARGS
-User=peer
-Group=peer
+EnvironmentFile=-/etc/default/vine
+ExecStart=/usr/bin/vine $peer_CLI_ARGS
+User=vine
+Group=vine
 Restart=always
 RestartSec=120
 CapabilityBoundingSet=

@@ -1,5 +1,5 @@
 // Copyright 2017-2020 Parity Technologies (UK) Ltd.
-// This file is part of peer.
+// This file is part of vine.
 
 // Substrate is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -168,12 +168,12 @@ pub mod pallet {
 		VestingScheduleExists,
 	}
 
-	// A map of all participants in the peer purchase process.
+	// A map of all participants in the vine purchase process.
 	#[pallet::storage]
 	pub(super) type Accounts<T: Config> =
 		StorageMap<_, Blake2_128Concat, T::AccountId, AccountStatus<BalanceOf<T>>, ValueQuery>;
 
-	// The account that will be used to payout participants of the peer purchase process.
+	// The account that will be used to payout participants of the vine purchase process.
 	#[pallet::storage]
 	pub(super) type PaymentAccount<T: Config> = StorageValue<_, T::AccountId, OptionQuery>;
 
@@ -363,7 +363,7 @@ pub mod pallet {
 
 		/* Configuration Operations */
 
-		/// Set the account that will be used to payout users in the peer purchase process.
+		/// Set the account that will be used to payout users in the vine purchase process.
 		///
 		/// Origin must match the `ConfigurationOrigin`
 		#[pallet::weight(T::DbWeight::get().writes(1))]
@@ -375,7 +375,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		/// Set the statement that must be signed for a user to participate on the peer sale.
+		/// Set the statement that must be signed for a user to participate on the vine sale.
 		///
 		/// Origin must match the `ConfigurationOrigin`
 		#[pallet::weight(T::DbWeight::get().writes(1))]
@@ -419,7 +419,7 @@ impl<T: Config> Pallet<T> {
 			.ok_or(Error::<T>::InvalidSignature)?
 			.into();
 
-		// In peer, the AccountId is always the same as the 32 byte public key.
+		// In vine, the AccountId is always the same as the 32 byte public key.
 		let account_bytes: [u8; 32] = account_to_bytes(who)?;
 		let public_key = sr25519::Public::from_raw(account_bytes);
 

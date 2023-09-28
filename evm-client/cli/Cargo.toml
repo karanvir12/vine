@@ -14,10 +14,10 @@ ethereum-types = { version = "0.14.1", default-features = false }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 # Substrate
-sc-cli = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-api = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer" }
-sp-blockchain = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
-sp-runtime = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer" }
+sc-cli = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-api = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36" }
+sp-blockchain = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
+sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36" }
 # Frontier
 fc-db = { path = "../db" , default-features = false  }
 fp-rpc = { version = "3.0.0-dev", path = "../../evm-primitives/rpc", default-features = false   }
@@ -28,10 +28,10 @@ futures = "0.3.21"
 scale-codec = { package = "parity-scale-codec", version = "3.2.1", default-features = false, features = ["derive"] }
 tempfile = "3.3.0"
 # Substrate
-sc-block-builder = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sc-client-db = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sp-consensus = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer" , default-features = false  }
-sp-io = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", default-features = false , branch = "mainnet-peer"  }
-substrate-test-runtime-client = { git = "ssh://git@github.com/PEER-Inc/peer-substrate.git", branch = "mainnet-peer", default-features = false   }
+sc-block-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sc-client-db = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sp-consensus = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" , default-features = false  }
+sp-io = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.36"  }
+substrate-test-runtime-client = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false   }
 # Frontier
-vine-runtime = { version = "3.0.0-dev", path = "../../runtime/peer" }
+vine-runtime = { version = "3.0.0-dev", path = "../../runtime/vine" }

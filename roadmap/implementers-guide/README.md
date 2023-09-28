@@ -1,10 +1,10 @@
-# The peer Parachain Host Implementers' Guide
+# The vine Parachain Host Implementers' Guide
 
 The implementers' guide is compiled from several source files with [`mdBook`](https://github.com/rust-lang/mdBook).
 
 ## Hosted build
 
-This is available [here](https://paritytech.github.io/peer/book/).
+This is available [here](https://paritytech.github.io/vine/book/).
 
 ## Local build
 
@@ -32,4 +32,4 @@ open http://localhost:3000
 
 ## Specification
 
-See also the peer specification [hosted](https://spec.peer.network/), and its [source](https://github.com/w3f/peer-spec).
+See also the vine specification [hosted](https://spec.vine.network/), and its [source](https://github.com/w3f/vine-spec).

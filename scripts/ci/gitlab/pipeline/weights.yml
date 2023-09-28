@@ -6,7 +6,7 @@ update_peer_weights:           &update-weights
   timeout:                         1d
   when:                            manual
   variables:
-    RUNTIME:                       peer
+    RUNTIME:                       vine
   artifacts:
     paths:
       - ${RUNTIME}_weights_${CI_COMMIT_SHORT_SHA}.patch

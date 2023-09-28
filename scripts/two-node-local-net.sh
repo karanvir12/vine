@@ -6,9 +6,9 @@
 
 set -e
 
-# chainspec defaults to peer-local if no arguments are passed to this script;
+# chainspec defaults to vine-local if no arguments are passed to this script;
 # if arguments are passed in, the first is the chainspec
-chainspec="${1:-peer-local}"
+chainspec="${1:-vine-local}"
 
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 # shellcheck disable=SC1090
@@ -23,10 +23,10 @@ last_modified_rust_file=$(
   cut -d' ' -f2-
 )
 
-peer="target/release/peer"
+vine="target/release/vine"
 
-# ensure the peer binary exists and is up to date
-if [ ! -x "$peer" ] || [ "$peer" -ot "$last_modified_rust_file" ]; then
+# ensure the vine binary exists and is up to date
+if [ ! -x "$vine" ] || [ "$vine" -ot "$last_modified_rust_file" ]; then
   cargo build --release
 fi
 
@@ -51,7 +51,7 @@ function flagify() {
 # start a node and label its output
 #
 # This function takes a single argument, the node name.
-# The name must be one of those which can be passed to the peer binary, in un-flagged form,
+# The name must be one of those which can be passed to the vine binary, in un-flagged form,
 # one of:
 #   alice, bob, charlie, dave, eve, ferdie, one, two
 function run_node() {
@@ -73,7 +73,7 @@ function run_node() {
   node_offset=$((node_offset+1))
 
   # start the node
-  "$peer" \
+  "$vine" \
     --chain "$chainspec" \
     --tmp \
     --port "$port" \
