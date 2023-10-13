@@ -61,7 +61,7 @@ pub trait Context {
 	fn requisite_votes(&self, group: &Self::GroupId) -> usize;
 }
 
-/// Statements circulated among beris.
+/// Statements circulated among vnes.
 #[derive(PartialEq, Eq, Debug, Clone, Encode, Decode)]
 pub enum Statement<Candidate, Digest> {
 	/// Broadcast by an authority to indicate that this is its candidate for inclusion.

@@ -135,7 +135,7 @@ fn default_parachains_host_configuration(
 pub fn vine_chain_spec_properties() -> serde_json::map::Map<String, serde_json::Value> {
 	serde_json::json!({
 		"tokenDecimals": 18,
-		"tokenSymbol":"BERI",
+		"tokenSymbol":"VNE",
 	})
 	.as_object()
 	.expect("Map given; qed")

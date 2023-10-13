@@ -153,7 +153,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("vine"),
 	impl_name: create_runtime_str!("vine-node"),
 	authoring_version: 0,
-	spec_version: 100,
+	spec_version: 106,
 	impl_version: 0,
 	#[cfg(not(feature = "disable-runtime-api"))]
 	apis: RUNTIME_API_VERSIONS,
@@ -540,7 +540,7 @@ parameter_types! {
 	// signed config
 	pub const SignedMaxSubmissions: u32 = 16;
 	pub const SignedMaxRefunds: u32 = 16 / 4;
-	// 40 beris fixed deposit..
+	// 40 vnes fixed deposit..
 	pub const SignedDepositBase: Balance = deposit(2, 0);
 	// 0.01 vine per KB of solution data.
 	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024;
@@ -678,17 +678,17 @@ pallet_staking_reward_curve::build! {
 
 parameter_types! {
 	// Six sessions in an era (24 hours).
-	pub const SessionsPerEra: SessionIndex = prod_or_fast!(8, 8);
+	pub const SessionsPerEra: SessionIndex = prod_or_fast!(1, 1);
 
 	// 28 eras for unbonding (28 days).
 	pub BondingDuration: sp_staking::EraIndex = prod_or_fast!(
-		28,
-		28,
+		1,
+		1,
 		"VINE_BONDING_DURATION"
 	);
 	pub SlashDeferDuration: sp_staking::EraIndex = prod_or_fast!(
-		27,
-		27,
+		1,
+		1,
 		"VINE_SLASH_DEFER_DURATION"
 	);
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
@@ -801,12 +801,12 @@ impl pallet_identity::Config for Runtime {
 }
 
 parameter_types! {
-	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS , 7 * DAYS, "VINE_LAUNCH_PERIOD");
-	pub VotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 7 * DAYS , "VINE_VOTING_PERIOD");
-	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 7 * DAYS, "VINE_FAST_TRACK_VOTING_PERIOD");
+	pub LaunchPeriod: BlockNumber = prod_or_fast!(2 * MINUTES , 2 * MINUTES, "VINE_LAUNCH_PERIOD");
+	pub VotingPeriod: BlockNumber = prod_or_fast!(2 * MINUTES, 2 * MINUTES , "VINE_VOTING_PERIOD");
+	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(2 * MINUTES, 2 * MINUTES, "VINE_FAST_TRACK_VOTING_PERIOD");
 	pub const MinimumDeposit: Balance = 100 * DOLLARS;
-	pub EnactmentPeriod: BlockNumber = prod_or_fast!(7 * DAYS,7 * DAYS, "VINE_ENACTMENT_PERIOD");
-	pub CooloffPeriod: BlockNumber = prod_or_fast!(7 * DAYS , 7 * DAYS, "VINE_COOLOFF_PERIOD");
+	pub EnactmentPeriod: BlockNumber = prod_or_fast!(2 * MINUTES,2 * MINUTES, "VINE_ENACTMENT_PERIOD");
+	pub CooloffPeriod: BlockNumber = prod_or_fast!(2 * MINUTES , 2 * MINUTES, "VINE_COOLOFF_PERIOD");
 	pub const InstantAllowed: bool = true;
 	pub const MaxVotes: u32 = 100;
 	pub const MaxProposals: u32 = 100;
@@ -876,7 +876,7 @@ impl pallet_democracy::Config for Runtime {
 }
 
 parameter_types! {
-	pub CouncilMotionDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "VINE_MOTION_DURATION");
+	pub CouncilMotionDuration: BlockNumber = prod_or_fast!(4 * MINUTES, 4 * MINUTES, "VINE_MOTION_DURATION");
 	pub const CouncilMaxProposals: u32 = 100;
 	pub const CouncilMaxMembers: u32 = 100;
 }
@@ -900,7 +900,7 @@ parameter_types! {
 	// additional data per vote is 32 bytes (account id).
 	pub const VotingBondFactor: Balance = deposit(0, 32);
 	/// Weekly council elections; scaling up to monthly eventually.
-	pub TermDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "VINE_TERM_DURATION");
+	pub TermDuration: BlockNumber = prod_or_fast!(2 * DAYS, 4 * MINUTES, "VINE_TERM_DURATION");
 
 	/// 13 members initially, to be increased to 23 eventually.
 	pub const DesiredMembers: u32 = 13;
@@ -1298,7 +1298,7 @@ parameter_types! {
 }
 
 parameter_types! {
-	pub Prefix: &'static [u8] = b"Pay beris to the vine account:";
+	pub Prefix: &'static [u8] = b"Pay vnes to the vine account:";
 }
 
 impl claims::Config for Runtime {
@@ -2900,7 +2900,7 @@ mod test_fees {
 	#[test]
 	fn signed_deposit_is_sensible() {
 		// ensure this number does not change, or that it is checked after each change.
-		// a 1 MB solution should take (40 + 10) beris of deposit.
+		// a 1 MB solution should take (40 + 10) vnes of deposit.
 		let deposit = SignedDepositBase::get() + (SignedDepositByte::get() * 1024 * 1024);
 		assert_eq_error_rate!(deposit, 50 * DOLLARS, DOLLARS);
 	}

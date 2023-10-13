@@ -28,7 +28,7 @@ use sc_chain_spec::{ChainSpec, ChainType};
 use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use sp_core::sr25519;
 use sp_runtime::Perbill;
-use test_runtime_constants::currency::BERIS;
+use test_runtime_constants::currency::VNES;
 
 const DEFAULT_PROTOCOL_ID: &str = "vine";
 
@@ -111,8 +111,8 @@ fn vine_testnet_genesis(
 
 	let endowed_accounts: Vec<AccountId> = endowed_accounts.unwrap_or_else(testnet_accounts);
 
-	const ENDOWMENT: u128 = 1_000_000 * BERIS;
-	const STASH: u128 = 100 * BERIS;
+	const ENDOWMENT: u128 = 1_000_000 * VNES;
+	const STASH: u128 = 100 * VNES;
 
 	runtime::GenesisConfig {
 		system: runtime::SystemConfig {

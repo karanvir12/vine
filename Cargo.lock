@@ -13,21 +13,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "Vine"
-version = "0.9.36"
-dependencies = [
- "assert_cmd",
- "color-eyre",
- "nix 0.24.3",
- "substrate-rpc-client",
- "tempfile",
- "tikv-jemallocator",
- "tokio",
- "vine-cli",
- "vine-core-primitives",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -11076,6 +11061,21 @@ name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
+
+[[package]]
+name = "vine"
+version = "0.9.36"
+dependencies = [
+ "assert_cmd",
+ "color-eyre",
+ "nix 0.24.3",
+ "substrate-rpc-client",
+ "tempfile",
+ "tikv-jemallocator",
+ "tokio",
+ "vine-cli",
+ "vine-core-primitives",
+]
 
 [[package]]
 name = "vine-approval-distribution"

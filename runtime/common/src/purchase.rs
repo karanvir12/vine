@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Pallet to process purchase of beris.
+//! Pallet to process purchase of vnes.
 
 use frame_support::{
 	pallet_prelude::*,
@@ -70,15 +70,15 @@ impl AccountValidity {
 	}
 }
 
-/// All information about an account regarding the purchase of beris.
+/// All information about an account regarding the purchase of vnes.
 #[derive(Encode, Decode, Default, Clone, Eq, PartialEq, RuntimeDebug, TypeInfo)]
 pub struct AccountStatus<Balance> {
 	/// The current validity status of the user. Will denote if the user has passed KYC,
 	/// how much they are able to purchase, and when their purchase process has completed.
 	validity: AccountValidity,
-	/// The amount of free beris they have purchased.
+	/// The amount of free vnes they have purchased.
 	free_balance: Balance,
-	/// The amount of locked beris they have purchased.
+	/// The amount of locked vnes they have purchased.
 	locked_balance: Balance,
 	/// Their sr25519/ed25519 signature verifying they have signed our required statement.
 	signature: Vec<u8>,
@@ -120,11 +120,11 @@ pub mod pallet {
 		#[pallet::constant]
 		type MaxStatementLength: Get<u32>;
 
-		/// The amount of purchased locked beris that we will unlock for basic actions on the chain.
+		/// The amount of purchased locked vnes that we will unlock for basic actions on the chain.
 		#[pallet::constant]
 		type UnlockedProportion: Get<Permill>;
 
-		/// The maximum amount of locked beris that we will unlock.
+		/// The maximum amount of locked vnes that we will unlock.
 		#[pallet::constant]
 		type MaxUnlocked: Get<BalanceOf<Self>>;
 	}
@@ -181,7 +181,7 @@ pub mod pallet {
 	#[pallet::storage]
 	pub(super) type Statement<T> = StorageValue<_, Vec<u8>, ValueQuery>;
 
-	// The block where all locked beris will unlock.
+	// The block where all locked vnes will unlock.
 	#[pallet::storage]
 	pub(super) type UnlockBlock<T: Config> = StorageValue<_, T::BlockNumber, ValueQuery>;
 
@@ -330,7 +330,7 @@ pub mod pallet {
 
 					if !status.locked_balance.is_zero() {
 						let unlock_block = UnlockBlock::<T>::get();
-						// We allow some configurable portion of the purchased locked beris to be unlocked for basic usage.
+						// We allow some configurable portion of the purchased locked vnes to be unlocked for basic usage.
 						let unlocked = (T::UnlockedProportion::get() * status.locked_balance)
 							.min(T::MaxUnlocked::get());
 						let locked = status.locked_balance.saturating_sub(unlocked);
@@ -391,7 +391,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		/// Set the block where locked beris will become unlocked.
+		/// Set the block where locked vnes will become unlocked.
 		///
 		/// Origin must match the `ConfigurationOrigin`
 		#[pallet::weight(T::DbWeight::get().writes(1))]

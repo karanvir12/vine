@@ -1,9 +1,9 @@
 [[bin]]
-name = "Vine"
+name = "vine"
 path = "src/main.rs"
 
 [package]
-name = "Vine"
+name = "vine"
 description = "Implementation of a `https://vine.network` node in Rust based on the Substrate framework."
 license = "GPL-3.0-only"
 rust-version = "1.64.0" # workspace properties

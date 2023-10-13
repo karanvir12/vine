@@ -38,7 +38,7 @@ parameter_types! {
 	/// The location of the vine token, from the context of this chain. Since this token is native to this
 	/// chain, we make it synonymous with it and thus it is the `Here` location, which means "equivalent to
 	/// the context".
-	pub const BeriLocation: MultiLocation = Here.into();
+	pub const vneLocation: MultiLocation = Here.into();
 	/// The vine network ID. This is named.
 	pub const VineNetwork: NetworkId = NetworkId::vine;
 	/// Our XCM location ancestry - i.e. what, if anything, `Parent` means evaluated in our context. Since
@@ -60,12 +60,12 @@ pub type SovereignAccountOf = (
 /// Our asset transactor. This is what allows us to interact with the runtime assets from the point of
 /// view of XCM-only concepts like `MultiLocation` and `MultiAsset`.
 ///
-/// Ours is only aware of the Balances pallet, which is mapped to `BeriLocation`.
+/// Ours is only aware of the Balances pallet, which is mapped to `vneLocation`.
 pub type LocalAssetTransactor = XcmCurrencyAdapter<
 	// Use this currency:
 	Balances,
 	// Use this currency when it is a fungible asset matching the given location or name:
-	IsConcrete<BeriLocation>,
+	IsConcrete<vneLocation>,
 	// We can convert the MultiLocations with our converter above:
 	SovereignAccountOf,
 	// Our chain's account ID type (we can't get away without mentioning it explicitly):
@@ -105,14 +105,14 @@ pub type XcmRouter = (
 );
 
 parameter_types! {
-	pub const vine: MultiAssetFilter = Wild(AllOf { fun: WildFungible, id: Concrete(BeriLocation::get()) });
-	pub const BeriForStatemint: (MultiAssetFilter, MultiLocation) = (vine::get(), Parachain(1000).into());
-	pub const BeriForCollectives: (MultiAssetFilter, MultiLocation) = (vine::get(), Parachain(1001).into());
+	pub const vine: MultiAssetFilter = Wild(AllOf { fun: WildFungible, id: Concrete(vneLocation::get()) });
+	pub const vneForStatemint: (MultiAssetFilter, MultiLocation) = (vine::get(), Parachain(1000).into());
+	pub const vneForCollectives: (MultiAssetFilter, MultiLocation) = (vine::get(), Parachain(1001).into());
 }
 
 /// vine Relay recognizes/respects System parachains as teleporters.
 pub type TrustedTeleporters =
-	(xcm_builder::Case<BeriForStatemint>, xcm_builder::Case<BeriForCollectives>);
+	(xcm_builder::Case<vneForStatemint>, xcm_builder::Case<vneForCollectives>);
 
 match_types! {
 	pub type OnlyParachains: impl Contains<MultiLocation> = {
@@ -145,7 +145,7 @@ impl xcm_executor::Config for XcmConfig {
 	type Barrier = Barrier;
 	type Weigher = FixedWeightBounds<BaseXcmWeight, RuntimeCall, MaxInstructions>;
 	// The weight trader piggybacks on the existing transaction-fee conversion logic.
-	type Trader = UsingComponents<WeightToFee, BeriLocation, AccountId, Balances, ToAuthor<Runtime>>;
+	type Trader = UsingComponents<WeightToFee, vneLocation, AccountId, Balances, ToAuthor<Runtime>>;
 	type ResponseHandler = XcmPallet;
 	type AssetTrap = XcmPallet;
 	type AssetClaims = XcmPallet;

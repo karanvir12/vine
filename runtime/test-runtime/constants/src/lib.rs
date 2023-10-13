@@ -22,8 +22,8 @@ pub mod weights;
 pub mod currency {
 	use primitives::v2::Balance;
 
-	pub const BERIS: Balance = 1_000_000_000_000;
-	pub const DOLLARS: Balance = BERIS;
+	pub const VNES: Balance = 1_000_000_000_000;
+	pub const DOLLARS: Balance = VNES;
 	pub const CENTS: Balance = DOLLARS / 100;
 	pub const MILLICENTS: Balance = CENTS / 1_000;
 }
