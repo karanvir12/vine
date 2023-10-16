@@ -1,0 +1,27 @@
+[package]
+name = "vine-node-core-runtime-api"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+futures = "0.3.21"
+gum = { package = "tracing-gum", path = "../../gum" }
+lru = "0.8"
+
+sp-consensus-babe = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+
+vine-primitives = { path = "../../../primitives" }
+vine-node-subsystem = { path = "../../subsystem" }
+vine-node-subsystem-types = { path = "../../subsystem-types" }
+vine-node-subsystem-util = { path = "../../subsystem-util" }
+
+[dev-dependencies]
+sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-authority-discovery = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+futures = { version = "0.3.21", features = ["thread-pool"] }
+vine-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
+vine-node-primitives = { path = "../../primitives" }
+test-helpers = { package = "vine-primitives-test-helpers", path = "../../../primitives/test-helpers" }

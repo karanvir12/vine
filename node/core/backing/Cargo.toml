@@ -1,0 +1,30 @@
+[package]
+name = "vine-node-core-backing"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+futures = "0.3.21"
+sp-keystore = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+vine-primitives = { path = "../../../primitives" }
+vine-node-primitives = { path = "../../primitives" }
+vine-node-subsystem = {path = "../../subsystem" }
+vine-node-subsystem-util = { path = "../../subsystem-util" }
+erasure-coding = { package = "vine-erasure-coding", path = "../../../erasure-coding" }
+statement-table = { package = "vine-statement-table", path = "../../../statement-table" }
+bitvec = { version = "1.0.0", default-features = false, features = ["alloc"] }
+gum = { package = "tracing-gum", path = "../../gum" }
+thiserror = "1.0.31"
+fatality = "0.0.6"
+
+[dev-dependencies]
+sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-application-crypto = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sc-keystore = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+sp-tracing = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36" }
+futures = { version = "0.3.21", features = ["thread-pool"] }
+assert_matches = "1.4.0"
+vine-node-subsystem-test-helpers = { path = "../../subsystem-test-helpers" }
+test-helpers = { package = "vine-primitives-test-helpers", path = "../../../primitives/test-helpers" }
